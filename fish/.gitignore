@@ -1,0 +1,8 @@
+functions/**/*.fish
+functions/**/*.py
+completions/**/*.fish
+conf.d/**/*.fish
+
+fish_variables
+
+!functions/md.fish
