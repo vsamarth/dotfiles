@@ -195,7 +195,15 @@ require("mason-lspconfig").setup()
 local servers = {
   rust_analyzer = {},
   gopls = {},
-
+  yamlls = {
+    settings = {
+      yaml = {
+        schemas = {
+          ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+        },
+      },
+    },
+  },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },

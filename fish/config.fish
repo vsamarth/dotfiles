@@ -46,16 +46,16 @@ alias e "$EDITOR"
 # sets up pnpm completion
 [ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-if test -f /opt/homebrew/Caskroom/miniconda/base/bin/conda
-    eval /opt/homebrew/Caskroom/miniconda/base/bin/conda "shell.fish" "hook" $argv | source
-else
-    if test -f "/opt/homebrew/Caskroom/miniconda/base/etc/fish/conf.d/conda.fish"
-        . "/opt/homebrew/Caskroom/miniconda/base/etc/fish/conf.d/conda.fish"
-    else
-        set -x PATH "/opt/homebrew/Caskroom/miniconda/base/bin" $PATH
-    end
+if status is-interactive && type -q conda
+  conda "shell.fish" "hook" $argv | source
 end
-# <<< conda initialize <<<
 
+# FZF
+
+set --export FZF_DEFAULT_OPTS '--cycle --layout=reverse --border --height=40% --preview-window=wrap --marker="*" --prompt="❯" --pointer="❯"'
+
+# Tmux aliases
+abbr -a tm "tmux"
+abbr -a tmc "tmux_create_session"
+abbr -a tma "tmux_attach"
+abbr -a tmls "tmux list-sessions"
