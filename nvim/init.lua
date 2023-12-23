@@ -103,11 +103,14 @@ require("lazy").setup({
     opts = {},
   },
   {
-    "sindrets/diffview.nvim",
-    opts = {
-
-    }
-  }
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = {},
+  },
 })
 
 -- }}}
@@ -177,6 +180,7 @@ require("mason-lspconfig").setup()
 
 local servers = {
   rust_analyzer = {},
+  gopls = {},
 
   lua_ls = {
     Lua = {
@@ -294,6 +298,7 @@ cmp.setup({
 require("conform").setup({
   formatters_by_ft = {
     lua = { "stylua" },
+    go = { "gofmt", "goimports" },
   },
 })
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"

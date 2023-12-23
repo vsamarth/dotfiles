@@ -16,11 +16,11 @@ define heading
 	@tput sgr0
 endef
 
-define symlink 
-	@$(DOTFILES_DIR)/bin/symlink $(1) $(2)
+define symlink
+	$(DOTFILES_DIR)/bin/symlink $(1) $(2)
 endef
 
-all: sudo fish neovim
+all: sudo fish neovim vscode go rust node python
 
 NVIM_CONFIG_DIR := $(HOME)/.config/nvim
 
@@ -34,11 +34,8 @@ NVIM_CONFIG_DIR := $(HOME)/.config/nvim
 
 neovim:
 	$(call heading,Configuring neovim)
-	$(call message,Installing neovim)
 	brew install -q neovim
-	$(call message,Linking neovim config)
 	$(call symlink,$(DOTFILES_DIR)/nvim,$(NVIM_CONFIG_DIR))
-	$(call message,Installing neovim plugins)
 	nvim --headless "+Lazy! sync" +qa
 
 .PHONY: fish
@@ -46,8 +43,43 @@ neovim:
 FISH_CONFIG_DIR := $(HOME)/.config/fish
 fish:
 	$(call heading,Configuring fish shell)
-	$(call message,Installing fish shell)
 	brew install -q fish
-	$(call message,Symlinking fish config)
 	$(call symlink,$(DOTFILES_DIR)/fish,$(FISH_CONFIG_DIR))
 
+
+.PHONY: go rust
+
+go:
+	$(call heading,Setting up Go)
+	brew install -q go
+	go env -w GOPATH="$(HOME)/.go"
+	mkdir -p "$(HOME)/go"
+	go install github.com/cosmtrek/air@latest
+	brew install -q golangci-lint golang-migrate
+
+rust:
+	$(call heading,Setting up Rust)
+	brew install -q rustup-init
+	rustup-init --no-modify-path -y
+	source $(HOME)/.cargo/env && cargo install cargo-edit cargo-cache
+
+node:
+	$(call heading,Setting up Node.js)
+	brew install -q node
+	npm install --global pnpm prettier fkill-cli serve
+
+python:
+	$(call heading,Setting up Python)
+	brew install -q miniconda
+	conda init fish
+
+.PHONY: vscode
+
+VSCODE_SETTINGS := $(HOME)/Library/Application\ Support/Code/User/settings.json
+
+vscode:
+	$(call heading,Setting up Visual Studio Code)
+	brew install -q visual-studio-code
+	code --install-extension jdinhlife.gruvbox
+	code --install-extension esbenp.prettier-vscode
+	$(call symlink,$(DOTFILES_DIR)/vscode/settings.json,$(VSCODE_SETTINGS))

@@ -1,0 +1,11 @@
+{
+  "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 13,
+  "editor.minimap.enabled": false,
+  "files.autoSave": "afterDelay",
+  "window.title": "${rootName}",
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "workbench.editor.showTabs": "single",
+  "workbench.sideBar.location": "right"
+}
