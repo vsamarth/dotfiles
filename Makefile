@@ -20,7 +20,7 @@ define symlink
 	$(DOTFILES_DIR)/bin/symlink $(1) $(2)
 endef
 
-all: sudo fish neovim vscode go rust node python
+all: sudo create-dirs fish neovim vscode tmux go rust node python
 
 NVIM_CONFIG_DIR := $(HOME)/.config/nvim
 
@@ -31,6 +31,9 @@ ifndef GITHUB_ACTION
 endif
 
 NVIM_CONFIG_DIR := $(HOME)/.config/nvim
+
+create-dirs:
+	mkdir -p $(HOME)/.config
 
 neovim:
 	$(call heading,Configuring neovim)
@@ -45,6 +48,7 @@ fish:
 	$(call heading,Configuring fish shell)
 	brew install -q fish
 	$(call symlink,$(DOTFILES_DIR)/fish,$(FISH_CONFIG_DIR))
+	fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
 
 
 .PHONY: go rust
@@ -83,3 +87,9 @@ vscode:
 	code --install-extension jdinhlife.gruvbox
 	code --install-extension esbenp.prettier-vscode
 	$(call symlink,$(DOTFILES_DIR)/vscode/settings.json,$(VSCODE_SETTINGS))
+
+.PHONY: tmux
+tmux:
+	$(call heading,Setting up Tmux)
+	brew install -q tmux tmuxp
+	$(call symlink,$(DOTFILES_DIR)/tmux/tmux.conf,$(HOME)/.tmux.conf)
