@@ -1,6 +1,7 @@
 set -gx EDITOR "nvim"
 set -gx VISUAL "code --wait"
 
+fish_add_path "$HOME/.local/bin"
 if test -x "/opt/homebrew/bin/brew"
   eval "$(/opt/homebrew/bin/brew shellenv)"
 end

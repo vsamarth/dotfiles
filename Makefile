@@ -75,6 +75,7 @@ node:
 python:
 	$(call heading,Setting up Python)
 	brew install -q miniconda
+	pip install --user tmuxp
 
 .PHONY: vscode
 
@@ -90,7 +91,7 @@ vscode:
 .PHONY: tmux
 tmux:
 	$(call heading,Setting up Tmux)
-	brew install -q tmux tmuxp
+	brew install -q tmux
 	$(call symlink,$(DOTFILES_DIR)/tmux/tmux.conf,$(HOME)/.tmux.conf)
 
 .PHONY: git
