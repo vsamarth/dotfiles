@@ -2,6 +2,10 @@
 DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 CURRENT_SHELL := $(shell echo $$SHELL)
 
+CARGO_PACKAGES := cargo-edit cargo-cache stylua
+PIP_PACKAGES := tmuxp 
+NPM_PACKAGES := pnpm prettier fkill-cli serve
+
 define message
 	@tput bold
 	@echo "❯ $(1)"
@@ -34,6 +38,7 @@ NVIM_CONFIG_DIR := $(HOME)/.config/nvim
 
 create-dirs:
 	mkdir -p $(HOME)/.config
+	mkdir -p $(HOME)/.local/bin
 
 neovim:
 	$(call heading,Configuring neovim)
@@ -65,17 +70,17 @@ rust:
 	$(call heading,Setting up Rust)
 	brew install -q rustup-init
 	rustup-init --no-modify-path -y
-	source $(HOME)/.cargo/env && cargo install cargo-edit cargo-cache
+	source $(HOME)/.cargo/env && cargo install $(CARGO_PACKAGES)
 
 node:
 	$(call heading,Setting up Node.js)
 	brew install -q node
-	npm install --global pnpm prettier fkill-cli serve
+	npm install --global $(NPM_PACKAGES)
 
 python:
 	$(call heading,Setting up Python)
 	brew install -q miniconda
-	pip install --user tmuxp
+	pip install --user $(PIP_PACKAGES)
 
 .PHONY: vscode
 
