@@ -1,7 +1,8 @@
 set -gx EDITOR "nvim"
-set -gx VISUAL "code --wait"
+set -gx VISUAL "code"
 
 fish_add_path "$HOME/.local/bin"
+fish_add_path "$HOME/.dotfiles/bin"
 if test -x "/opt/homebrew/bin/brew"
   eval "$(/opt/homebrew/bin/brew shellenv)"
 end
@@ -37,6 +38,7 @@ abbr -a brls "brew list"
 abbr -a g "git"
 abbr -a gs git status -s
 abbr -a gl git log
+abbr -a ghrv gh repo view
 
 alias reload "source $HOME/.config/fish/config.fish"
 

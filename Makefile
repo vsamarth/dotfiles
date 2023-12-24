@@ -3,7 +3,7 @@ DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 CURRENT_SHELL := $(shell echo $$SHELL)
 
 CARGO_PACKAGES := cargo-edit cargo-cache stylua
-PIP_PACKAGES := tmuxp 
+PIP_PACKAGES := tmuxp
 NPM_PACKAGES := pnpm prettier fkill-cli serve
 
 define message
@@ -105,3 +105,7 @@ git:
 	brew install -q git gh lazygit git-flow git-delta
 	$(call symlink,$(DOTFILES_DIR)/git/gitconfig,$(HOME)/.gitconfig)
 	$(call symlink,$(DOTFILES_DIR)/git/gitignore,$(HOME)/.gitignore)
+
+BIN_DIR := $(HOME)/.local/bin
+
+.PHONY: symlink-bin

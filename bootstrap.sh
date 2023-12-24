@@ -27,11 +27,15 @@ while true; do
   kill -0 "$$" || exit
 done 2>/dev/null &
 
-if ! command -v brews &>/dev/null; then
+if ! command -v brew &>/dev/null; then
   info "Installing homebrew..."
   curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-echo "Cloning your dotfiles..."
+info "Cloning your dotfiles..."
 git clone $DOTFILES_REPO "$HOME/.dotfiles"
+
+info "Running dotfiles script"
+$HOME/.dotfiles/bin/dots
+

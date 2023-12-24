@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Change to the dotfiles directory
+DOTFILES_DIR="$HOME/.dotfiles"
+cd "$DOTFILES_DIR" || exit
+
+# Run the Makefile
+make "$@"
+
+# Return to the original directory
+cd - > /dev/null || exit
