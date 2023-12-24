@@ -20,7 +20,7 @@ define symlink
 	$(DOTFILES_DIR)/bin/symlink $(1) $(2)
 endef
 
-all: sudo create-dirs fish neovim vscode tmux go rust node python
+all: sudo create-dirs fish neovim vscode git tmux go rust node python
 
 NVIM_CONFIG_DIR := $(HOME)/.config/nvim
 
@@ -75,7 +75,6 @@ node:
 python:
 	$(call heading,Setting up Python)
 	brew install -q miniconda
-	conda init fish
 
 .PHONY: vscode
 
@@ -93,3 +92,10 @@ tmux:
 	$(call heading,Setting up Tmux)
 	brew install -q tmux tmuxp
 	$(call symlink,$(DOTFILES_DIR)/tmux/tmux.conf,$(HOME)/.tmux.conf)
+
+.PHONY: git
+git:
+	$(call heading,Setting up Git)
+	brew install -q git gh lazygit git-flow git-delta
+	$(call symlink,$(DOTFILES_DIR)/git/gitconfig,$(HOME)/.gitconfig)
+	$(call symlink,$(DOTFILES_DIR)/git/gitignore,$(HOME)/.gitignore)

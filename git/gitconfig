@@ -1,0 +1,28 @@
+[user]
+	name = Samarth Verma
+	email = samarthverma@icloud.com
+
+[core]
+    pager = delta
+	excludesfile = ~/.gitignore
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    light = false      
+    navigate = true    
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[apply]
+	# Detect whitespace errors when applying a patch.
+	whitespace = fix
+
+[branch]
+	# Show most recently changed branches first.
+	sort = -committerdate
