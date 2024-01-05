@@ -27,3 +27,7 @@
 [branch]
 	# Show most recently changed branches first.
 	sort = -committerdate
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true

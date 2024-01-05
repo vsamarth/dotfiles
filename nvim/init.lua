@@ -204,6 +204,7 @@ local servers = {
       },
     },
   },
+  tailwindcss = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },

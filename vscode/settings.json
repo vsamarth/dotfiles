@@ -10,5 +10,33 @@
   "workbench.colorTheme": "Gruvbox Dark Hard",
   "workbench.editor.showTabs": "none",
   "workbench.iconTheme": "vscode-icons",
-  "workbench.sideBar.location": "right"
+  "workbench.sideBar.location": "right",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "explorer.confirmDelete": false,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "explorer.confirmDragAndDrop": false,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.inheritEnv": false,
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.copyWithSyntaxHighlighting": false,
+  "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "cmake.showOptionsMovedNotification": false,
+  "git.confirmSync": false
 }

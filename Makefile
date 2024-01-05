@@ -3,7 +3,7 @@ DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 CURRENT_SHELL := $(shell echo $$SHELL)
 
 CARGO_PACKAGES := cargo-edit cargo-cache stylua
-PIP_PACKAGES := tmuxp
+PIP_PACKAGES := tmuxp httpie
 NPM_PACKAGES := pnpm prettier fkill-cli serve
 
 define message
