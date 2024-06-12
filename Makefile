@@ -1,19 +1,20 @@
 # Assumes homebrew is installed.
 
 HOMEBREW_PREFIX := /opt/homebrew
-
 DOTFILES_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 PATH := $(HOMEBREW_PREFIX)/bin:$(DOTFILES_DIR)/bin:$(PATH)
 SHELL := env PATH=$(PATH) /bin/bash
 CURRENT_SHELL := $(shell echo $$SHELL)
+
+# just in case using an unsupported macOS version for homebrew
 export HOMEBREW_DEVELOPER=1
 
 define symlink
 	symlink $(1) $(2)
 endef
 
-all: sudo create-dirs fish
+all: sudo create-dirs fish vscode git dock
 
 
 sudo:
@@ -56,3 +57,9 @@ git:
 	brew install -q git gh git-delta
 	$(call symlink,$(DOTFILES_DIR)/git/gitconfig,$(HOME)/.gitconfig)
 	$(call symlink,$(DOTFILES_DIR)/git/gitignore,$(HOME)/.gitignore)
+
+.PHONY: dock
+dock:
+	$(info Setting up your dock)
+	brew install -q dockutil
+	bash $(DOTFILES_DIR)/macos/dock.sh
