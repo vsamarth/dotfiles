@@ -10,18 +10,16 @@ CURRENT_SHELL := $(shell echo $$SHELL)
 # just in case using an unsupported macOS version for homebrew
 export HOMEBREW_DEVELOPER=1
 
-define symlink
-	symlink $(1) $(2)
-endef
-
-all: sudo create-dirs fish vscode git dock
-
+setup: sudo create-dirs fish vscode git dock
 
 sudo:
 ifndef GITHUB_ACTION
 	@sudo -v
 	@while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 endif
+
+clean:
+	brew cleanup
 
 
 create-dirs:
@@ -39,7 +37,6 @@ fish:
 
 
 
-.PHONY: vscode
 
 VSCODE_EXTENSIONS := jdinhlife.gruvbox esbenp.prettier-vscode vscode-icons-team.vscode-icons
 VSCODE_SETTINGS := $(HOME)/Library/Application Support/Code/User/settings.json
@@ -49,14 +46,14 @@ vscode:
 	$(info Setting up Visual Studio Code)
 	brew install -q visual-studio-code
 	$(foreach extension,$(VSCODE_EXTENSIONS),code --install-extension $(extension);)
-	$(call symlink,$(DOTFILES_DIR)/vscode/settings.json,$(VSCODE_SETTINGS))
+	symlink $(DOTFILES_DIR)/vscode/settings.json $(VSCODE_SETTINGS)
 
 .PHONY: git
 git: 
 	$(info Setting up Git and Github CLI)
 	brew install -q git gh git-delta
-	$(call symlink,$(DOTFILES_DIR)/git/gitconfig,$(HOME)/.gitconfig)
-	$(call symlink,$(DOTFILES_DIR)/git/gitignore,$(HOME)/.gitignore)
+	symlink $(DOTFILES_DIR)/git/gitconfig $(HOME)/.gitconfig
+	symlink $(DOTFILES_DIR)/git/gitignore $(HOME)/.gitignore
 
 .PHONY: dock
 dock:

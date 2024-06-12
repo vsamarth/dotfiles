@@ -1,14 +1,5 @@
-if type -q nvim
-    set -gx EDITOR "nvim"
-else 
-    set -gx EDITOR "vim"
-end
-
-if type -q code
-    set -gx VISUAL "code"
-else
-    set -gx VISUAL $EDITOR
-end
+set -gx VISUAL "code"
+set -gx EDITOR "nvim"
 
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.dotfiles/bin"

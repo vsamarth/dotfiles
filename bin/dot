@@ -1,0 +1,72 @@
+#!/bin/sh
+
+DOTFILES_DIR="$HOME/.dotfiles"
+
+BIN_NAME=$(basename "$0")
+COMMAND_NAME=$1
+SUB_COMMAND_NAME=$2
+
+editor_name() {
+    case $1 in
+        "vim")
+            echo "Vim"
+            ;;
+        "nvim")
+            echo "Neovim"
+            ;;
+        "code")
+            echo "Visual Studio Code"
+            ;;
+        *)
+            echo "Unknown"
+            ;;
+    esac
+}
+
+sub_help () {
+  echo "Usage: $BIN_NAME <command>"
+  echo
+  echo "Commands:"
+  echo "   clean            Clean up caches and broken symbolic links"
+  echo "   edit             Open dotfiles in $(editor_name $VISUAL)"
+  echo "   help             This help message"
+  echo "   setup            Bootstrap your system"
+  echo "   update           Update packages and software"
+}
+
+sub_edit() {
+    sh -c "$VISUAL $DOTFILES_DIR"
+}
+
+sub_setup() {
+    cd "$DOTFILES_DIR" || exit
+    make setup
+    cd - > /dev/null || exit
+}
+
+sub_clean() {
+    cd "$DOTFILES_DIR" || exit
+    make clean
+    cd - > /dev/null || exit
+}
+
+sub_update() {
+    echo "Running topgrade to update packages"
+    sleep 2
+    topgrade
+}
+
+case $COMMAND_NAME in
+  "" | "-h" | "--help")
+    sub_help
+    ;;
+  *)
+    shift
+    sub_${COMMAND_NAME} $@
+    if [ $? = 127 ]; then
+      echo "'$COMMAND_NAME' is not a known command or has errors." >&2
+      sub_help
+      exit 1
+    fi
+    ;;
+esac
