@@ -1,0 +1,24 @@
+{
+  "breadcrumbs.enabled": false,
+  "editor.copyWithSyntaxHighlighting": false,
+  "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 13,
+  "editor.guides.indentation": false,
+  "editor.minimap.enabled": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "files.autoSave": "afterDelay",
+  "git.confirmSync": false,
+  "terminal.integrated.inheritEnv": false,
+  "vsicons.dontShowNewVersionMessage": true,
+  "window.autoDetectColorScheme": true,
+  "workbench.editor.showTabs": "none",
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.preferredDarkColorTheme": "GitHub Dark Default",
+  "workbench.preferredLightColorTheme": "GitHub Light Default",
+  "workbench.sideBar.location": "right"
+}
