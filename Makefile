@@ -60,3 +60,15 @@ dock:
 	$(info Setting up your dock)
 	brew install -q dockutil
 	bash $(DOTFILES_DIR)/macos/dock.sh
+
+.PHONY: rust
+rust:
+	$(info Setting up Rust)
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+	source "$(HOME)/.cargo/env" && cargo install cargo-edit
+
+.PHONY: node
+node:
+	$(info Setting up Node.js)
+	brew install -q node
+	npm install -g pnpm fkill-cli

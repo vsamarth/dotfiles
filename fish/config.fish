@@ -1,5 +1,6 @@
 set -gx VISUAL "code"
 set -gx EDITOR "nvim"
+set -gx LANG "en_US.UTF-8"
 
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.dotfiles/bin"
@@ -7,6 +8,10 @@ fish_add_path "$HOME/.dotfiles/bin"
 # Homebrew
 if test -x "/opt/homebrew/bin/brew"
   eval "$(/opt/homebrew/bin/brew shellenv)"
+end
+
+if test -d "$HOME/cargo"
+  source "$HOME/.cargo/env.fish"
 end
 
 if type -q zoxide
@@ -33,7 +38,7 @@ abbr -a brls "brew list"
 
 abbr -a g "git"
 abbr -a gs git status -s
-abbr -a gl git log
+abbr -a gl git slog
 abbr -a ghrv gh repo view
 
 alias reload "source $HOME/.config/fish/config.fish"
