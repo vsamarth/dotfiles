@@ -57,6 +57,5 @@ end
 
 # Tmux
 abbr -a tm tmux
-abbr -a tma "tmux attach -t"
 abbr -a tmds tmux_directory_session
 abbr -a tmls tmux_list_sessions
