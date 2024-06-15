@@ -1,0 +1,10 @@
+{
+  "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
+  "conform.nvim": { "branch": "master", "commit": "797d1f622a23d4a21bb58218bdf5999a9beac4ef" },
+  "gruvbox.nvim": { "branch": "main", "commit": "d4cde3853a172485961b515c36d51d757728d6e6" },
+  "lazy.nvim": { "branch": "main", "commit": "eb4957442e3182f051b0ae11da32e06d22c190e3" },
+  "mini.nvim": { "branch": "main", "commit": "ebc8cb0c1f73ee6c53e0560957a37a2307a70f98" },
+  "nvim-cmp": { "branch": "main", "commit": "a110e12d0b58eefcf5b771f533fc2cf3050680ac" },
+  "plenary.nvim": { "branch": "master", "commit": "a3e3bc82a3f95c5ed0d7201546d5d2c19b20d683" },
+  "todo-comments.nvim": { "branch": "main", "commit": "51e10f838e84b4756c16311d0b1ef0972c6482d2" }
+}

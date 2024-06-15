@@ -53,7 +53,7 @@ sub_clean() {
 sub_update() {
     echo "Running topgrade to update packages"
     sleep 2
-    topgrade
+    topgrade --disable pnpm
 }
 
 case $COMMAND_NAME in

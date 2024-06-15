@@ -72,3 +72,9 @@ node:
 	$(info Setting up Node.js)
 	brew install -q node
 	npm install -g pnpm fkill-cli
+
+.PHONY: neovim
+neovim:
+	$(info Setting up Neovim)
+	brew install -q neovim
+	symlink $(DOTFILES_DIR)/nvim $(HOME)/.config/nvim
