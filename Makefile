@@ -32,7 +32,7 @@ create-dirs:
 FISH_CONFIG_DIR := $(HOME)/.config/fish
 fish:
 	brew install -q fish
-	$(call symlink,$(DOTFILES_DIR)/fish,$(FISH_CONFIG_DIR))
+	symlink $(DOTFILES_DIR)/fish $(FISH_CONFIG_DIR)
 	fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
 
 
