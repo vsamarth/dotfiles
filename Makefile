@@ -10,7 +10,7 @@ CURRENT_SHELL := $(shell echo $$SHELL)
 # just in case using an unsupported macOS version for homebrew
 export HOMEBREW_DEVELOPER=1
 
-setup: sudo create-dirs fish vscode git dock
+setup: sudo create-dirs fish vscode git tmux dock
 
 sudo:
 ifndef GITHUB_ACTION
@@ -78,3 +78,9 @@ neovim:
 	$(info Setting up Neovim)
 	brew install -q neovim
 	symlink $(DOTFILES_DIR)/nvim $(HOME)/.config/nvim
+
+.PHONY: tmux
+tmux:
+	$(info Setting up Tmux)
+	brew install -q tmux
+	symlink $(DOTFILES_DIR)/tmux $(HOME)/.config/tmux

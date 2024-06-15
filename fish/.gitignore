@@ -6,3 +6,4 @@ conf.d/**/*.fish
 fish_variables
 
 !functions/md.fish
+!functions/tmux*.fish
