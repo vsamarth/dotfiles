@@ -1,3 +1,6 @@
+-- Adapted from the wonderful `kickstart.nvim` but is still very much a work in progress
+-- TODO: See if mini-basics.nvim is useful for some common settings
+
 -- Set <space> as the leader key and `\` as the localleader key
 vim.g.mapleader = ' '
 vim.g.maplocalleader = '\\'
@@ -23,6 +26,13 @@ vim.opt.breakindent = true
 
 -- Save undo history
 vim.opt.undofile = true
+
+-- Don't store backup when overrwriting a file
+vim.opt.backup = false
+vim.opt.writebackup = false
+
+-- Allow going past the end of line in visual block mode
+vim.opt.virtualedit = 'block'
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
@@ -60,7 +70,7 @@ vim.opt.scrolloff = 10
 -- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
   end,
@@ -104,7 +114,7 @@ require('lazy').setup({
     end,
   },
   { -- Statusline at the bottom of buffers
-    -- TODO: Remove components not required
+    -- T-- Allow going past the end of line in visual block modeODO: Remove components not required
     'nvim-lualine/lualine.nvim',
     opts = {
       options = {
@@ -137,6 +147,11 @@ require('lazy').setup({
         enabled = false,
       },
     },
+  },
+  { -- Surround mappings
+    'echasnovski/mini.surround',
+    version = '*',
+    config = true,
   },
   { -- Fuzzy finder for files, lsp etc.
     'nvim-telescope/telescope.nvim',
@@ -226,11 +241,15 @@ vim.opt.formatexpr = "v:lua.require'conform'.formatexpr()"
 require('mason').setup {}
 local handlers = {
   function(server_name)
-    lspconfig[server_name].setup {}
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    lspconfig[server_name].setup {
+      capabilities = capabilities,
+    }
   end,
 }
 
 require('mason-lspconfig').setup {
+  ensure_installed = { 'lua_ls', 'rust_analyzer' },
   handlers = handlers,
 }
 
@@ -270,20 +289,40 @@ cmp.setup {
   }, {
     { name = 'buffer' },
   }),
+  experimental = {
+    ghost_text = true,
+  },
 }
 
 -- }}}
 
 -- [[ Telescope ]] {{{
-require('telescope').setup {}
+
+-- TODO: Look into using telescope-frecency
+
+local telescope = require 'telescope'
+
+telescope.setup {
+  pickers = {
+    buffers = {
+      previewer = false,
+      theme = 'dropdown',
+    },
+    find_files = {
+      previewer = false,
+      theme = 'dropdown',
+    },
+  },
+}
 
 -- Enable Telescope extensions if they are installed
-pcall(require('telescope').load_extension, 'fzf')
+pcall(telescope.load_extension, 'fzf')
 
 local builtin = require 'telescope.builtin'
 
 map('n', '<leader>sh', builtin.help_tags)
 map('n', '<leader><leader>', builtin.find_files)
+map('n', ';', builtin.buffers)
 
 -- }}}
 
