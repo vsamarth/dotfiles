@@ -8,11 +8,10 @@ dockutil --remove all --no-restart
 
 APPS=(
 	"Safari"
+	"Firefox"
 	"Visual Studio Code"
 	"iTerm"
 	"Calendar"
-	"Telegram"
-	"WhatsApp"
 	"Spotify"
 )
 

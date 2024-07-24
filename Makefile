@@ -39,7 +39,7 @@ fish:
 
 
 VSCODE_EXTENSIONS := jdinhlife.gruvbox esbenp.prettier-vscode vscode-icons-team.vscode-icons
-VSCODE_SETTINGS := $(HOME)/Library/Application Support/Code/User/settings.json
+VSCODE_SETTINGS := "$(HOME)/Library/Application Support/Code/User/settings.json"
 
 .PHONY: vscode
 vscode:
