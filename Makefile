@@ -66,7 +66,14 @@ dock:
 rust:
 	$(info Setting up Rust)
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-	source "$(HOME)/.cargo/env" && cargo install cargo-edit
+	source "$(HOME)/.cargo/env" && cargo install cargo-edit cargo-update
+
+.PHONY: python
+python:
+	$(info Setting up Python)
+	brew install -q python pipx
+	pipx install poetry ruff
+
 
 .PHONY: node
 node:
