@@ -51,6 +51,12 @@ sub_clean() {
 }
 
 sub_update() {
+    # Check if topgrade is installed
+    if ! command -v topgrade &> /dev/null; then
+        echo "Error: 'topgrade' is not installed. Please install it before running this script."
+        exit 1
+    fi
+
     echo "Running topgrade to update packages"
     sleep 2
     topgrade --disable pnpm

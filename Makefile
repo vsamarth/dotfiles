@@ -7,9 +7,6 @@ PATH := $(HOMEBREW_PREFIX)/bin:$(DOTFILES_DIR)/bin:$(PATH)
 SHELL := env PATH=$(PATH) /bin/bash
 CURRENT_SHELL := $(shell echo $$SHELL)
 
-# just in case using an unsupported macOS version for homebrew
-export HOMEBREW_DEVELOPER=1
-
 setup: sudo create-dirs fish vscode git tmux dock
 
 sudo:
@@ -30,13 +27,17 @@ create-dirs:
 .PHONY: fish
 
 FISH_CONFIG_DIR := $(HOME)/.config/fish
+FISH_PATH := $(HOMEBREW_PREFIX)/bin/fish
 fish:
 	brew install -q fish
 	symlink $(DOTFILES_DIR)/fish $(FISH_CONFIG_DIR)
 	fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
-
-
-
+	@if ! grep -Fxq "$(FISH_PATH)" /etc/shells; then \
+		echo "$(FISH_PATH)" | sudo tee -a /etc/shells > /dev/null; \
+	fi
+	@if [ "$(CURRENT_SHELL)" != "$(FISH_PATH)" ]; then \
+		chsh -s "$(FISH_PATH)"; \
+	fi
 
 VSCODE_EXTENSIONS := jdinhlife.gruvbox esbenp.prettier-vscode vscode-icons-team.vscode-icons
 VSCODE_SETTINGS := "$(HOME)/Library/Application Support/Code/User/settings.json"
