@@ -59,7 +59,7 @@ sub_update() {
 
     echo "Running topgrade to update packages"
     sleep 2
-    topgrade --disable pnpm
+    topgrade --disable pnpm --disable yarn
 }
 
 case $COMMAND_NAME in

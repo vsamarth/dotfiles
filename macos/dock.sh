@@ -7,7 +7,7 @@ fi
 dockutil --remove all --no-restart
 
 APPS=(
-	"Safari"
+	"Google Chrome"
 	"Visual Studio Code"
 	"iTerm"
 	"Whatsapp"
