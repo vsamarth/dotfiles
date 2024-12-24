@@ -11,6 +11,7 @@ APPS=(
 	"Visual Studio Code"
 	"iTerm"
 	"Whatsapp"
+	"Todoist"
 	"Calendar"
 	"ChatGPT"
 	"Spotify"
