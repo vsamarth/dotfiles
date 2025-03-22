@@ -92,3 +92,8 @@ tmux:
 	$(info Setting up Tmux)
 	brew install -q tmux
 	symlink $(DOTFILES_DIR)/tmux $(HOME)/.config/tmux
+
+.PHONY: go 
+go:
+	$(info Setting up Golang)
+	brew install -q go
