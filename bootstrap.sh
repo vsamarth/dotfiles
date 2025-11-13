@@ -28,8 +28,23 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-info "Cloning your dotfiles..."
-git clone $DOTFILES_REPO "$HOME/.dotfiles"
+# Check if dotfiles already exist
+if [ -d "$DOTFILES_DIR" ]; then
+  info "Dotfiles directory already exists at $DOTFILES_DIR"
+  read -p "Do you want to update it? (y/n): " answer
+  if [[ "$answer" =~ ^[Yy]$ ]]; then
+    info "Updating dotfiles..."
+    cd "$DOTFILES_DIR" || exit
+    git pull || exit
+    info "Running dotfiles script"
+    "$DOTFILES_DIR/bin/dot" setup
+  else
+    info "Skipping clone. Run '$DOTFILES_DIR/bin/dot setup' manually if needed."
+  fi
+else
+  info "Cloning your dotfiles..."
+  git clone $DOTFILES_REPO "$HOME/.dotfiles"
 
-info "Running dotfiles script"
-"$DOTFILES_DIR/bin/dot" setup
+  info "Running dotfiles script"
+  "$DOTFILES_DIR/bin/dot" setup
+fi

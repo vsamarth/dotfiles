@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 DOTFILES_DIR="$HOME/.dotfiles"
 
@@ -40,13 +40,21 @@ sub_edit() {
 
 sub_setup() {
     cd "$DOTFILES_DIR" || exit
-    make setup
+    if ! command -v just >/dev/null 2>&1; then
+        echo "Error: 'just' is not installed. Please install it before running this script."
+        exit 1
+    fi
+    just setup
     cd - > /dev/null || exit
 }
 
 sub_clean() {
     cd "$DOTFILES_DIR" || exit
-    make clean
+    if ! command -v just >/dev/null 2>&1; then
+        echo "Error: 'just' is not installed. Please install it before running this script."
+        exit 1
+    fi
+    just clean
     cd - > /dev/null || exit
 }
 
@@ -66,13 +74,13 @@ case $COMMAND_NAME in
   "" | "-h" | "--help")
     sub_help
     ;;
-  *)
+  clean | edit | setup | update)
     shift
-    sub_${COMMAND_NAME} $@
-    if [ $? = 127 ]; then
-      echo "'$COMMAND_NAME' is not a known command or has errors." >&2
-      sub_help
-      exit 1
-    fi
+    sub_${COMMAND_NAME} "$@"
+    ;;
+  *)
+    echo "'$COMMAND_NAME' is not a known command." >&2
+    sub_help
+    exit 1
     ;;
 esac

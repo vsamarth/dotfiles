@@ -29,7 +29,6 @@ if type -q bat
     alias cat bat
 end
 
-
 abbr -a br brew
 abbr -a bri "brew install -q"
 abbr -a brui "brew uninstall -q"

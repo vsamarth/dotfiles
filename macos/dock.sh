@@ -8,8 +8,8 @@ dockutil --remove all --no-restart
 
 APPS=(
 	"Google Chrome"
-	"Visual Studio Code"
-	"iTerm"
+	"Cursor"
+	"Ghostty"
 	"Whatsapp"
 	"Todoist"
 	"Calendar"

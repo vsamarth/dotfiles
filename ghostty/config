@@ -1,0 +1,4 @@
+theme = light:Gruvbox Light Hard,dark:Gruvbox Dark Hard
+macos-option-as-alt = true
+
+font-family = "JetBrains Mono"
