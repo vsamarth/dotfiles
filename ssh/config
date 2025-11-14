@@ -2,7 +2,7 @@
 # This file is symlinked to ~/.ssh/config
 
 # Include private configs if they exist (not tracked in git)
-Include ~/.ssh/config.private 2>/dev/null
+Include ~/.ssh/config.private
 
 # Default settings for all hosts
 Host *
@@ -25,4 +25,3 @@ Host gitlab.com
     User git
     IdentityFile ~/.ssh/id_ed25519
     IdentitiesOnly yes
-

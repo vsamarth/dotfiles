@@ -8,6 +8,7 @@ homebrew_prefix := "/opt/homebrew"
 fish_config_dir := home_dir + "/.config/fish"
 fish_path := homebrew_prefix + "/bin/fish"
 cursor_settings := home_dir + "/Library/Application Support/Cursor/User/settings.json"
+ghostty_dir := home_dir + "/.config/ghostty"
 config_dir := home_dir + "/.config"
 ssh_dir := home_dir + "/.ssh"
 
@@ -16,7 +17,7 @@ default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish cursor git tmux dock ssh dev-tools ghostty
+setup: sudo create-dirs fish cursor terminal git tmux dock ssh dev-tools
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -54,6 +55,12 @@ cursor:
     cursor --install-extension esbenp.prettier-vscode 2>/dev/null || true
     cursor --install-extension vscode-icons-team.vscode-icons 2>/dev/null || true
 
+terminal:
+    @echo "Setting up Ghostty"
+    brew install --cask -q ghostty
+    mkdir -p "{{ghostty_dir}}"
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/ghostty/config "{{ghostty_dir}}/config"
+
 # Install Git and GitHub CLI
 git:
     @echo "Setting up Git and Github CLI"
@@ -61,18 +68,10 @@ git:
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/git/gitconfig {{home_dir}}/.gitconfig
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/git/gitignore {{home_dir}}/.gitignore
 
-# Install Ghostty terminal
-ghostty:
-    @echo "Setting up Ghostty terminal"
-    brew install --cask -q ghostty
-    mkdir -p {{config_dir}}/ghostty
-    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/ghostty/config {{config_dir}}/ghostty/config
-
 # Setup macOS dock
 dock:
     @echo "Setting up your dock"
     brew install -q dockutil
-    brew install --cask -q ghostty
     bash {{dotfiles_dir}}/macos/dock.sh
 
 # Install Rust
