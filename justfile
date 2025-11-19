@@ -7,7 +7,7 @@ home_dir := env_var("HOME")
 homebrew_prefix := "/opt/homebrew"
 fish_config_dir := home_dir + "/.config/fish"
 fish_path := homebrew_prefix + "/bin/fish"
-cursor_settings := home_dir + "/Library/Application Support/Cursor/User/settings.json"
+vscode_settings := home_dir + "/Library/Application Support/Code/User/settings.json"
 ghostty_dir := home_dir + "/.config/ghostty"
 config_dir := home_dir + "/.config"
 ssh_dir := home_dir + "/.ssh"
@@ -17,7 +17,7 @@ default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish cursor terminal git tmux dock ssh dev-tools
+setup: sudo create-dirs fish vscode terminal git tmux ssh dev-tools brewfile dock macos
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -45,15 +45,15 @@ fish:
         chsh -s "{{fish_path}}"; \
     fi
 
-# Install Cursor
-cursor:
-    @echo "Setting up Cursor"
-    brew install --cask -q cursor
-    mkdir -p "{{home_dir}}/Library/Application Support/Cursor/User"
-    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/vscode/settings.json "{{cursor_settings}}"
-    cursor --install-extension jdinhlife.gruvbox 2>/dev/null || true
-    cursor --install-extension esbenp.prettier-vscode 2>/dev/null || true
-    cursor --install-extension vscode-icons-team.vscode-icons 2>/dev/null || true
+# Install VS Code
+vscode:
+    @echo "Setting up VS Code"
+    brew install --cask -q visual-studio-code
+    mkdir -p "{{home_dir}}/Library/Application Support/Code/User"
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/vscode/settings.json "{{vscode_settings}}"
+    code --install-extension jdinhlife.gruvbox 2>/dev/null || true
+    code --install-extension esbenp.prettier-vscode 2>/dev/null || true
+    code --install-extension vscode-icons-team.vscode-icons 2>/dev/null || true
 
 terminal:
     @echo "Setting up Ghostty"
@@ -73,6 +73,11 @@ dock:
     @echo "Setting up your dock"
     brew install -q dockutil
     bash {{dotfiles_dir}}/macos/dock.sh
+
+# Configure macOS system defaults
+macos:
+    @echo "Configuring macOS system defaults..."
+    bash {{dotfiles_dir}}/macos/.macos
 
 # Install Rust
 rust:
@@ -129,6 +134,11 @@ ssh:
 dev-tools:
     @echo "Setting up development tools"
     brew install -q zoxide fzf fd ripgrep jq dust lazygit just
+
+# Install all packages from Brewfile
+brewfile:
+    @echo "Installing packages from Brewfile..."
+    brew bundle install --file={{dotfiles_dir}}/Brewfile
 
 # Clean Homebrew caches
 clean:

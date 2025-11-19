@@ -8,13 +8,14 @@ dockutil --remove all --no-restart
 
 APPS=(
 	"Google Chrome"
-	"Cursor"
+	"Visual Studio Code"
 	"Ghostty"
 	"Whatsapp"
 	"Todoist"
 	"Calendar"
 	"ChatGPT"
 	"Spotify"
+	"Proton Mail"
 )
 
 for app in "${APPS[@]}"; do

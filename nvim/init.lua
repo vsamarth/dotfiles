@@ -48,7 +48,9 @@ require('lazy').setup {
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     dependencies = { { 'mason-org/mason.nvim', config = true } },
-    opts = { ensure_installed = { 'stylua', 'gopls', 'ruff', 'shfmt', 'goimports', 'biome', 'tailwindcss-language-server', 'clang-format', 'shellcheck' } },
+    opts = {
+      ensure_installed = { 'pyright', 'stylua', 'gopls', 'ruff', 'shfmt', 'goimports', 'biome', 'tailwindcss-language-server', 'clang-format', 'shellcheck' },
+    },
   },
   {
     'stevearc/conform.nvim',
@@ -203,6 +205,21 @@ require('lazy').setup {
       },
     },
   },
+  {
+    'linux-cultist/venv-selector.nvim',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
+    },
+    ft = 'python', -- Load when opening Python files
+    keys = {
+      { ',v', '<cmd>VenvSelect<cr>' }, -- Open picker on keymap
+    },
+    opts = { -- this can be an empty lua table - just showing below for clarity.
+      search = {}, -- if you add your own searches, they go here.
+      options = {}, -- if you add plugin options, they go here.
+    },
+  },
 }
 
 --}}}
@@ -233,6 +250,7 @@ vim.opt.scrolloff = 10 -- Minimal number of screen lines to keep above and below
 vim.opt.confirm = true
 -- }}}
 
+-- Keybindings {{{
 local function map(mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, { noremap = true, silent = true, desc = desc })
 end
@@ -265,7 +283,6 @@ map('n', '<leader>sh', function()
   vim.cmd 'split'
 end, 'Horizontal split')
 
-
 map('n', '<leader>rn', vim.lsp.buf.rename, 'LSP rename')
 map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
 map('n', 'gd', vim.lsp.buf.definition, 'Goto definition')
@@ -273,12 +290,12 @@ map('n', 'gD', vim.lsp.buf.declaration, 'Goto declaration')
 map('n', 'gi', vim.lsp.buf.implementation, 'Goto implementation')
 map('n', 'gr', vim.lsp.buf.references, 'Goto references')
 map('n', '<leader>f', function()
-  require('conform').format({async = true, lsp_fallback = true})
+  require('conform').format { async = true, lsp_fallback = true }
 end, 'Format buffer')
 -- }}}
 
 -- LSP {{{
-vim.lsp.enable { 'clangd', 'gopls' }
+vim.lsp.enable { 'clangd', 'gopls', 'pyright' }
 
 vim.diagnostic.config {
   severity_sort = true,
