@@ -41,8 +41,7 @@ sub_edit() {
 sub_setup() {
     cd "$DOTFILES_DIR" || exit
     if ! command -v just >/dev/null 2>&1; then
-        echo "Error: 'just' is not installed. Please install it before running this script."
-        exit 1
+	brew install just
     fi
     just setup
     cd - > /dev/null || exit
