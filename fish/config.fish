@@ -20,6 +20,10 @@ if type -q zoxide
     zoxide init fish | source
 end
 
+if type -q direnv
+    direnv hook fish | source
+end
+
 if type -q eza
     alias ls "eza -A --sort type"
     alias ll "eza -A --long --sort type --git --no-user --no-time"
@@ -53,6 +57,12 @@ if type -q fzf
 end
 
 # Tmux
-abbr -a tm tmux
-abbr -a tmds tmux_directory_session
-abbr -a tmls tmux_list_sessions
+# abbr -a tm tmux
+# abbr -a tmds tmux_directory_session
+# abbr -a tmls tmux_list_sessions
+
+# Zellij
+abbr -a zl zellij
+abbr -a zla "zellij attach --create"
+abbr -a zlls "zellij list-sessions"
+abbr -a zlds "zellij attach --create (basename (pwd))"

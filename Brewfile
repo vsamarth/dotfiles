@@ -1,4 +1,5 @@
 brew "bat"
+brew "direnv"
 brew "dockutil"
 brew "dust"
 brew "eza"
@@ -20,6 +21,7 @@ brew "ripgrep"
 brew "tmux"
 brew "topgrade"
 brew "wget"
+brew "zellij"
 brew "zoxide"
 
 cask "chatgpt"
