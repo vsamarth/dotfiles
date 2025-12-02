@@ -27,7 +27,18 @@
   "workbench.preferredLightColorTheme": "Gruvbox Light Hard",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": false,
-  "workbench.activityBar.location": "hidden",
-  "chat.disableAIFeatures": true
+  "svelte.enable-ts-plugin": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "githubPullRequests.pushBranch": "always",
+  "git.autofetch": true,
+  "chat.tools.terminal.autoApprove": {
+    "/^bun lint$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^bun test$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

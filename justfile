@@ -17,7 +17,7 @@ default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish vscode terminal git tmux ssh dev-tools brewfile dock macos
+setup: sudo create-dirs fish vscode terminal git zellij ssh dev-tools brewfile dock macos
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -118,11 +118,13 @@ neovim:
     brew install -q neovim
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/nvim {{config_dir}}/nvim
 
-# Install Tmux
-tmux:
-    @echo "Setting up Tmux"
-    brew install -q tmux
-    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/tmux {{config_dir}}/tmux
+# Install Zellij
+zellij:
+    @echo "Setting up Zellij"
+    brew install -q zellij
+    mkdir -p {{config_dir}}/zellij
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/zellij {{config_dir}}/zellij
+
 
 # Setup SSH config
 ssh:

@@ -1,3 +1,5 @@
+Include /Users/samarth/.colima/ssh_config
+
 # SSH Config
 # This file is symlinked to ~/.ssh/config
 

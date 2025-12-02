@@ -12,10 +12,10 @@ APPS=(
 	"Ghostty"
 	"Whatsapp"
 	"Todoist"
+	"Proton Mail"
 	"Calendar"
 	"ChatGPT"
 	"Spotify"
-	"Proton Mail"
 )
 
 for app in "${APPS[@]}"; do

@@ -27,3 +27,12 @@ Temporary Items
 
 # iCloud generated files
 *.icloud
+
+### Global Ignores ###
+.env
+.venv
+node_modules
+.vscode/
+dist/
+build/
+*.log

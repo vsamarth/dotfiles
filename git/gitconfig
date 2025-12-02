@@ -3,40 +3,44 @@
 	email = vsamarthj@gmail.com
 
 [alias]
-    # View abbreviated SHA, description, and history graph of the latest 20 commits.
-    slog = log --pretty=oneline -n 20 --graph --abbrev-commit
+	# View abbreviated SHA, description, and history graph of the latest 20 commits.
+	slog = log --pretty=oneline -n 20 --graph --abbrev-commit
 
-    # Amend the currently staged files to the latest commit.
+	# Amend the currently staged files to the latest commit.
 	amend = commit --amend --reuse-message=HEAD
 
-    # Show verbose output about tags, branches or remotes
+	# Show verbose output about tags, branches or remotes
 	tags = tag -l
 	branches = branch --all
 	remotes = remote --verbose
 
-    # List contributors with number of commits.
+	# List contributors with number of commits.
 	contributors = shortlog --summary --numbered
 
 	# Show the user email for the current repository.
 	whoami = config user.email
+	pf = push --force-with-lease
+	
+	# Smart checkout: Switch to branch if exists, else create it.
+	go = "!f() { git checkout \"$1\" 2>/dev/null || git checkout -b \"$1\"; }; f"
 
 [core]
-    pager = delta
+	pager = delta
 	excludesfile = ~/.gitignore
 	editor = code --wait
 
 [interactive]
-    diffFilter = delta --color-only
+	diffFilter = delta --color-only
 
 [delta]
-    light = false      
-    navigate = true    
+	light = false
+	navigate = true
 
 [merge]
-    conflictstyle = diff3
+	conflictstyle = diff3
 
 [diff]
-    colorMoved = default
+	colorMoved = default
 
 [apply]
 	# Detect whitespace errors when applying a patch.
@@ -53,8 +57,6 @@
 	rebase = true
 
 [credential "https://github.com"]
-	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
-	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
