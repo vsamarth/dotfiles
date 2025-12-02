@@ -51,9 +51,6 @@ vscode:
     brew install --cask -q visual-studio-code
     mkdir -p "{{home_dir}}/Library/Application Support/Code/User"
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/vscode/settings.json "{{vscode_settings}}"
-    code --install-extension jdinhlife.gruvbox 2>/dev/null || true
-    code --install-extension esbenp.prettier-vscode 2>/dev/null || true
-    code --install-extension vscode-icons-team.vscode-icons 2>/dev/null || true
 
 terminal:
     @echo "Setting up Ghostty"

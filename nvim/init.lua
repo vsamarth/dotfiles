@@ -1,232 +1,235 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = '\\'
 
--- Plugins {{{
--- Install lazy.nvim {{{
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
--- }}}
+if not vim.g.vscode then
+  -- Plugins {{{
+  -- Install lazy.nvim {{{
+  local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+    local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+    if vim.v.shell_error ~= 0 then
+      error('Error cloning lazy.nvim:\n' .. out)
+    end
+  end ---@diagnostic disable-next-line: undefined-field
+  vim.opt.rtp:prepend(lazypath)
+  -- }}}
 
-require('lazy').setup {
-  { 'neovim/nvim-lspconfig' },
-  { 'nvim-mini/mini.basics', config = true },
-  { 'nvim-mini/mini.pairs', config = true },
-  { 'nvim-mini/mini.surround', config = true },
-  { 'lewis6991/gitsigns.nvim', config = true },
-  { 'j-hui/fidget.nvim', config = true },
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000,
-    opts = {
-      contrast = 'hard',
-      overrides = { Folded = { link = 'Comment' }, SignColumn = { link = 'Normal' }, Pmenu = { link = 'Normal' }, PmenuBorder = { link = 'GruvboxBg4' } },
-    },
-  },
-  { 'okuuva/auto-save.nvim', cmd = 'ASToggle', event = { 'InsertLeave', 'TextChanged' }, config = true },
-  { 'nvim-lualine/lualine.nvim', opts = { options = { icons_enabled = false, section_separators = '', component_separators = '|' } } },
-  {
-    'saghen/blink.cmp',
-    dependencies = { 'rafamadriz/friendly-snippets', 'folke/lazydev.nvim' },
-    version = '1.*',
-    opts = {
-      keymap = { preset = 'default' },
-      completion = { documentation = { auto_show = false } },
-      sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer' },
-      },
-      fuzzy = { implementation = 'prefer_rust_with_warning' },
-    },
-    opts_extend = { 'sources.default' },
-  },
-  {
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
-    dependencies = { { 'mason-org/mason.nvim', config = true } },
-    opts = {
-      ensure_installed = { 'pyright', 'stylua', 'gopls', 'ruff', 'shfmt', 'goimports', 'biome', 'tailwindcss-language-server', 'clang-format', 'shellcheck' },
-    },
-  },
-  {
-    'stevearc/conform.nvim',
-    opts = {
-      formatters_by_ft = {
-        fish = { 'fish_indent' },
-        sh = { 'shfmt' },
-        go = { 'goimports', 'gofmt' },
-        lua = { 'stylua' },
-        python = { 'ruff' },
-        rust = { 'rustfmt' },
-        c = { 'clang-format' },
-        cpp = { 'clang-format' },
-        javascript = { 'biome' },
-        javascriptreact = { 'biome' },
-        typescript = { 'biome' },
-        typescriptreact = { 'biome' },
+  require('lazy').setup {
+    { 'neovim/nvim-lspconfig' },
+    { 'nvim-mini/mini.basics', config = true },
+    { 'nvim-mini/mini.pairs', config = true },
+    { 'nvim-mini/mini.surround', config = true },
+    { 'lewis6991/gitsigns.nvim', config = true },
+    { 'j-hui/fidget.nvim', config = true },
+    {
+      'ellisonleao/gruvbox.nvim',
+      priority = 1000,
+      opts = {
+        contrast = 'hard',
+        overrides = { Folded = { link = 'Comment' }, SignColumn = { link = 'Normal' }, Pmenu = { link = 'Normal' }, PmenuBorder = { link = 'GruvboxBg4' } },
       },
     },
-  },
-  {
-    'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    main = 'nvim-treesitter.configs',
-    opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
-      auto_install = true,
-      highlight = { enable = true, additional_vim_regex_highlighting = { 'ruby' } },
-      indent = { enable = true, disable = { 'ruby' } },
-    },
-  },
-
-  { -- Fuzzy Finder (files, lsp, etc)
-    'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-    },
-    config = function()
-      local telescope = require 'telescope'
-      local actions = require 'telescope.actions'
-
-      telescope.setup {
-        defaults = {
-          prompt_prefix = '   ',
-          selection_caret = '❯ ',
-          sorting_strategy = 'ascending',
-          path_display = { 'smart' },
-          layout_config = {
-            prompt_position = 'top',
-            width = 0.9,
-            height = 0.85,
-            preview_cutoff = 120,
-          },
-          file_ignore_patterns = { '%.git/', 'node_modules', '%.lock' },
-          mappings = {
-            i = {
-              ['<C-j>'] = actions.move_selection_next,
-              ['<C-k>'] = actions.move_selection_previous,
-              ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
-              ['<esc>'] = actions.close,
-            },
-            n = {
-              ['q'] = actions.close,
-            },
-          },
+    { 'okuuva/auto-save.nvim', cmd = 'ASToggle', event = { 'InsertLeave', 'TextChanged' }, config = true },
+    { 'nvim-lualine/lualine.nvim', opts = { options = { icons_enabled = false, section_separators = '', component_separators = '|' } } },
+    {
+      'saghen/blink.cmp',
+      dependencies = { 'rafamadriz/friendly-snippets', 'folke/lazydev.nvim' },
+      version = '1.*',
+      opts = {
+        keymap = { preset = 'default' },
+        completion = { documentation = { auto_show = false } },
+        sources = {
+          default = { 'lsp', 'path', 'snippets', 'buffer' },
         },
-        pickers = {
-          buffers = {
-            theme = 'dropdown',
-            previewer = false,
-            sort_lastused = true,
+        fuzzy = { implementation = 'prefer_rust_with_warning' },
+      },
+      opts_extend = { 'sources.default' },
+    },
+    {
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      dependencies = { { 'mason-org/mason.nvim', config = true } },
+      opts = {
+        ensure_installed = {'json-lsp', 'pyright', 'stylua', 'gopls', 'ruff', 'shfmt', 'goimports', 'biome', 'tailwindcss-language-server', 'clang-format', 'shellcheck' },
+      },
+    },
+    {
+      'stevearc/conform.nvim',
+      opts = {
+        formatters_by_ft = {
+          fish = { 'fish_indent' },
+          sh = { 'shfmt' },
+          go = { 'goimports', 'gofmt' },
+          lua = { 'stylua' },
+          python = { 'ruff' },
+          rust = { 'rustfmt' },
+          c = { 'clang-format' },
+          cpp = { 'clang-format' },
+          javascript = { 'biome' },
+          javascriptreact = { 'biome' },
+          typescript = { 'biome' },
+          typescriptreact = { 'biome' },
+        },
+      },
+    },
+    {
+      'nvim-treesitter/nvim-treesitter',
+      build = ':TSUpdate',
+      main = 'nvim-treesitter.configs',
+      opts = {
+        ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+        auto_install = true,
+        highlight = { enable = true, additional_vim_regex_highlighting = { 'ruby' } },
+        indent = { enable = true, disable = { 'ruby' } },
+      },
+    },
+
+    { -- Fuzzy Finder (files, lsp, etc)
+      'nvim-telescope/telescope.nvim',
+      event = 'VimEnter',
+      branch = '0.1.x',
+      dependencies = {
+        'nvim-lua/plenary.nvim',
+        {
+          'nvim-telescope/telescope-fzf-native.nvim',
+          build = 'make',
+          cond = function()
+            return vim.fn.executable 'make' == 1
+          end,
+        },
+        { 'nvim-telescope/telescope-ui-select.nvim' },
+      },
+      config = function()
+        local telescope = require 'telescope'
+        local actions = require 'telescope.actions'
+
+        telescope.setup {
+          defaults = {
+            prompt_prefix = '   ',
+            selection_caret = '❯ ',
+            sorting_strategy = 'ascending',
+            path_display = { 'smart' },
+            layout_config = {
+              prompt_position = 'top',
+              width = 0.9,
+              height = 0.85,
+              preview_cutoff = 120,
+            },
+            file_ignore_patterns = { '%.git/', 'node_modules', '%.lock' },
             mappings = {
-              i = { ['<C-d>'] = actions.delete_buffer },
-              n = { ['dd'] = actions.delete_buffer },
+              i = {
+                ['<C-j>'] = actions.move_selection_next,
+                ['<C-k>'] = actions.move_selection_previous,
+                ['<C-q>'] = actions.smart_send_to_qflist + actions.open_qflist,
+                ['<esc>'] = actions.close,
+              },
+              n = {
+                ['q'] = actions.close,
+              },
             },
           },
-          find_files = {
-            theme = 'dropdown',
-            previewer = false,
-            hidden = true,
-            follow = true,
+          pickers = {
+            buffers = {
+              theme = 'dropdown',
+              previewer = false,
+              sort_lastused = true,
+              mappings = {
+                i = { ['<C-d>'] = actions.delete_buffer },
+                n = { ['dd'] = actions.delete_buffer },
+              },
+            },
+            find_files = {
+              theme = 'dropdown',
+              previewer = false,
+              hidden = true,
+              follow = true,
+            },
+            live_grep = {
+              theme = 'ivy',
+              additional_args = function()
+                return { '--hidden' }
+              end,
+            },
           },
-          live_grep = {
-            theme = 'ivy',
-            additional_args = function()
-              return { '--hidden' }
-            end,
+          extensions = {
+            ['ui-select'] = {
+              require('telescope.themes').get_dropdown(),
+            },
           },
-        },
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
-      }
+        }
 
-      pcall(telescope.load_extension, 'fzf')
-      pcall(telescope.load_extension, 'ui-select')
-    end,
-    keys = {
-      {
-        ';',
-        function()
-          require('telescope.builtin').buffers()
-        end,
-        desc = '[ ] Find existing buffers',
-      },
-      {
-        '<leader><leader>',
-        function()
-          require('telescope.builtin').find_files()
-        end,
-        desc = '[S]earch [F]iles',
-      },
-      {
-        '<leader>sd',
-        function()
-          require('telescope.builtin').diagnostics()
-        end,
-        desc = '[S]earch [D]iagnostics',
-      },
-      {
-        '<leader>sg',
-        function()
-          require('telescope.builtin').live_grep()
-        end,
-        desc = '[S]earch by [G]rep',
-      },
-      {
-        '<leader>sh',
-        function()
-          require('telescope.builtin').help_tags()
-        end,
-        desc = '[S]earch [H]elp',
-      },
-      {
-        '<leader>sr',
-        function()
-          require('telescope.builtin').resume()
-        end,
-        desc = '[S]earch [R]esume',
+        pcall(telescope.load_extension, 'fzf')
+        pcall(telescope.load_extension, 'ui-select')
+      end,
+      keys = {
+        {
+          ';',
+          function()
+            require('telescope.builtin').buffers()
+          end,
+          desc = '[ ] Find existing buffers',
+        },
+        {
+          '<leader><leader>',
+          function()
+            require('telescope.builtin').find_files()
+          end,
+          desc = '[S]earch [F]iles',
+        },
+        {
+          '<leader>sd',
+          function()
+            require('telescope.builtin').diagnostics()
+          end,
+          desc = '[S]earch [D]iagnostics',
+        },
+        {
+          '<leader>sg',
+          function()
+            require('telescope.builtin').live_grep()
+          end,
+          desc = '[S]earch by [G]rep',
+        },
+        {
+          '<leader>sh',
+          function()
+            require('telescope.builtin').help_tags()
+          end,
+          desc = '[S]earch [H]elp',
+        },
+        {
+          '<leader>sr',
+          function()
+            require('telescope.builtin').resume()
+          end,
+          desc = '[S]earch [R]esume',
+        },
       },
     },
-  },
-  {
-    'linux-cultist/venv-selector.nvim',
-    dependencies = {
-      'neovim/nvim-lspconfig',
-      { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
+    {
+      'linux-cultist/venv-selector.nvim',
+      dependencies = {
+        'neovim/nvim-lspconfig',
+        { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
+      },
+      ft = 'python', -- Load when opening Python files
+      keys = {
+        { ',v', '<cmd>VenvSelect<cr>' }, -- Open picker on keymap
+      },
+      opts = { -- this can be an empty lua table - just showing below for clarity.
+        search = {}, -- if you add your own searches, they go here.
+        options = {}, -- if you add plugin options, they go here.
+      },
     },
-    ft = 'python', -- Load when opening Python files
-    keys = {
-      { ',v', '<cmd>VenvSelect<cr>' }, -- Open picker on keymap
-    },
-    opts = { -- this can be an empty lua table - just showing below for clarity.
-      search = {}, -- if you add your own searches, they go here.
-      options = {}, -- if you add plugin options, they go here.
-    },
-  },
-}
-
+  }
 --}}}
+end
 
 -- Settings {{{
 
-vim.cmd 'colorscheme gruvbox'
+if not vim.g.vscode then
+  vim.cmd 'colorscheme gruvbox'
+end
 
 -- General
 vim.opt.numberwidth = 5
@@ -295,35 +298,48 @@ end, 'Format buffer')
 -- }}}
 
 -- LSP {{{
-vim.lsp.enable { 'clangd', 'gopls', 'pyright' }
+if not vim.g.vscode then
 
-vim.diagnostic.config {
-  severity_sort = true,
-  float = { border = 'rounded', source = 'if_many' },
-  underline = { severity = vim.diagnostic.severity.ERROR },
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = '󰅚 ',
-      [vim.diagnostic.severity.WARN] = '󰀪 ',
-      [vim.diagnostic.severity.INFO] = '󰋽 ',
-      [vim.diagnostic.severity.HINT] = '󰌶 ',
-    },
-  },
-  virtual_text = {
-    source = 'if_many',
-    spacing = 2,
-    format = function(diagnostic)
-      local diagnostic_message = {
-        [vim.diagnostic.severity.ERROR] = diagnostic.message,
-        [vim.diagnostic.severity.WARN] = diagnostic.message,
-        [vim.diagnostic.severity.INFO] = diagnostic.message,
-        [vim.diagnostic.severity.HINT] = diagnostic.message,
+  vim.lsp.config('*', {
+    capabilities = {
+      textDocument = {
+        semanticTokens = {
+          multilineTokenSupport = true,
+        }
       }
-      return diagnostic_message[diagnostic.severity]
-    end,
-  },
-}
+    },
+    root_markers = { '.git' },
+  })
 
+  vim.lsp.enable { 'clangd', 'gopls', 'pyright', 'jsonls' }
+
+  vim.diagnostic.config {
+    severity_sort = true,
+    float = { border = 'rounded', source = 'if_many' },
+    underline = { severity = vim.diagnostic.severity.ERROR },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = '󰅚 ',
+        [vim.diagnostic.severity.WARN] = '󰀪 ',
+        [vim.diagnostic.severity.INFO] = '󰋽 ',
+        [vim.diagnostic.severity.HINT] = '󰌶 ',
+      },
+    },
+    virtual_text = {
+      source = 'if_many',
+      spacing = 2,
+      format = function(diagnostic)
+        local diagnostic_message = {
+          [vim.diagnostic.severity.ERROR] = diagnostic.message,
+          [vim.diagnostic.severity.WARN] = diagnostic.message,
+          [vim.diagnostic.severity.INFO] = diagnostic.message,
+          [vim.diagnostic.severity.HINT] = diagnostic.message,
+        }
+        return diagnostic_message[diagnostic.severity]
+      end,
+    },
+  }
+end
 -- }}}
 
 -- vim: ts=2 sts=2 sw=2 et foldmethod=marker

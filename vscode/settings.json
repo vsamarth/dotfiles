@@ -1,44 +1,43 @@
 {
   "breadcrumbs.enabled": false,
+  "chat.disableAIFeatures": true,
   "editor.accessibilitySupport": "off",
   "editor.copyWithSyntaxHighlighting": false,
+  "editor.cursorBlinking": "solid",
   "editor.folding": true,
   "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
   "editor.guides.indentation": false,
   "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "selection",
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
   "files.associations": {
     "*.css": "tailwindcss"
   },
   "files.autoSave": "afterDelay",
+  "git.autofetch": true,
   "git.confirmSync": false,
+  "githubPullRequests.pushBranch": "always",
+  "svelte.enable-ts-plugin": true,
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.enablePersistentSessions": false,
   "terminal.integrated.inheritEnv": false,
   "terminal.integrated.shellIntegration.enabled": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "vsicons.dontShowNewVersionMessage": true,
   "window.autoDetectColorScheme": true,
+  "workbench.activityBar.location": "hidden",
   "workbench.editor.showTabs": "single",
   "workbench.iconTheme": "vscode-icons",
   "workbench.preferredDarkColorTheme": "Gruvbox Dark Hard",
   "workbench.preferredLightColorTheme": "Gruvbox Light Hard",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "svelte.enable-ts-plugin": true,
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "githubPullRequests.pushBranch": "always",
-  "git.autofetch": true,
-  "chat.tools.terminal.autoApprove": {
-    "/^bun lint$/": {
-      "approve": true,
-      "matchCommandLine": true
-    },
-    "/^bun test$/": {
-      "approve": true,
-      "matchCommandLine": true
-    }
-  }
+  "workbench.statusBar.visible": false,
+  "C_Cpp.clang_format_fallbackStyle": "LLVM"
 }
