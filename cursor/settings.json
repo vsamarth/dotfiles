@@ -1,6 +1,6 @@
 {
   "breadcrumbs.enabled": false,
-  "chat.disableAIFeatures": true,
+  // "chat.disableAIFeatures": true,
   "editor.accessibilitySupport": "off",
   "editor.copyWithSyntaxHighlighting": false,
   "editor.cursorBlinking": "solid",
@@ -38,6 +38,8 @@
   "workbench.preferredLightColorTheme": "Gruvbox Light Hard",
   "workbench.sideBar.location": "right",
   "workbench.startupEditor": "none",
-  "workbench.statusBar.visible": false,
-  "C_Cpp.clang_format_fallbackStyle": "LLVM"
+  "C_Cpp.clang_format_fallbackStyle": "LLVM",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

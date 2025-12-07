@@ -50,7 +50,21 @@ if not vim.g.vscode then
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       dependencies = { { 'mason-org/mason.nvim', config = true } },
       opts = {
-        ensure_installed = {'json-lsp', 'pyright', 'stylua', 'gopls', 'ruff', 'shfmt', 'goimports', 'biome', 'tailwindcss-language-server', 'clang-format', 'shellcheck' },
+        ensure_installed = {
+          'json-lsp',
+          'typescript-language-server',
+          'svelte-language-server',
+          'pyright',
+          'stylua',
+          'gopls',
+          'ruff',
+          'shfmt',
+          'goimports',
+          'biome',
+          'tailwindcss-language-server',
+          'clang-format',
+          'shellcheck',
+        },
       },
     },
     {
@@ -221,8 +235,11 @@ if not vim.g.vscode then
         options = {}, -- if you add plugin options, they go here.
       },
     },
+    { 'dmmulroy/ts-error-translator.nvim', opts = {
+      auto_attach = true,
+    } },
   }
---}}}
+  --}}}
 end
 
 -- Settings {{{
@@ -299,19 +316,18 @@ end, 'Format buffer')
 
 -- LSP {{{
 if not vim.g.vscode then
-
   vim.lsp.config('*', {
     capabilities = {
       textDocument = {
         semanticTokens = {
           multilineTokenSupport = true,
-        }
-      }
+        },
+      },
     },
     root_markers = { '.git' },
   })
 
-  vim.lsp.enable { 'clangd', 'gopls', 'pyright', 'jsonls' }
+  vim.lsp.enable { 'clangd', 'gopls', 'pyright', 'jsonls', 'ts_ls', 'svelte', 'tailwindcss' }
 
   vim.diagnostic.config {
     severity_sort = true,

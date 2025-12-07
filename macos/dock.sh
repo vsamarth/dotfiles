@@ -8,7 +8,7 @@ dockutil --remove all --no-restart
 
 APPS=(
 	"Google Chrome"
-	"Visual Studio Code"
+	"Cursor"
 	"Ghostty"
 	"Whatsapp"
 	"Todoist"

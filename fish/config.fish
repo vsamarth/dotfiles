@@ -92,3 +92,6 @@ abbr -a zl zellij
 abbr -a zla "zellij attach --create"
 abbr -a zlds "zellij attach --create (basename (pwd))"
 abbr -a zlls "zellij list-sessions"
+
+# Added by Antigravity
+fish_add_path /Users/samarth/.antigravity/antigravity/bin
