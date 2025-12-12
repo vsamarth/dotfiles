@@ -7,7 +7,8 @@ fi
 dockutil --remove all --no-restart
 
 APPS=(
-	"Google Chrome"
+
+	"Firefox"
 	"Cursor"
 	"Ghostty"
 	"Whatsapp"
