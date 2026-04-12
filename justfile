@@ -18,7 +18,7 @@ default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish cursor terminal git zellij ssh dev-tools brewfile dock macos
+setup: sudo create-dirs fish cursor terminal firefox git zellij ssh dev-tools brewfile dock macos
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -58,6 +58,29 @@ terminal:
     brew install --cask -q ghostty
     mkdir -p "{{ghostty_dir}}"
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/ghostty/config "{{ghostty_dir}}/config"
+
+# Install Firefox and setup Betterfox
+firefox:
+    @echo "Setting up Firefox and Betterfox..."
+    brew install --cask -q firefox
+    # Ensure Firefox profile directory exists
+    @if [ ! -d "{{home_dir}}/Library/Application Support/Firefox/Profiles" ]; then \
+        echo "Opening Firefox to initialize profile..."; \
+        open -a Firefox; \
+        sleep 10; \
+        pkill -fi firefox || true; \
+    fi
+    # Find the default-release profile
+    @PROFILE_DIR=$(ls -d "{{home_dir}}/Library/Application Support/Firefox/Profiles/"*.default-release 2>/dev/null | head -n 1); \
+    if [ -n "$PROFILE_DIR" ]; then \
+        echo "Installing Betterfox user.js and overrides to $PROFILE_DIR..."; \
+        cat {{dotfiles_dir}}/firefox/user.js {{dotfiles_dir}}/firefox/user-overrides.js > "$PROFILE_DIR/user.js"; \
+        echo "Betterfox with overrides applied successfully."; \
+    else \
+        echo "Warning: Could not find a Firefox .default-release profile. Please open Firefox once and run 'just firefox' again."; \
+    fi
+    @echo "Requesting Firefox to be the default browser..."
+    open -a "Firefox" --args -silent -nosplash -setDefaultBrowser
 
 # Install Git and GitHub CLI
 git:
