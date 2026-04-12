@@ -33,7 +33,7 @@ brew "zellij"
 brew "zoxide"
 
 cask "chatgpt"
-cask "cursor"
+cask "visual-studio-code"
 cask "discord"
 cask "docker"
 cask "font-jetbrains-mono"

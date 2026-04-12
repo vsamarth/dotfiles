@@ -8,7 +8,6 @@ homebrew_prefix := "/opt/homebrew"
 fish_config_dir := home_dir + "/.config/fish"
 fish_path := homebrew_prefix + "/bin/fish"
 vscode_settings := home_dir + "/Library/Application Support/Code/User/settings.json"
-cursor_settings := home_dir + "/Library/Application Support/Cursor/User/settings.json"
 ghostty_dir := home_dir + "/.config/ghostty"
 config_dir := home_dir + "/.config"
 ssh_dir := home_dir + "/.ssh"
@@ -18,7 +17,7 @@ default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish cursor terminal firefox git zellij ssh dev-tools brewfile dock macos
+setup: sudo create-dirs fish vscode terminal firefox git zellij ssh dev-tools brewfile dock macos
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -46,12 +45,12 @@ fish:
         chsh -s "{{fish_path}}"; \
     fi
 
-# Install Cursor
-cursor:
-    @echo "Setting up Cursor"
-    brew install --cask -q cursor
-    mkdir -p "{{home_dir}}/Library/Application Support/Cursor/User"
-    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/cursor/settings.json "{{cursor_settings}}"
+# Install VS Code
+vscode:
+    @echo "Setting up VS Code"
+    brew install --cask -q visual-studio-code
+    mkdir -p "{{home_dir}}/Library/Application Support/Code/User"
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/vscode/settings.json "{{vscode_settings}}"
 
 terminal:
     @echo "Setting up Ghostty"

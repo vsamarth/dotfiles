@@ -9,7 +9,7 @@ dockutil --remove all --no-restart
 APPS=(
 
 	"Firefox"
-	"Cursor"
+	"Visual Studio Code"
 	"Ghostty"
 	"Whatsapp"
 	"Todoist"
