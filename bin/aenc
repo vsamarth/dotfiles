@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: aenc -i <recipient.key> [-i <recipient2.key> ...] [FILE...]
+
+Encrypt files directly and directories as tar archives before encrypting.
+Outputs default to:
+  file      -> file.age
+  directory -> directory.tar.age
+EOF
+}
+
+die() {
+    echo "aenc: $*" >&2
+    exit 1
+}
+
+recipient_files=()
+inputs=()
+force=0
+
+while (($#)); do
+    case "$1" in
+        -i)
+            shift
+            (($#)) || die "missing value for -i"
+            recipient_files+=("$1")
+            ;;
+        -f|--force)
+            force=1
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --)
+            shift
+            inputs+=("$@")
+            break
+            ;;
+        -*)
+            die "unknown option: $1"
+            ;;
+        *)
+            inputs+=("$1")
+            ;;
+    esac
+    shift
+done
+
+((${#recipient_files[@]})) || die "at least one -i recipient key file is required"
+((${#inputs[@]})) || die "at least one file or directory is required"
+
+recipient_args=()
+for recipient_file in "${recipient_files[@]}"; do
+    [[ -r "$recipient_file" ]] || die "recipient key file not readable: $recipient_file"
+    recipient_args+=(-R "$recipient_file")
+done
+
+encrypt_file() {
+    local src=$1
+    local out=$2
+    local tmp
+    tmp="$(mktemp "${TMPDIR:-/tmp}/aenc.XXXXXX")"
+
+    if [[ -e "$out" && $force -ne 1 ]]; then
+        rm -f "$tmp"
+        die "output already exists: $out"
+    fi
+
+    mkdir -p "$(dirname "$out")"
+
+    if [[ -d "$src" ]]; then
+        local src_dir src_base
+        src_dir="$(dirname "$src")"
+        src_base="$(basename "$src")"
+        if tar -C "$src_dir" -cf - "$src_base" | age "${recipient_args[@]}" -o "$tmp"; then
+            mv -f "$tmp" "$out"
+        else
+            local status=$?
+            rm -f "$tmp"
+            return "$status"
+        fi
+    else
+        if age "${recipient_args[@]}" -o "$tmp" "$src"; then
+            mv -f "$tmp" "$out"
+        else
+            local status=$?
+            rm -f "$tmp"
+            return "$status"
+        fi
+    fi
+}
+
+for src in "${inputs[@]}"; do
+    [[ -e "$src" ]] || die "input does not exist: $src"
+
+    if [[ -d "$src" ]]; then
+        encrypt_file "$src" "${src%/}.tar.age"
+    else
+        encrypt_file "$src" "$src.age"
+    fi
+done

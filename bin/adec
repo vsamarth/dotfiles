@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: adec -i <identity.key> [-i <identity2.key> ...] [FILE...]
+
+Decrypt files produced by aenc.
+For tar archives, the decrypted archive is extracted into the current directory.
+For regular files, the decrypted output defaults to stripping the trailing .age.
+EOF
+}
+
+die() {
+    echo "adec: $*" >&2
+    exit 1
+}
+
+identity_files=()
+inputs=()
+force=0
+
+while (($#)); do
+    case "$1" in
+        -i)
+            shift
+            (($#)) || die "missing value for -i"
+            identity_files+=("$1")
+            ;;
+        -f|--force)
+            force=1
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --)
+            shift
+            inputs+=("$@")
+            break
+            ;;
+        -*)
+            die "unknown option: $1"
+            ;;
+        *)
+            inputs+=("$1")
+            ;;
+    esac
+    shift
+done
+
+((${#identity_files[@]})) || die "at least one -i identity key file is required"
+((${#inputs[@]})) || die "at least one encrypted file is required"
+
+identity_args=()
+for identity_file in "${identity_files[@]}"; do
+    [[ -r "$identity_file" ]] || die "identity key file not readable: $identity_file"
+    identity_args+=(-i "$identity_file")
+done
+
+decrypt_one() {
+    local src=$1
+    local out=$2
+    local tmp
+    tmp="$(mktemp "${TMPDIR:-/tmp}/adec.XXXXXX")"
+
+    if [[ -e "$out" && $force -ne 1 ]]; then
+        rm -f "$tmp"
+        die "output already exists: $out"
+    fi
+
+    mkdir -p "$(dirname "$out")"
+
+    if age -d "${identity_args[@]}" -o "$tmp" "$src"; then
+        :
+    else
+        local status=$?
+        rm -f "$tmp"
+        return "$status"
+    fi
+
+    if tar -tf "$tmp" >/dev/null 2>&1; then
+        if ! tar -xf "$tmp" -C "$(dirname "$out")"; then
+            local status=$?
+            rm -f "$tmp"
+            return "$status"
+        fi
+        rm -f "$tmp"
+    else
+        mv -f "$tmp" "$out"
+    fi
+}
+
+for src in "${inputs[@]}"; do
+    [[ -e "$src" ]] || die "input does not exist: $src"
+
+    out="$src"
+    case "$out" in
+        *.tar.age)
+            out="${out%.tar.age}"
+            ;;
+        *.age)
+            out="${out%.age}"
+            ;;
+        *)
+            out="${out}.dec"
+            ;;
+    esac
+
+    decrypt_one "$src" "$out"
+done
