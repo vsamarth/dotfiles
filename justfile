@@ -114,7 +114,7 @@ rust:
 # Install Python
 python:
     @echo "Setting up Python"
-    brew install -q python pipx
+    brew install -q python@3.12 pipx
     pipx ensurepath
     @echo "Installing Python tools..."
     pipx install uv ruff

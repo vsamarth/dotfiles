@@ -1,0 +1,12 @@
+# Local environment variables - DO NOT COMMIT TO GIT
+# Copy this file to config.local.fish and fill in your actual values
+
+# Replace this with your actual OpenRouter API key
+set -gx OPENROUTER_API_KEY "your-actual-key-here"
+
+# OpenRouter settings
+set -gx ANTHROPIC_BASE_URL "https://openrouter.ai/api"
+set -gx ANTHROPIC_AUTH_TOKEN "$OPENROUTER_API_KEY"
+
+# Important: Must be explicitly empty for OpenRouter compatibility
+set -gx ANTHROPIC_API_KEY ""

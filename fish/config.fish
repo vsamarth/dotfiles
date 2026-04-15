@@ -1,21 +1,21 @@
 # Environment Variables
-set -gx ANTHROPIC_BASE_URL "https://openrouter.ai/api"
-set -gx ANTHROPIC_AUTH_TOKEN $OPENROUTER_API_KEY
-set -gx ANTHROPIC_API_KEY ""
-set -gx ANTHROPIC_DEFAULT_OPUS_MODEL "z-ai/glm-5"
-set -gx ANTHROPIC_DEFAULT_SONNET_MODEL "minimax/minimax-m2.5:free"
-set -gx ANTHROPIC_DEFAULT_HAIKU_MODEL "z-ai/glm-4.7-flash"
-set -gx CLAUDE_CODE_SUBAGENT_MODEL "minimax/minimax-m2.5:free"
 set -gx VISUAL code
 set -gx EDITOR nvim
 set -gx LANG "en_US.UTF-8"
+set -gx CLAUDE_CODE_ATTRIBUTION_HEADER 0
 
 # Path Configuration
 fish_add_path "$HOME/.local/bin"
 fish_add_path "$HOME/.dotfiles/bin"
 fish_add_path "$HOME/go/bin"
+fish_add_path "/opt/homebrew/opt/python@3.12/bin"
 
 # --- Integrations ---
+
+# Local environment variables
+if test -f "$HOME/.config/fish/config.local.fish"
+    source "$HOME/.config/fish/config.local.fish"
+end
 
 # Homebrew
 if test -x /opt/homebrew/bin/brew

@@ -36,3 +36,6 @@ node_modules
 dist/
 build/
 *.log
+
+# Fish shell local config
+fish/config.local.fish

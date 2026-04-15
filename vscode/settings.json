@@ -40,6 +40,7 @@
   "workbench.startupEditor": "none",
   "C_Cpp.clang_format_fallbackStyle": "LLVM",
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "claudeCode.preferredLocation": "panel"
 }
