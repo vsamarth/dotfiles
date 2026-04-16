@@ -1,11 +1,8 @@
 # .files
 
-## Installation
-On a fresh installation, run:
+## Setup
 
-```
-curl -fsSL https://raw.githubusercontent.com/vsamarth/dotfiles/main/bootstrap.sh | bash
-```
+To set up a new machine, follow the instructions in [instructions.md](instructions.md).
 
 ## Age helpers
 
