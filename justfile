@@ -151,6 +151,13 @@ ssh:
     @echo "Setting up SSH config"
     mkdir -p {{ssh_dir}}
     {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/ssh/config {{ssh_dir}}/config
+    chmod 700 {{ssh_dir}}
+    chmod 600 {{ssh_dir}}/config
+    @if [ -f "{{ssh_dir}}/config.private" ]; then chmod 600 "{{ssh_dir}}/config.private"; fi
+    @if [ -f "{{ssh_dir}}/id_ed25519" ]; then \
+        echo "Testing SSH connection to GitHub..."; \
+        ssh -o BatchMode=yes -o ConnectTimeout=5 -T git@github.com || true; \
+    fi
 
 # Install development tools
 dev-tools:

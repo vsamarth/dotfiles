@@ -23,7 +23,7 @@ if test -x /opt/homebrew/bin/brew
 end
 
 # Rust / Cargo
-if test -d "$HOME/cargo"
+if test -d "$HOME/.cargo"
     source "$HOME/.cargo/env.fish"
 end
 
