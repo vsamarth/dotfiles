@@ -58,6 +58,8 @@ Before starting, ensure you have the following set up:
 
 ## 1. Configure Git and GitHub
 
+Install Git and Github CLI from Homebrew.
+
 You need to configure Git and GitHub with **my** personal details. This is a critical step that must be done correctly to ensure all commits are properly attributed and authentication works seamlessly.
 
 Ask me for these details first:
@@ -94,10 +96,6 @@ Configure the following git aliases exactly as specified:
 
 Create a global gitignore file at `~/.gitignore` with useful defaults for the system (e.g., OS-specific files, editor temporary files, etc.)
 
-Install Git and related tools:
-- Install Git and GitHub CLI using Homebrew.
-- Install Git Delta using Homebrew.
-
 Authenticate with GitHub CLI using the web flow (run `gh auth login` and follow the browser prompts)
 
 Verify the configuration by checking that the settings and aliases are applied correctly.
@@ -121,15 +119,14 @@ Customize macOS system behavior and appearance using the `defaults` command. The
 
 Configure SSH client settings directly in `~/.ssh/config`. This ensures secure connections to remote servers and GitHub.
 
-Check for existing SSH keys: Verify `~/.ssh/id_ed25519` or similar SSH key files exist.
-If SSH keys don't exist: Ask me to generate new SSH keys. Once confirmed, verify they exist before proceeding.
-If keys still don't exist after confirmation: Skip this section and proceed to the next step.
+Check for existing SSH keys: 
+ - Verify `~/.ssh/id_ed25519` or similar SSH key files exist. Prefer modern standards over older ones like RSA.
+ - If SSH keys don't exist: Ask me to generate new SSH keys. Give me the command that I should run to generate it. Ask me for confirmation when keys are generated.
+ -  Once confirmed, verify they exist before proceeding. If keys still don't exist after confirmation: Skip this section and proceed to the next step.
 
 Create the SSH config file at `~/.ssh/config` with these settings:
-   - Include `~/.ssh/config.private`
-   - Default settings for all hosts: AddKeysToAgent yes, UseKeychain yes, IdentityFile ~/.ssh/id_ed25519, ServerAliveInterval 60, ServerAliveCountMax 3
+   - Default settings for all hosts: AddKeysToAgent yes, UseKeychain yes, IdentityFile ~/.ssh/id_ed25519 (or the path of the private key which was generated), ServerAliveInterval 60, ServerAliveCountMax 3
    - GitHub host: HostName github.com, User git, IdentityFile ~/.ssh/id_ed25519, IdentitiesOnly yes
-   - GitLab host: HostName gitlab.com, User git, IdentityFile ~/.ssh/id_ed25519, IdentitiesOnly yes
 
 Set proper permissions on the SSH directory and config file (700 for directory, 600 for files)
 
