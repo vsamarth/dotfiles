@@ -1,0 +1,10 @@
+theme = dark:everforest-codex-dark,light:everforest-codex-light
+font-family = JetBrains Mono
+font-size = 14
+macos-option-as-alt = true
+macos-titlebar-style = transparent
+
+keybind = global:ctrl+Quote=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 40%
+quick-terminal-autohide = true

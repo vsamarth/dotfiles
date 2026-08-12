@@ -1,0 +1,74 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$cmd_duration\
+$fill\
+$nodejs\
+$python\
+$rust\
+$golang\
+$jobs\
+$line_break\
+$character"""
+
+add_newline = false
+
+[fill]
+symbol = " "
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+style = "bold #d3c6aa"
+
+[git_branch]
+symbol = ""
+style = "bold #83c092"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "#e69875"
+format = "([$all_status$ahead_behind]($style))"
+
+[git_state]
+style = "#a6b0a0"
+format = " [($state( $progress_current/$progress_total))]($style)"
+
+[cmd_duration]
+min_time = 1_000
+style = "#d699b6"
+format = " [took $duration]($style)"
+
+[nodejs]
+symbol = "node "
+style = "#a7c080"
+format = "[$symbol($version )]($style)"
+
+[python]
+symbol = "py "
+style = "#83c092"
+format = "[$symbol($version )]($style)"
+
+[rust]
+symbol = "rs "
+style = "#e69875"
+format = "[$symbol($version )]($style)"
+
+[golang]
+symbol = "go "
+style = "#7fbbb3"
+format = "[$symbol($version )]($style)"
+
+[jobs]
+symbol = "✦ "
+style = "#d699b6"
+format = "[$symbol$number]($style) "
+
+[character]
+success_symbol = "[❯](bold #a7c080)"
+error_symbol = "[❯](bold #e67e80)"
+vimcmd_symbol = "[❮](bold #83c092)"

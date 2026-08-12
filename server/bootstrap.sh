@@ -73,10 +73,16 @@ if command -v brew >/dev/null 2>&1; then
   fi
 
   brew_owner="$(stat -f '%Su' "$brew_prefix")"
-  if [[ "$brew_owner" == "$current_user" ]]; then
-    preflight_ok "Homebrew is owned by $current_user"
+  if [[ "$brew_owner" == 'samarth' ]]; then
+    preflight_ok 'Homebrew is controlled by the samarth administrator account'
   else
-    preflight_bad "Homebrew at $brew_prefix is owned by $brew_owner, not $current_user; do not repair this with a broad chown"
+    preflight_bad "Homebrew at $brew_prefix is owned by $brew_owner, not samarth; do not repair this with a broad chown"
+  fi
+
+  if env HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file="$server_dir/Brewfile" >/dev/null 2>&1; then
+    preflight_ok 'server Brewfile is already installed by samarth'
+  else
+    preflight_bad 'server Brewfile is incomplete; ask Samarth to run brew bundle install --file=~/.dotfiles/server/Brewfile'
   fi
 fi
 
@@ -145,9 +151,8 @@ if "$preflight_only"; then
   exit 0
 fi
 
-phase '2/4' 'Packages'
-brew bundle install --file="$server_dir/Brewfile"
-brew bundle check --file="$server_dir/Brewfile"
+phase '2/4' 'Admin-controlled packages'
+env HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file="$server_dir/Brewfile"
 
 phase '3/4' 'Tracked configuration'
 mkdir -p "$HOME/.config" "$HOME/.codex" "$HOME/.local/bin" "$HOME/Work" "$HOME/Projects"

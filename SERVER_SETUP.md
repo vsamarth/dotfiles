@@ -48,8 +48,8 @@ Samarth is required to:
 1. Create `agent`; store and retrieval-test its original password externally.
 2. Enable FileVault; store and retrieval-test its recovery key externally; audit the
    actual unlock-user list.
-3. Approve Command Line Tools, Homebrew, Tailscale, Remote Login, firewall, power,
-   and backup changes through macOS's trusted interfaces.
+3. Install and update the shared Homebrew toolchain, and approve Tailscale, Remote
+   Login, firewall, power, and backup changes through macOS's trusted interfaces.
 4. Complete Codex, GitHub, and Tailscale browser/device authentication.
 5. Verify the SSH host fingerprint and install only a client public key.
 6. Perform the initial LAN, Tailscale, planned-reboot, cold-power, adapter, and backup
@@ -150,60 +150,34 @@ router that can reach `den`'s reserved LAN address, genuine out-of-band console/
 hardware, or a trusted person on site. `den` cannot provide its own Tailscale path
 while FileVault is locked.
 
-## 4. Install the bootstrap prerequisites as `agent`
+## 4. Install the shared toolchain as `samarth`
 
-While logged into the `agent` account, open Terminal and install Apple's Command Line
-Tools:
+If `WORKSTATION_SETUP.md` has been completed, Homebrew and Command Line Tools already
+exist at `/opt/homebrew` and are owned by `samarth`. Keep that ownership: one supported
+Apple-silicon Homebrew prefix cannot safely be controlled independently by both local
+accounts.
 
-```bash
-xcode-select --install
-```
-
-Complete the graphical installer. Then install Homebrew using the current signed macOS
-`.pkg` from Homebrew's official release, linked from
-[Homebrew's installation documentation](https://docs.brew.sh/Installation). Authorize
-the package installer as `samarth` when macOS asks, but never give the administrator
-password to Codex or the agent.
-
-The graphical session must still be `agent` so the package installer assigns the
-single-user Homebrew installation to `agent`. Make the target deterministic using
-Homebrew's documented package-user override. From a Terminal owned by `samarth`, run:
+From a Terminal owned by `samarth`, install the server package subset:
 
 ```bash
-sudo defaults write /var/tmp/.homebrew_pkg_user HOMEBREW_PKG_USER agent
-sudo chown root:wheel /var/tmp/.homebrew_pkg_user.plist
-sudo chmod 600 /var/tmp/.homebrew_pkg_user.plist
-sudo chmod -N /var/tmp/.homebrew_pkg_user.plist
+brew bundle install --file=~/.dotfiles/server/Brewfile
+brew bundle check --file=~/.dotfiles/server/Brewfile
 ```
 
-Install the signed Homebrew package, verify `/opt/homebrew` is owned by `agent`, then
-remove only this one-time override from the same administrator Terminal:
+The `agent` account may execute these shared, world-readable tools but cannot install,
+upgrade, remove, or replace them. This is deliberate: toolchain mutation is an
+administrator-reviewed maintenance action. Project-local dependencies remain usable
+through repository toolchains and local environments.
 
-```bash
-ls -ld /opt/homebrew
-sudo rm /var/tmp/.homebrew_pkg_user.plist
-```
-
-This deliberately lets the agent manage its command-line toolchain without making it
-a macOS administrator. The `samarth` account should not depend on or maintain this
-Homebrew installation.
-
-Add Homebrew to the **current shell only** after installation:
+Log into `agent`, open Terminal, and initialize Homebrew in the current shell only:
 
 ```bash
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-Do not append a Homebrew line to `~/.zprofile`; the server bootstrap will provide the
-tracked login-shell configuration. Then install Git, Just, and Codex:
-
-```bash
-brew install git just
-brew install --cask codex
-```
-
-The Homebrew Codex cask installs the terminal CLI. Do not launch it yet; its portable
-configuration should be linked first.
+Do not append a Homebrew line to `~/.zprofile`; the bootstrap supplies the tracked
+login-shell configuration. Do not run `brew install` as `agent` and never change
+`/opt/homebrew` ownership to make it succeed.
 
 ## 5. Clone the dotfiles and inspect them as `agent`
 
@@ -226,7 +200,7 @@ The bootstrap:
 
 - performs a mutation-free prerequisite, disk-space, Homebrew ownership/prefix, and
   target-collision preflight before installing anything;
-- installs the command-line packages in `server/Brewfile`;
+- verifies the administrator-installed command-line packages in `server/Brewfile`;
 - creates `~/Work` and `~/Projects`;
 - initializes Kit's private, mutable continuity ledger in `~/Kit`;
 - links the server-specific Zsh, Git, Starship, Zellij, and Codex configuration;
@@ -240,7 +214,7 @@ Run the mutation-free preflight first:
 just server-preflight
 ```
 
-It checks every managed target before Homebrew or linking begins, so a late collision
+It checks every managed target before linking begins, so a late collision
 cannot leave an avoidable partial setup. Resolve every reported prerequisite or
 unmanaged target yourself. When it passes, run:
 
@@ -365,10 +339,11 @@ summarized in [Tailscale's macOS variant matrix](https://tailscale.com/docs/conc
 Tailscale's open-source CLI-only `tailscaled` can run as a system service before a
 graphical login, but it remains unavailable while FileVault is locked, has no GUI or
 automatic updater, is less tested on macOS, and is recommended only for experienced
-administrators. Do not run a root service from an `agent`-owned Homebrew binary. If
-you later choose this option, Samarth must review a specific released version, install
-the daemon and its launchd definition as `root:wheel`, record an update procedure,
-and rerun every recovery drill. Never install the GUI and CLI-only variants together.
+administrators. Do not run a root service from a Homebrew binary in a user-controlled
+prefix. If you later choose this option, Samarth must review a specific released
+version, install the daemon and its launchd definition as `root:wheel`, record an
+update procedure, and rerun every recovery drill. Never install the GUI and CLI-only
+variants together.
 
 ## 8. Configure Remote Login
 
@@ -615,6 +590,11 @@ For routine maintenance, connect over SSH, review pending updates, and then run:
 brew update
 brew bundle install --file=~/.dotfiles/server/Brewfile
 brew upgrade
+```
+
+Run those Homebrew commands only as `samarth`. Then return to `agent` and run:
+
+```bash
 just --justfile ~/.dotfiles/justfile server-doctor
 ```
 

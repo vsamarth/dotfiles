@@ -177,6 +177,26 @@ clean:
 list:
     just --list
 
+# Mutation-free prerequisite and collision check for Samarth's workstation.
+workstation-preflight:
+    bash {{dotfiles_dir}}/workstation/bootstrap.sh --preflight
+
+# Recreate Samarth's clean workstation applications and tracked configuration.
+workstation-bootstrap:
+    bash {{dotfiles_dir}}/workstation/bootstrap.sh
+
+# Read-only workstation health check.
+workstation-doctor:
+    bash {{dotfiles_dir}}/workstation/doctor.sh
+
+# Conservative per-user Finder, Dock, screenshot, and text-input preferences.
+workstation-macos:
+    bash {{dotfiles_dir}}/workstation/macos.sh
+
+# Destructively replace the current Dock layout after explicit invocation.
+workstation-dock:
+    bash {{dotfiles_dir}}/workstation/dock.sh
+
 # Minimal, non-destructive profile for the dedicated agent-server Mac.
 server-bootstrap:
     bash {{dotfiles_dir}}/server/bootstrap.sh

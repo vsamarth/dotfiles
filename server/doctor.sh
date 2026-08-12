@@ -62,13 +62,13 @@ if command -v brew >/dev/null 2>&1; then
   else
     bad "expected /opt/homebrew/bin/brew and prefix /opt/homebrew; got command $brew_command prefix $brew_prefix"
   fi
-  if [[ "$brew_owner" == "$current_user" ]]; then
-    ok "Homebrew is owned by the agent account"
+  if [[ "$brew_owner" == 'samarth' ]]; then
+    ok "Homebrew is controlled by the samarth administrator account"
   else
-    bad "Homebrew is owned by $brew_owner instead of $current_user"
+    bad "Homebrew is owned by $brew_owner instead of samarth"
   fi
 
-  if brew bundle check --file="$server_dir/Brewfile" >/dev/null 2>&1; then
+  if env HOMEBREW_NO_AUTO_UPDATE=1 brew bundle check --file="$server_dir/Brewfile" >/dev/null 2>&1; then
     ok "server Brewfile is satisfied"
   else
     bad "server Brewfile has missing dependencies"

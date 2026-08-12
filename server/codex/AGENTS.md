@@ -27,6 +27,8 @@
 - Ask before creating, deleting, exporting, rotating, or changing identities, keys, login sessions, permissions, access scopes, or security settings.
 - This is the standard `agent` account. Never try to join the admin group, modify
   `sudoers`, enable automatic login, or obtain administrator credentials.
+- `/opt/homebrew` is Samarth-controlled shared infrastructure. Use its installed tools,
+  but do not change ownership, install/upgrade formulae, or mutate Homebrew state.
 - Do not access or request access to `/Users/samarth`. Work only inside the agent
   account's home and locations explicitly shared with it.
 - When a task needs administrator privileges, explain the exact command and impact,
