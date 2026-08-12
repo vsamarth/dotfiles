@@ -1,0 +1,48 @@
+[user]
+	name = Samarth Verma
+	email = hi@samarthv.com
+
+[alias]
+	slog = log --pretty=oneline -n 20 --graph --abbrev-commit
+	amend = commit --amend --reuse-message=HEAD
+	branches = branch --all
+	remotes = remote --verbose
+	whoami = config user.email
+	pf = push --force-with-lease
+
+[core]
+	pager = delta
+	excludesfile = ~/.gitignore
+	editor = vim
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[apply]
+	whitespace = fix
+
+[branch]
+	sort = -committerdate
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential

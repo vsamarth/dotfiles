@@ -4,6 +4,8 @@
 
 To set up a new machine, follow the instructions in [instructions.md](instructions.md).
 
+For the dedicated agent-server Mac, use [SERVER_SETUP.md](SERVER_SETUP.md).
+
 ## Age helpers
 
 The `bin/` directory is on PATH, so these helpers are available as commands:

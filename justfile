@@ -176,3 +176,11 @@ clean:
 # List all available recipes
 list:
     just --list
+
+# Minimal, non-destructive profile for the dedicated agent-server Mac.
+server-bootstrap:
+    bash {{dotfiles_dir}}/server/bootstrap.sh
+
+# Read-only health check for the dedicated agent-server Mac.
+server-doctor:
+    bash {{dotfiles_dir}}/server/doctor.sh
