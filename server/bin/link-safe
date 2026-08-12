@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source_path="${1:?usage: link-safe SOURCE TARGET}"
+target_path="${2:?usage: link-safe SOURCE TARGET}"
+
+if [[ ! -e "$source_path" ]]; then
+  printf 'Source does not exist: %s\n' "$source_path" >&2
+  exit 1
+fi
+
+if [[ -L "$target_path" && "$(readlink "$target_path")" == "$source_path" ]]; then
+  printf 'Already linked: %s\n' "$target_path"
+  exit 0
+fi
+
+if [[ -e "$target_path" || -L "$target_path" ]]; then
+  printf 'Refusing to replace existing path: %s\n' "$target_path" >&2
+  printf 'Inspect and move it aside yourself, then rerun the bootstrap.\n' >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$target_path")"
+ln -s "$source_path" "$target_path"
+printf 'Linked %s -> %s\n' "$target_path" "$source_path"

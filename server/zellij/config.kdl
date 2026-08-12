@@ -1,0 +1,3 @@
+on_force_close "detach"
+default_layout "work"
+session_serialization false

@@ -1,0 +1,54 @@
+format = """
+$directory\
+$git_branch\
+$git_status\
+$cmd_duration\
+$fill\
+$nodejs\
+$python\
+$jobs\
+$line_break\
+$character"""
+
+add_newline = false
+
+[fill]
+symbol = " "
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+style = "bold #d3c6aa"
+
+[git_branch]
+symbol = ""
+style = "bold #83c092"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "#e69875"
+format = "([$all_status$ahead_behind]($style))"
+
+[cmd_duration]
+min_time = 1000
+style = "#d699b6"
+format = " [took $duration]($style)"
+
+[nodejs]
+symbol = "node "
+style = "#a7c080"
+format = "[$symbol($version )]($style)"
+
+[python]
+symbol = "py "
+style = "#83c092"
+format = "[$symbol($version )]($style)"
+
+[jobs]
+symbol = "✦ "
+style = "#d699b6"
+format = "[$symbol$number]($style) "
+
+[character]
+success_symbol = "[❯](bold #a7c080)"
+error_symbol = "[❯](bold #e67e80)"
