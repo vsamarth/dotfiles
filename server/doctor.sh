@@ -14,6 +14,14 @@ else
   bad "expected Apple silicon macOS"
 fi
 
+computer_name="$(scutil --get ComputerName 2>/dev/null || true)"
+local_hostname="$(scutil --get LocalHostName 2>/dev/null || true)"
+if [[ "$computer_name" == "den" && "$local_hostname" == "den" ]]; then
+  ok "computer name and local hostname are den"
+else
+  bad "expected computer name and local hostname den; got ComputerName='$computer_name' LocalHostName='$local_hostname'"
+fi
+
 current_user="$(id -un)"
 if [[ "$current_user" == "agent" ]]; then
   ok "running as the dedicated agent account"

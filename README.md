@@ -4,7 +4,7 @@
 
 To set up a new machine, follow the instructions in [instructions.md](instructions.md).
 
-For the dedicated agent-server Mac, use [SERVER_SETUP.md](SERVER_SETUP.md).
+For Kit's dedicated server Mac, `den`, use [SERVER_SETUP.md](SERVER_SETUP.md).
 
 ## Age helpers
 

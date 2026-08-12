@@ -1,4 +1,4 @@
-# Agent Server Setup
+# Kit on den
 
 This runbook prepares an Apple-silicon MacBook as a mostly headless personal-agent
 server. It installs the operating environment but intentionally does **not** install,
@@ -6,6 +6,16 @@ configure, authorize, or run Hermes.
 
 The existing `instructions.md` and default `just setup` recipe describe the older
 workstation configuration. Do not run them on this server.
+
+## Identity
+
+- **Kit** is the personal agent you interact with.
+- **`agent`** is Kit's deliberately boring, auditable macOS account.
+- **`den`** is the Mac's computer name, local hostname, and Tailscale machine name.
+- **Hermes** may later provide the runtime, but it is not Kit's identity.
+
+Keep these layers separate. A future runtime migration should not rename Kit, the
+account, or the machine.
 
 ## Intended posture
 
@@ -31,8 +41,8 @@ workstation configuration. Do not run them on this server.
 4. Open **Automatic Updates** on that page and enable update checks, downloads,
    macOS updates, app updates, and security responses/system files.
 5. In **System Settings → Users & Groups**, confirm automatic login is off.
-6. Choose a stable computer name in **System Settings → General → About → Name**.
-   A short name such as `agentbook` is convenient, but changing identity is your decision.
+6. Set the computer name to `den` in
+   **System Settings → General → About → Name**.
 
 Do not sign the server into unnecessary personal apps or enable broad iCloud syncing.
 
@@ -214,7 +224,7 @@ In Tailscale settings:
 - keep Tailscale connected;
 - enable launch at login if offered;
 - do not enable an exit node or advertise routes unless you deliberately need them;
-- give this device a recognizable name;
+- name this device `den`;
 - confirm it is visible from the controlling Mac.
 
 Wired Ethernet is preferable for an always-on server when practical. It is also the
@@ -240,8 +250,11 @@ From the controlling Mac, test the command shown in that settings panel, first o
 local network and then using the Tailscale device name or Tailscale IP:
 
 ```bash
-ssh agent@<tailscale-name-or-ip>
+ssh agent@den
 ```
+
+On the local network, `ssh agent@den.local` is the usual Bonjour form. If MagicDNS is
+not enabled on the tailnet, use den's Tailscale IP instead of `den`.
 
 Use password authentication only for initial setup. For durable key-based SSH, create
 or select the client identity yourself, install **only its public key** into
@@ -308,7 +321,7 @@ Remote Login visibility, and authentication status without reading credentials.
 Then test the operating loop from the controlling Mac:
 
 ```bash
-ssh agent@<tailscale-name-or-ip>
+ssh agent@den
 cd ~/Work
 zj
 ```
