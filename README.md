@@ -5,6 +5,9 @@
 To set up a new machine, follow the instructions in [instructions.md](instructions.md).
 
 For Kit's dedicated server Mac, `den`, use [SERVER_SETUP.md](SERVER_SETUP.md).
+Its setup flow is `just server-preflight`, `just server-bootstrap`,
+`just server-doctor`, and—only after the documented recovery drills—
+`just server-readiness`.
 
 ## Age helpers
 

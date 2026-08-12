@@ -10,6 +10,8 @@ Kit cannot erase.
 2. Read the newest file in `journal/`.
 3. Consult `DECISIONS.md` when prior reasoning affects the current work.
 4. Use `RECOVERY.md` only as a non-secret map of recovery responsibilities.
+5. Use `READINESS.md` as Samarth's evidence checklist for recovery drills. Kit may
+   remind Samarth about unchecked items but must never mark a drill complete itself.
 
 ## While working
 

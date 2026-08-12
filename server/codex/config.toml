@@ -1,6 +1,25 @@
 approval_policy = "on-request"
-default_permissions = ":workspace"
+default_permissions = "kit"
 web_search = "cached"
+
+[permissions.kit]
+description = "Kit's working directories with secret-bearing files denied."
+extends = ":workspace"
+
+[permissions.kit.workspace_roots]
+"~/Work" = true
+"~/Projects" = true
+"~/Kit" = true
+"~/.dotfiles" = true
+
+[permissions.kit.filesystem.":workspace_roots"]
+"." = "write"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
+"**/*.pem" = "deny"
+"**/*.p12" = "deny"
+"**/*.pfx" = "deny"
+"**/*.key" = "deny"
 
 [shell_environment_policy]
 ignore_default_excludes = false

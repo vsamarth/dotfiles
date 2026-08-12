@@ -14,6 +14,13 @@ else
   bad "expected Apple silicon macOS"
 fi
 
+macos_major="$(sw_vers -productVersion 2>/dev/null | cut -d. -f1)"
+if [[ "$macos_major" =~ ^[0-9]+$ ]] && ((macos_major >= 26)); then
+  ok "macOS $macos_major supports the documented FileVault recovery drill"
+else
+  bad "expected macOS 26 or later; got ${macos_major:-unknown}"
+fi
+
 computer_name="$(scutil --get ComputerName 2>/dev/null || true)"
 local_hostname="$(scutil --get LocalHostName 2>/dev/null || true)"
 if [[ "$computer_name" == "den" && "$local_hostname" == "den" ]]; then
@@ -49,10 +56,22 @@ dotfiles_dir="$(cd "$server_dir/.." && pwd)"
 if command -v brew >/dev/null 2>&1; then
   brew_prefix="$(brew --prefix)"
   brew_owner="$(stat -f '%Su' "$brew_prefix")"
+  brew_command="$(command -v brew)"
+  if [[ "$brew_prefix" == "/opt/homebrew" && "$brew_command" == "/opt/homebrew/bin/brew" ]]; then
+    ok "Homebrew uses the supported Apple-silicon prefix"
+  else
+    bad "expected /opt/homebrew/bin/brew and prefix /opt/homebrew; got command $brew_command prefix $brew_prefix"
+  fi
   if [[ "$brew_owner" == "$current_user" ]]; then
     ok "Homebrew is owned by the agent account"
   else
     bad "Homebrew is owned by $brew_owner instead of $current_user"
+  fi
+
+  if brew bundle check --file="$server_dir/Brewfile" >/dev/null 2>&1; then
+    ok "server Brewfile is satisfied"
+  else
+    bad "server Brewfile has missing dependencies"
   fi
 fi
 
@@ -100,7 +119,7 @@ check_private_path() {
 
 check_private_path "$HOME/Kit" 700
 check_private_path "$HOME/Kit/journal" 700
-for continuity_file in README.md NOW.md DECISIONS.md RECOVERY.md; do
+for continuity_file in README.md NOW.md DECISIONS.md RECOVERY.md READINESS.md; do
   check_private_path "$HOME/Kit/$continuity_file" 600
 done
 
@@ -149,7 +168,7 @@ fi
 if command -v tailscale >/dev/null 2>&1 && tailscale status >/dev/null 2>&1; then
   ok "Tailscale is connected"
 else
-  note "Tailscale is not connected; open it and complete its secure sign-in"
+  note "Tailscale CLI/status is unavailable; complete the selected variant's setup"
 fi
 
 if [[ "$failures" -gt 0 ]]; then
@@ -157,4 +176,4 @@ if [[ "$failures" -gt 0 ]]; then
   exit 1
 fi
 
-printf '\nRequired checks passed. Review the informational lines above.\n'
+printf '\nCore checks passed. Review the informational lines above, then run server-readiness after the recovery drills.\n'

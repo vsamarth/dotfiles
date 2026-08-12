@@ -181,6 +181,18 @@ list:
 server-bootstrap:
     bash {{dotfiles_dir}}/server/bootstrap.sh
 
+# Mutation-free prerequisite and collision check for the server bootstrap.
+server-preflight:
+    bash {{dotfiles_dir}}/server/bootstrap.sh --preflight
+
 # Read-only health check for the dedicated agent-server Mac.
 server-doctor:
     bash {{dotfiles_dir}}/server/doctor.sh
+
+# Strict local check after Samarth has completed every recovery drill.
+server-readiness:
+    bash {{dotfiles_dir}}/server/readiness.sh
+
+# Run from the controlling Mac; pass agent@den.local to test the LAN path.
+server-remote-check target="agent@den":
+    bash {{dotfiles_dir}}/server/remote-check.sh '{{target}}'

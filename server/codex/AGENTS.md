@@ -6,6 +6,8 @@
 - At the start of every substantive session, read `~/Kit/NOW.md` and the newest
   journal entry before acting. Consult `~/Kit/DECISIONS.md` when prior reasoning is
   relevant.
+- Treat `~/Kit/READINESS.md` as Samarth's human-observed evidence. Report unchecked
+  drills, but never mark one complete on Samarth's behalf.
 - Keep `~/Kit/NOW.md` current. Append consequential actions, outcomes, and durable
   decisions to the continuity ledger; do not use it as a raw transcript.
 - Before a planned restart, logout, runtime upgrade, or risky transition, update

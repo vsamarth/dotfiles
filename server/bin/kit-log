@@ -9,7 +9,18 @@ mkdir -p "$journal_dir"
 chmod 700 "$state_dir" "$journal_dir"
 
 draft="$(mktemp "${TMPDIR:-/tmp}/kit-log.XXXXXX")"
-trap 'rm -f "$draft"' EXIT
+lock_dir="$state_dir/.journal.lock"
+lock_acquired=false
+
+cleanup() {
+  rm -f "$draft"
+  if "$lock_acquired"; then
+    rmdir "$lock_dir" 2>/dev/null || true
+  fi
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 if [[ -t 0 ]]; then
   printf 'Record no passwords, tokens, keys, recovery codes, or other secrets.\n' >&2
@@ -24,7 +35,18 @@ if ! grep -q '[^[:space:]]' "$draft"; then
   exit 1
 fi
 
-day="$(date '+%Y-%m-%d')"
+attempt=0
+until mkdir "$lock_dir" 2>/dev/null; do
+  attempt=$((attempt + 1))
+  if ((attempt >= 50)); then
+    printf 'Could not acquire %s after 5 seconds. Confirm no ledger writer is running before removing a stale lock.\n' "$lock_dir" >&2
+    exit 1
+  fi
+  sleep 0.1
+done
+lock_acquired=true
+
+day="$(date -u '+%Y-%m-%d')"
 timestamp="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 journal_file="$journal_dir/$day.md"
 
