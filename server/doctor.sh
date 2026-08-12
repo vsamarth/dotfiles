@@ -14,6 +14,19 @@ else
   bad "expected Apple silicon macOS"
 fi
 
+current_user="$(id -un)"
+if [[ "$current_user" == "agent" ]]; then
+  ok "running as the dedicated agent account"
+else
+  bad "expected the dedicated account name agent, got $current_user"
+fi
+
+if [[ " $(id -Gn "$current_user") " == *" admin "* ]]; then
+  bad "the agent account belongs to the admin group"
+else
+  ok "the agent account is not an administrator"
+fi
+
 for command_name in brew codex gh git jq node pnpm rg starship uv zellij; do
   if command -v "$command_name" >/dev/null 2>&1; then
     ok "$command_name is installed"
@@ -24,6 +37,16 @@ done
 
 server_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 dotfiles_dir="$(cd "$server_dir/.." && pwd)"
+
+if command -v brew >/dev/null 2>&1; then
+  brew_prefix="$(brew --prefix)"
+  brew_owner="$(stat -f '%Su' "$brew_prefix")"
+  if [[ "$brew_owner" == "$current_user" ]]; then
+    ok "Homebrew is owned by the agent account"
+  else
+    bad "Homebrew is owned by $brew_owner instead of $current_user"
+  fi
+fi
 
 check_link() {
   local target_path="$1"

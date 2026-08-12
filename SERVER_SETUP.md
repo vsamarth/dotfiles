@@ -9,17 +9,21 @@ workstation configuration. Do not run them on this server.
 
 ## Intended posture
 
+- `samarth` remains the human-controlled administrator and recovery account.
+- `agent` is a separate standard account that runs Codex and, later, the personal
+  agent. It is not an administrator and has no passwordless `sudo`.
 - FileVault stays enabled; automatic login stays disabled.
 - The Mac stays on AC power with idle system sleep disabled.
 - The lid stays open for reliable operation. A closed MacBook lid can force sleep.
 - Tailscale is the private remote network. Do not forward SSH or other ports on the router.
-- Remote Login is limited to your account. Full Disk Access for remote users starts off.
+- Remote Login is limited to named accounts. Full Disk Access for remote users starts off.
 - Codex is used to prepare and maintain the host with workspace-scoped permissions.
-- `~/Work` holds confidential work repositories; `~/Projects` holds personal projects.
+- `/Users/agent/Work` holds confidential work repositories; `/Users/agent/Projects`
+  holds personal projects. The agent does not work inside `/Users/samarth`.
 - Credentials, private keys, recovery keys, `.env` files, and agent runtime state remain
   local and untracked.
 
-## 1. Finish macOS first
+## 1. Finish macOS as `samarth`
 
 1. Keep the MacBook connected to power and the working display adapter.
 2. Install every macOS update from **System Settings → General → Software Update**.
@@ -32,9 +36,38 @@ workstation configuration. Do not run them on this server.
 
 Do not sign the server into unnecessary personal apps or enable broad iCloud syncing.
 
-## 2. Enable FileVault
+## 2. Create the account boundary
 
-Open **System Settings → Privacy & Security → FileVault** and turn FileVault on.
+Stay signed in as `samarth`. In **System Settings → Users & Groups**, add a new user:
+
+- **New User:** Standard
+- **Full Name:** Agent
+- **Account Name:** `agent`
+
+Choose the password yourself and keep it out of prompts, repositories, shell commands,
+and documentation. Do not sign `agent` into an Apple Account, enable automatic login,
+turn on **Allow this user to administer this computer**, add it to `sudoers`, or give
+it blanket Full Disk Access.
+
+The boundary is intentional:
+
+| Account | Purpose | Privilege |
+| --- | --- | --- |
+| `samarth` | FileVault recovery, macOS updates, account management, security settings, and reviewed system changes | Administrator |
+| `agent` | Codex, repositories, terminal sessions, and the future personal-agent runtime | Standard user |
+
+The agent can fully control its own home directory and anything explicitly shared with
+it. It must not receive access to `/Users/samarth`. When privileged work is needed,
+the agent should explain the exact change and stop; you then perform it from `samarth`.
+
+Log out and log into `agent` once so macOS creates `/Users/agent`. Keep the remaining
+Terminal-based setup in that account unless a step explicitly says to switch back to
+`samarth`.
+
+## 3. Enable FileVault as `samarth`
+
+Return to `samarth`. Open **System Settings → Privacy & Security → FileVault** and
+turn FileVault on.
 
 - Use a personal recovery key if offered.
 - Store it in a secure location outside this Mac.
@@ -42,22 +75,34 @@ Open **System Settings → Privacy & Security → FileVault** and turn FileVault
   a Codex prompt.
 - Confirm FileVault later with `fdesetup status`; do not print the recovery key.
 
+Keep `samarth` as the deliberate preboot unlock and recovery identity. Do not enable
+`agent` as an additional FileVault unlock user merely for convenience. This means an
+unattended restart may require you to unlock the Mac before agent services can resume.
+
 On Apple silicon with macOS 26 or later, Apple supports unlocking FileVault over SSH
 after a restart when Remote Login is enabled and a compatible network is available.
 Test this from your own network before depending on it. Preboot networking may not
 have Tailscale, so retain a physical-unlock plan.
 
-## 3. Install the bootstrap prerequisites
+## 4. Install the bootstrap prerequisites as `agent`
 
-Open Terminal and install Apple's Command Line Tools:
+While logged into the `agent` account, open Terminal and install Apple's Command Line
+Tools:
 
 ```bash
 xcode-select --install
 ```
 
-Complete the graphical installer. Then install Homebrew using the command currently
-published at [brew.sh](https://brew.sh). Review that command on the site rather than
-copying an old installer command from this repository.
+Complete the graphical installer. Then install Homebrew using the current signed macOS
+`.pkg` from Homebrew's official release, linked from
+[Homebrew's installation documentation](https://docs.brew.sh/Installation). Authorize
+the package installer as `samarth` when macOS asks, but never give the administrator
+password to Codex or the agent.
+
+The graphical session must still be `agent` so the package installer assigns the
+single-user Homebrew installation to `agent`. This deliberately lets the agent manage
+its command-line toolchain without making it a macOS administrator. The `samarth`
+account should not depend on or maintain this Homebrew installation.
 
 Add Homebrew to the **current shell only** after installation:
 
@@ -76,7 +121,7 @@ brew install --cask codex
 The Homebrew Codex cask installs the terminal CLI. Do not launch it yet; its portable
 configuration should be linked first.
 
-## 4. Clone the dotfiles and inspect them
+## 5. Clone the dotfiles and inspect them as `agent`
 
 Clone over public HTTPS initially so no SSH identity is required:
 
@@ -98,6 +143,7 @@ The bootstrap:
 - installs the command-line packages in `server/Brewfile`;
 - creates `~/Work` and `~/Projects`;
 - links the server-specific Zsh, Git, Starship, Zellij, and Codex configuration;
+- refuses to run from `root` or an administrator account;
 - refuses to replace any existing file or symlink;
 - does not use `sudo`, change macOS settings, authenticate services, or install Hermes.
 
@@ -132,7 +178,7 @@ appropriate. Ask Codex to read `SERVER_SETUP.md`, inspect the repository state, 
 run `just server-doctor`. It should pause at every manual security or authentication
 step rather than trying to complete those steps for you.
 
-## 5. Authenticate GitHub
+## 6. Authenticate GitHub
 
 Authenticate through GitHub CLI's secure browser flow:
 
@@ -152,7 +198,7 @@ git config --global user.email
 The server profile uses HTTPS plus GitHub CLI's credential helper. It does not create,
 copy, or configure a private SSH key.
 
-## 6. Configure Tailscale
+## 7. Configure Tailscale
 
 Install Tailscale's current standalone macOS package using the official instructions
 at [tailscale.com/docs/install/mac](https://tailscale.com/docs/install/mac). Tailscale
@@ -177,20 +223,24 @@ most predictable preboot network for FileVault recovery. Wi-Fi can remain the fa
 Do not expose SSH through router port forwarding. Tailscale should be the route to
 the server during normal operation.
 
-## 7. Configure Remote Login
+## 8. Configure Remote Login
 
 Open **System Settings → General → Sharing**. Open the details for **Remote Login**:
 
 1. Turn Remote Login on.
 2. Set **Allow access for** to **Only these users**.
-3. Add only your server account.
+3. Add `agent` for routine access.
 4. Leave **Allow full disk access for remote users** off initially.
+
+Optionally add `samarth` as a break-glass SSH administrator only after key-based login
+has been tested. Keeping it out of Remote Login provides the smaller attack surface;
+adding it provides a remote recovery path. Either way, never select **All users**.
 
 From the controlling Mac, test the command shown in that settings panel, first on the
 local network and then using the Tailscale device name or Tailscale IP:
 
 ```bash
-ssh <server-user>@<tailscale-name-or-ip>
+ssh agent@<tailscale-name-or-ip>
 ```
 
 Use password authentication only for initial setup. For durable key-based SSH, create
@@ -205,23 +255,24 @@ After both local-network and Tailscale SSH work, enable the macOS firewall in
 **System Settings → Network → Firewall**. Retest both SSH paths immediately. Do not
 enable **Block all incoming connections**, because Remote Login must remain reachable.
 
-## 8. Configure AC-power behavior
+## 9. Configure AC-power behavior
 
-Keep the lid open. Then review the current settings:
+Keep the lid open. The `agent` account can review the current settings:
 
 ```bash
 pmset -g custom
 ```
 
 The following change affects AC power only. It prevents idle system and disk sleep,
-keeps network wake/keepalive enabled, and asks the Mac to restart after power returns:
+keeps network wake/keepalive enabled, and asks the Mac to restart after power returns.
+Log into `samarth`, open Terminal there, and run:
 
 ```bash
 sudo pmset -c sleep 0 disksleep 0 womp 1 tcpkeepalive 1 autorestart 1
 ```
 
-Enter the administrator password directly in Terminal. Codex must not request or enter
-it. Verify afterwards:
+Enter the administrator password directly in that Terminal. Codex must not request or
+enter it. Return to `agent` and verify afterwards:
 
 ```bash
 pmset -g custom
@@ -234,16 +285,16 @@ Because FileVault remains enabled, a restart can stop at preboot unlock even whe
 `autorestart` succeeds. Validate remote unlock on your network before relying on
 unattended recovery. Otherwise plan to unlock the Mac physically after a restart.
 
-## 9. Optional Screen Sharing
+## 10. Optional Screen Sharing
 
 SSH should be the normal administration path. If occasional GUI recovery is useful,
 turn on **Screen Sharing** in **System Settings → General → Sharing**, restrict it to
-your account, and connect only over Tailscale. Do not enable both Screen Sharing and
+`samarth`, and connect only over Tailscale. Do not enable both Screen Sharing and
 Remote Management without a specific need.
 
 Screen Sharing is not a substitute for FileVault preboot unlock.
 
-## 10. Validate
+## 11. Validate
 
 From `~/.dotfiles`, run:
 
@@ -257,7 +308,7 @@ Remote Login visibility, and authentication status without reading credentials.
 Then test the operating loop from the controlling Mac:
 
 ```bash
-ssh <server-user>@<tailscale-name-or-ip>
+ssh agent@<tailscale-name-or-ip>
 cd ~/Work
 zj
 ```
@@ -265,7 +316,7 @@ zj
 Detach from Zellij with `Ctrl-o`, then `d`, disconnect SSH, reconnect, and run `zj`
 again. The same repository session should resume.
 
-## 11. Reboot drill
+## 12. Reboot drill
 
 Do this while you can physically reach the server:
 
@@ -273,13 +324,23 @@ Do this while you can physically reach the server:
 2. Restart the server.
 3. Attempt FileVault unlock over SSH from the local network if available.
 4. If it is unavailable, unlock physically.
-5. Confirm Tailscale reconnects after login.
-6. Confirm SSH works over Tailscale.
+5. Confirm Tailscale reconnects without enabling automatic login.
+6. Confirm SSH into `agent` works over Tailscale.
 7. Run `just --justfile ~/.dotfiles/justfile server-doctor`.
 
 Do not call the server unattended-ready until this drill succeeds.
 
-## 12. Backups and maintenance
+## 13. Future background-service boundary
+
+Hermes remains outside this setup. When it is added later, its persistent processes
+should run as the `agent` user, never as `root` or `samarth`.
+
+Do not enable automatic login to start it. If it must start before a graphical login,
+use a narrowly scoped system LaunchDaemon whose `UserName` is `agent`. Review and
+install that service from `samarth`; do not let the agent modify its own system service
+definition. Keep secrets out of launchd property lists and command arguments.
+
+## 14. Backups and maintenance
 
 An autonomous agent can delete or corrupt anything its account can write. Keep at least
 one recovery path outside that account's ordinary reach.
@@ -312,7 +373,8 @@ This profile does not install or configure:
 - API keys, OAuth grants, passwords, recovery keys, or private SSH keys;
 - password managers, personal browsers, mail, messages, cloud drives, or social apps;
 - Docker, local model runtimes, databases, or language toolchains not yet required;
-- automatic login, public port forwarding, passwordless `sudo`, or blanket Full Disk Access;
+- an administrator role for `agent`, automatic login, public port forwarding,
+  passwordless `sudo`, or blanket Full Disk Access;
 - the legacy Fish shell, Firefox customization, Dock layout, or broad macOS defaults.
 
 Add those later as explicit, independently reviewed decisions. In particular, Hermes

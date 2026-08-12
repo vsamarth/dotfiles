@@ -11,12 +11,33 @@ if [[ "$(uname -s)" != "Darwin" || "$(uname -m)" != "arm64" ]]; then
   exit 1
 fi
 
+current_user="$(id -un)"
+
+if [[ "$current_user" != "agent" ]]; then
+  printf 'Run this profile from the standard macOS account named agent, not %s.\n' "$current_user" >&2
+  exit 1
+fi
+
+if [[ " $(id -Gn "$current_user") " == *" admin "* ]]; then
+  printf 'The agent account must remain a standard user and must not belong to the admin group.\n' >&2
+  exit 1
+fi
+
 if ! command -v brew >/dev/null 2>&1; then
   printf 'Homebrew is required. Install it from https://brew.sh and rerun.\n' >&2
   exit 1
 fi
 
 eval "$(brew shellenv)"
+
+brew_prefix="$(brew --prefix)"
+brew_owner="$(stat -f '%Su' "$brew_prefix")"
+if [[ "$brew_owner" != "$current_user" ]]; then
+  printf 'Homebrew at %s is owned by %s, not %s. Follow SERVER_SETUP.md; do not repair this with a broad chown.\n' \
+    "$brew_prefix" "$brew_owner" "$current_user" >&2
+  exit 1
+fi
+
 brew bundle install --file="$server_dir/Brewfile"
 
 mkdir -p "$HOME/.config" "$HOME/.codex" "$HOME/Work" "$HOME/Projects"
