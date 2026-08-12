@@ -40,7 +40,7 @@ fi
 
 brew bundle install --file="$server_dir/Brewfile"
 
-mkdir -p "$HOME/.config" "$HOME/.codex" "$HOME/Work" "$HOME/Projects"
+mkdir -p "$HOME/.config" "$HOME/.codex" "$HOME/.local/bin" "$HOME/Work" "$HOME/Projects"
 
 "$link_safe" "$server_dir/zsh/zprofile" "$HOME/.zprofile"
 "$link_safe" "$server_dir/zsh/zshrc" "$HOME/.zshrc"
@@ -51,7 +51,32 @@ mkdir -p "$HOME/.config" "$HOME/.codex" "$HOME/Work" "$HOME/Projects"
 "$link_safe" "$dotfiles_dir/git/gitignore" "$HOME/.gitignore"
 "$link_safe" "$server_dir/codex/AGENTS.md" "$HOME/.codex/AGENTS.md"
 "$link_safe" "$server_dir/codex/config.toml" "$HOME/.codex/config.toml"
+"$link_safe" "$server_dir/bin/kit-log" "$HOME/.local/bin/kit-log"
+"$link_safe" "$server_dir/bin/kit-checkpoint" "$HOME/.local/bin/kit-checkpoint"
+
+kit_state_dir="$HOME/Kit"
+install -d -m 700 "$kit_state_dir" "$kit_state_dir/journal"
+chmod 700 "$kit_state_dir" "$kit_state_dir/journal"
+
+install_state_file() {
+  local source_path="$1"
+  local target_path="$2"
+
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
+    printf 'Keeping existing continuity file %s\n' "$target_path"
+    return
+  fi
+
+  install -m 600 "$source_path" "$target_path"
+  printf 'Initialized continuity file %s\n' "$target_path"
+}
+
+install_state_file "$server_dir/kit/README.md" "$kit_state_dir/README.md"
+install_state_file "$server_dir/kit/NOW.md" "$kit_state_dir/NOW.md"
+install_state_file "$server_dir/kit/DECISIONS.md" "$kit_state_dir/DECISIONS.md"
+install_state_file "$server_dir/kit/RECOVERY.md" "$kit_state_dir/RECOVERY.md"
 
 printf '\nCore agent-server profile installed.\n'
 printf 'Open a new terminal, then run: just --justfile %q server-doctor\n' "$dotfiles_dir/justfile"
+printf 'Kit continuity state is private and mutable at %s.\n' "$kit_state_dir"
 printf 'Security, networking, authentication, and power steps remain manual.\n'

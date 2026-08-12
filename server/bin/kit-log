@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+umask 077
+
+state_dir="${KIT_STATE_DIR:-$HOME/Kit}"
+journal_dir="$state_dir/journal"
+mkdir -p "$journal_dir"
+chmod 700 "$state_dir" "$journal_dir"
+
+draft="$(mktemp "${TMPDIR:-/tmp}/kit-log.XXXXXX")"
+trap 'rm -f "$draft"' EXIT
+
+if [[ -t 0 ]]; then
+  printf 'Record no passwords, tokens, keys, recovery codes, or other secrets.\n' >&2
+  editor="${VISUAL:-${EDITOR:-vi}}"
+  "$editor" "$draft"
+else
+  cat >"$draft"
+fi
+
+if ! grep -q '[^[:space:]]' "$draft"; then
+  printf 'No journal entry written: input was empty.\n' >&2
+  exit 1
+fi
+
+day="$(date '+%Y-%m-%d')"
+timestamp="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+journal_file="$journal_dir/$day.md"
+
+if [[ ! -e "$journal_file" ]]; then
+  printf '# Journal — %s\n' "$day" >"$journal_file"
+fi
+
+{
+  printf '\n## %s\n\n' "$timestamp"
+  cat "$draft"
+  printf '\n'
+} >>"$journal_file"
+
+chmod 600 "$journal_file"
+printf 'Appended continuity entry to %s\n' "$journal_file"

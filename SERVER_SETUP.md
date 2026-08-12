@@ -59,6 +59,12 @@ and documentation. Do not sign `agent` into an Apple Account, enable automatic l
 turn on **Allow this user to administer this computer**, add it to `sudoers`, or give
 it blanket Full Disk Access.
 
+Immediately store the original `agent` login password in your existing password
+manager, accessible from another trusted device that Kit cannot control. Verify that
+you can retrieve the record before continuing. Do not rely on an administrator reset
+as the normal recovery plan: it restores account access but may not unlock the old
+login keychain without the original password.
+
 The boundary is intentional:
 
 | Account | Purpose | Privilege |
@@ -152,6 +158,7 @@ The bootstrap:
 
 - installs the command-line packages in `server/Brewfile`;
 - creates `~/Work` and `~/Projects`;
+- initializes Kit's private, mutable continuity ledger in `~/Kit`;
 - links the server-specific Zsh, Git, Starship, Zellij, and Codex configuration;
 - refuses to run from `root` or an administrator account;
 - refuses to replace any existing file or symlink;
@@ -173,6 +180,18 @@ If the bootstrap refuses an existing path, inspect it and move it aside yourself
 not tell Codex to overwrite or delete an unknown configuration automatically.
 
 Open a new Terminal window after the bootstrap.
+
+Review the initialized continuity files:
+
+```bash
+less ~/Kit/README.md
+less ~/Kit/NOW.md
+less ~/Kit/RECOVERY.md
+```
+
+These files are deliberately copied into Kit's home rather than linked back into the
+public dotfiles repository. They will accumulate private operational context. Never
+put passwords, tokens, private keys, recovery keys, or one-time codes in them.
 
 Now complete Codex authentication through its secure browser/device flow and launch
 it from the repository:
@@ -329,21 +348,58 @@ zj
 Detach from Zellij with `Ctrl-o`, then `d`, disconnect SSH, reconnect, and run `zj`
 again. The same repository session should resume.
 
-## 12. Reboot drill
+## 12. Continuity and recovery
+
+Kit's continuity system has four durable views:
+
+- `NOW.md` is the concise handoff: current objective, state, next actions, blockers,
+  and last known-good checkpoint.
+- `journal/YYYY-MM-DD.md` is the append-only operational record of consequential
+  actions and outcomes.
+- `DECISIONS.md` preserves durable choices and why they were made.
+- `RECOVERY.md` maps assets to human-controlled recovery paths without containing
+  secrets.
+
+Append a non-secret journal entry through standard input:
+
+```bash
+kit-log
+```
+
+When run interactively this opens an editor. Before any planned restart, logout,
+runtime upgrade, or risky transition, update `NOW.md` and run:
+
+```bash
+kit-checkpoint
+```
+
+The ledger survives process and machine restarts, but it remains writable by Kit and
+is therefore not its own backup. Configure encrypted Time Machine or another trusted
+backup from `samarth`, ensure it includes `/Users/agent/Kit`, and do not grant
+`agent` permission to erase backup history. Perform a test restore of the ledger
+before treating continuity as reliable.
+
+The `agent` login password and FileVault recovery key belong in Samarth's external
+recovery system, accessible from another device. They never belong in `~/Kit`.
+
+## 13. Reboot drill
 
 Do this while you can physically reach the server:
 
 1. Confirm FileVault, Remote Login, Tailscale, and AC power settings.
-2. Restart the server.
-3. Attempt FileVault unlock over SSH from the local network if available.
-4. If it is unavailable, unlock physically.
-5. Confirm Tailscale reconnects without enabling automatic login.
-6. Confirm SSH into `agent` works over Tailscale.
-7. Run `just --justfile ~/.dotfiles/justfile server-doctor`.
+2. Update `~/Kit/NOW.md` and run `kit-checkpoint`.
+3. Restart the server.
+4. Attempt FileVault unlock over SSH from the local network if available.
+5. If it is unavailable, unlock physically.
+6. Log into `agent` to unlock its login keychain.
+7. Confirm Tailscale reconnects without enabling automatic login.
+8. Confirm SSH into `agent` works over Tailscale.
+9. Confirm Kit reads `NOW.md` and the latest journal entry before resuming work.
+10. Run `just --justfile ~/.dotfiles/justfile server-doctor`.
 
 Do not call the server unattended-ready until this drill succeeds.
 
-## 13. Future background-service boundary
+## 14. Future background-service boundary
 
 Hermes remains outside this setup. When it is added later, its persistent processes
 should run as the `agent` user, never as `root` or `samarth`.
@@ -353,7 +409,7 @@ use a narrowly scoped system LaunchDaemon whose `UserName` is `agent`. Review an
 install that service from `samarth`; do not let the agent modify its own system service
 definition. Keep secrets out of launchd property lists and command arguments.
 
-## 14. Backups and maintenance
+## 15. Backups and maintenance
 
 An autonomous agent can delete or corrupt anything its account can write. Keep at least
 one recovery path outside that account's ordinary reach.

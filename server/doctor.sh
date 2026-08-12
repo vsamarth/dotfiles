@@ -75,6 +75,34 @@ check_link "$HOME/.gitconfig" "$server_dir/gitconfig"
 check_link "$HOME/.gitignore" "$dotfiles_dir/git/gitignore"
 check_link "$HOME/.codex/AGENTS.md" "$server_dir/codex/AGENTS.md"
 check_link "$HOME/.codex/config.toml" "$server_dir/codex/config.toml"
+check_link "$HOME/.local/bin/kit-log" "$server_dir/bin/kit-log"
+check_link "$HOME/.local/bin/kit-checkpoint" "$server_dir/bin/kit-checkpoint"
+
+check_private_path() {
+  local target_path="$1"
+  local expected_mode="$2"
+
+  if [[ ! -e "$target_path" ]]; then
+    bad "$target_path is missing"
+    return
+  fi
+
+  local owner mode
+  owner="$(stat -f '%Su' "$target_path")"
+  mode="$(stat -f '%Lp' "$target_path")"
+
+  if [[ "$owner" == "$current_user" && "$mode" == "$expected_mode" ]]; then
+    ok "$target_path is owned by $current_user with mode $expected_mode"
+  else
+    bad "$target_path expected owner $current_user mode $expected_mode; got owner $owner mode $mode"
+  fi
+}
+
+check_private_path "$HOME/Kit" 700
+check_private_path "$HOME/Kit/journal" 700
+for continuity_file in README.md NOW.md DECISIONS.md RECOVERY.md; do
+  check_private_path "$HOME/Kit/$continuity_file" 600
+done
 
 if zsh -n "$HOME/.zprofile" "$HOME/.zshrc" "$HOME/.config/zsh/"*.zsh; then
   ok "Zsh configuration parses"

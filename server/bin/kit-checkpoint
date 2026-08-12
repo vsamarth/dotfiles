@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+umask 077
+
+state_dir="${KIT_STATE_DIR:-$HOME/Kit}"
+now_file="$state_dir/NOW.md"
+journal_dir="$state_dir/journal"
+
+if [[ ! -f "$now_file" ]]; then
+  printf 'Cannot checkpoint: %s is missing.\n' "$now_file" >&2
+  exit 1
+fi
+
+mkdir -p "$journal_dir"
+chmod 700 "$state_dir" "$journal_dir"
+
+day="$(date '+%Y-%m-%d')"
+timestamp="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+journal_file="$journal_dir/$day.md"
+
+if [[ ! -e "$journal_file" ]]; then
+  printf '# Journal — %s\n' "$day" >"$journal_file"
+fi
+
+{
+  printf '\n## Checkpoint — %s\n\n' "$timestamp"
+  printf 'Snapshot of `NOW.md` before a transition:\n\n'
+  cat "$now_file"
+  printf '\n'
+} >>"$journal_file"
+
+chmod 600 "$journal_file"
+printf 'Checkpoint written to %s\n' "$journal_file"
