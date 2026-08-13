@@ -11,6 +11,7 @@ dockutil --remove all --no-restart
 
 app_paths=(
   '/Applications/Safari.app'
+  '/Applications/Google Chrome.app'
   '/Applications/Ghostty.app'
   '/System/Applications/Messages.app'
   '/System/Applications/Calendar.app'

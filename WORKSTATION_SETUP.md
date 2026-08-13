@@ -19,12 +19,12 @@ configuration and is retained only for compatibility until explicitly retired.
 
 - Zsh with Starship, completion, syntax highlighting, autosuggestions, Zoxide,
   Direnv, FZF, Yazi, and the `zj` repository-session helper.
-- Ghostty, Zellij, Git/delta, Neovim, VS Code, Codex, and the common CLI stack.
-- The current laptop's core daily applications, including ChatGPT, Chrome, Raycast,
-  Rectangle, Notion, Linear, Slack, Spotify, WhatsApp, Telegram, Bitwarden, Secretive,
-  IINA, Motrix, KeepingYouAwake, and Wispr Flow.
+- Ghostty, Zellij, Git/delta, a review-focused Neovim, and the common CLI stack.
+- A small desktop baseline: Chrome, Rectangle, Bitwarden, Secretive, IINA,
+  KeepingYouAwake, and JetBrains Mono.
 - Conservative Finder, Dock, screenshot, and text-input preferences.
-- A clean VS Code configuration and a small, reviewable extension baseline.
+- Separately reviewed optional applications; none are installed by the default
+  bootstrap.
 
 VPNs, cloud-drive clients, device-management software, employer tooling, Apple Account
 data, browser profiles, app databases, development containers, global language
@@ -91,8 +91,14 @@ When preflight passes:
 just workstation-bootstrap
 ```
 
-The application download is intentionally substantial. The bootstrap may be rerun;
-Homebrew and already-correct links are idempotent.
+The bootstrap may be rerun; Homebrew and already-correct links are idempotent. It
+installs only the core workstation manifest. Review `workstation/Brewfile.optional`
+before installing any deferred applications:
+
+```bash
+less workstation/Brewfile.optional
+just workstation-optional-apps
+```
 
 Open a fresh Terminal after it completes, then run:
 
@@ -138,9 +144,7 @@ Then open and configure the applications you actually want:
 
 - Bitwarden and Secretive;
 - Chrome/browser profile;
-- ChatGPT and Codex;
-- VS Code Settings Sync if desired;
-- Slack, Linear, Notion, Spotify, WhatsApp, Telegram, and Wispr Flow;
+- any applications deliberately selected from `workstation/Brewfile.optional`;
 - Tailscale and one chosen VPN only after reviewing how they should coexist;
 - Git signing only after you choose the identity and approve its access.
 

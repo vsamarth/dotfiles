@@ -1,0 +1,13 @@
+# Install only after reviewing which applications this workstation actually needs.
+cask "chatgpt"
+cask "codex"
+cask "linear"
+cask "motrix"
+cask "notion"
+cask "raycast"
+cask "slack"
+cask "spotify"
+cask "telegram"
+cask "visual-studio-code"
+cask "whatsapp"
+cask "wispr-flow"

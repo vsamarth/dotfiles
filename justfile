@@ -185,6 +185,10 @@ workstation-preflight:
 workstation-bootstrap:
     bash {{dotfiles_dir}}/workstation/bootstrap.sh
 
+# Install the separately reviewed optional workstation applications.
+workstation-optional-apps:
+    brew bundle install --file={{dotfiles_dir}}/workstation/Brewfile.optional
+
 # Read-only workstation health check.
 workstation-doctor:
     bash {{dotfiles_dir}}/workstation/doctor.sh
