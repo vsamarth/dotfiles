@@ -96,10 +96,12 @@ check_link "$HOME/.config/starship.toml" "$workstation_dir/starship.toml"
 check_link "$HOME/.config/zellij" "$dotfiles_dir/server/zellij"
 check_link "$HOME/.config/ghostty/config" "$workstation_dir/ghostty/config"
 check_link "$HOME/.gitconfig" "$workstation_dir/gitconfig"
+check_link "$HOME/.config/git/allowed_signers" "$workstation_dir/git/allowed_signers"
 check_link "$HOME/.gitignore" "$dotfiles_dir/git/gitignore"
 check_link "$HOME/.config/nvim" "$dotfiles_dir/nvim"
 check_link "$HOME/.codex/AGENTS.md" "$workstation_dir/codex/AGENTS.md"
 check_link "$HOME/.codex/config.toml" "$workstation_dir/codex/config.toml"
+check_link "$HOME/.docker/cli-plugins/docker-buildx" '/opt/homebrew/lib/docker/cli-plugins/docker-buildx'
 
 if [[ -e "$HOME/Library/Application Support/Code/User/settings.json" || -L "$HOME/Library/Application Support/Code/User/settings.json" ]]; then
   check_link "$HOME/Library/Application Support/Code/User/settings.json" "$workstation_dir/vscode/settings.json"
@@ -129,6 +131,27 @@ if nvim --headless "+lua assert(require('diffview')); assert(require('oil')); as
   ok 'Neovim reviewer profile loads'
 else
   bad 'Neovim reviewer profile does not load'
+fi
+
+if docker buildx version >/dev/null 2>&1; then
+  ok 'Docker Buildx plugin loads'
+else
+  bad 'Docker Buildx plugin does not load'
+fi
+
+signing_key="$(git config --global user.signingkey 2>/dev/null || true)"
+if [[ "$(git config --global gpg.format 2>/dev/null || true)" == 'ssh' && \
+      "$(git config --global commit.gpgsign 2>/dev/null || true)" == 'true' && \
+      -f "$signing_key" ]]; then
+  ok 'Git SSH commit signing is configured'
+else
+  bad 'Git SSH commit signing is not configured'
+fi
+
+if colima status >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
+  ok 'Colima and the Docker daemon are running'
+else
+  note 'Colima is stopped; start Docker when needed with: colima start'
 fi
 
 if fdesetup status 2>/dev/null | grep -q 'FileVault is On'; then

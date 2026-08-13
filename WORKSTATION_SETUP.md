@@ -106,6 +106,14 @@ Open a fresh Terminal after it completes, then run:
 just --justfile ~/.dotfiles/justfile workstation-doctor
 ```
 
+Docker uses Colima and does not start automatically. Start and stop its local VM
+only when needed:
+
+```bash
+colima start
+colima stop
+```
+
 ## 4. Apply the reviewed preferences
 
 Inspect the scripts before running either one:

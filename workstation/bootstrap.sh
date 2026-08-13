@@ -81,11 +81,13 @@ link_sources=(
   "$dotfiles_dir/server/zellij"
   "$workstation_dir/ghostty/config"
   "$workstation_dir/gitconfig"
+  "$workstation_dir/git/allowed_signers"
   "$dotfiles_dir/git/gitignore"
   "$dotfiles_dir/nvim"
   "$workstation_dir/vscode/settings.json"
   "$workstation_dir/codex/AGENTS.md"
   "$workstation_dir/codex/config.toml"
+  '/opt/homebrew/lib/docker/cli-plugins/docker-buildx'
 )
 link_targets=(
   "$HOME/.zprofile"
@@ -95,11 +97,13 @@ link_targets=(
   "$HOME/.config/zellij"
   "$HOME/.config/ghostty/config"
   "$HOME/.gitconfig"
+  "$HOME/.config/git/allowed_signers"
   "$HOME/.gitignore"
   "$HOME/.config/nvim"
   "$HOME/Library/Application Support/Code/User/settings.json"
   "$HOME/.codex/AGENTS.md"
   "$HOME/.codex/config.toml"
+  "$HOME/.docker/cli-plugins/docker-buildx"
 )
 
 for index in "${!link_sources[@]}"; do
@@ -136,6 +140,8 @@ mkdir -p \
   "$HOME/.codex" \
   "$HOME/.config" \
   "$HOME/.config/ghostty" \
+  "$HOME/.config/git" \
+  "$HOME/.docker/cli-plugins" \
   "$HOME/.local/bin" \
   "$HOME/Library/Application Support/Code/User" \
   "$HOME/Projects" \

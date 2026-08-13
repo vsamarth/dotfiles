@@ -1,5 +1,5 @@
 export EDITOR='nvim'
-export VISUAL='code --wait'
+export VISUAL='nvim'
 export GIT_EDITOR="$EDITOR"
 export ZELLIJ_SOCKET_DIR="/tmp/zellij-${EUID}"
 
