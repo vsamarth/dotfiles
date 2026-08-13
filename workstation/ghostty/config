@@ -1,4 +1,4 @@
-theme = dark:everforest-codex-dark,light:everforest-codex-light
+theme = Gruvbox Dark Hard
 font-family = JetBrains Mono
 font-size = 14
 macos-option-as-alt = true

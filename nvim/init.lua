@@ -16,12 +16,41 @@ if not vim.g.vscode then
   -- }}}
 
   require('lazy').setup {
-    { 'neovim/nvim-lspconfig' },
     { 'nvim-mini/mini.basics', config = true },
     { 'nvim-mini/mini.pairs', config = true },
     { 'nvim-mini/mini.surround', config = true },
-    { 'lewis6991/gitsigns.nvim', config = true },
-    { 'j-hui/fidget.nvim', config = true },
+    {
+      'lewis6991/gitsigns.nvim',
+      opts = {
+        on_attach = function(bufnr)
+          local gs = require 'gitsigns'
+          local function bind(lhs, rhs, desc)
+            vim.keymap.set('n', lhs, rhs, { buffer = bufnr, desc = desc })
+          end
+          bind(']h', gs.next_hunk, 'Next changed hunk')
+          bind('[h', gs.prev_hunk, 'Previous changed hunk')
+          bind('<leader>hp', gs.preview_hunk, 'Preview changed hunk')
+          bind('<leader>hs', gs.stage_hunk, 'Stage changed hunk')
+          bind('<leader>hu', gs.undo_stage_hunk, 'Undo staged hunk')
+          bind('<leader>hr', gs.reset_hunk, 'Discard changed hunk')
+          bind('<leader>hb', gs.blame_line, 'Show line history')
+        end,
+      },
+    },
+    {
+      'sindrets/diffview.nvim',
+      dependencies = { 'nvim-lua/plenary.nvim' },
+      keys = {
+        { '<leader>gd', '<cmd>DiffviewOpen<cr>', desc = 'Review working-tree diff' },
+        { '<leader>gh', '<cmd>DiffviewFileHistory %<cr>', desc = 'Review file history' },
+        { '<leader>gq', '<cmd>DiffviewClose<cr>', desc = 'Close diff review' },
+      },
+    },
+    {
+      'stevearc/oil.nvim',
+      opts = { view_options = { show_hidden = true } },
+      keys = { { '-', '<cmd>Oil<cr>', desc = 'Browse containing directory' } },
+    },
     {
       'ellisonleao/gruvbox.nvim',
       priority = 1000,
@@ -30,64 +59,10 @@ if not vim.g.vscode then
         overrides = { Folded = { link = 'Comment' }, SignColumn = { link = 'Normal' }, Pmenu = { link = 'Normal' }, PmenuBorder = { link = 'GruvboxBg4' } },
       },
     },
-    { 'okuuva/auto-save.nvim', cmd = 'ASToggle', event = { 'InsertLeave', 'TextChanged' }, config = true },
     { 'nvim-lualine/lualine.nvim', opts = { options = { icons_enabled = false, section_separators = '', component_separators = '|' } } },
     {
-      'saghen/blink.cmp',
-      dependencies = { 'rafamadriz/friendly-snippets', 'folke/lazydev.nvim' },
-      version = '1.*',
-      opts = {
-        keymap = { preset = 'default' },
-        completion = { documentation = { auto_show = false } },
-        sources = {
-          default = { 'lsp', 'path', 'snippets', 'buffer' },
-        },
-        fuzzy = { implementation = 'prefer_rust_with_warning' },
-      },
-      opts_extend = { 'sources.default' },
-    },
-    {
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-      dependencies = { { 'mason-org/mason.nvim', config = true } },
-      opts = {
-        ensure_installed = {
-          'json-lsp',
-          'typescript-language-server',
-          'svelte-language-server',
-          'pyright',
-          'stylua',
-          'gopls',
-          'ruff',
-          'shfmt',
-          'goimports',
-          'biome',
-          'tailwindcss-language-server',
-          'clang-format',
-          'shellcheck',
-        },
-      },
-    },
-    {
-      'stevearc/conform.nvim',
-      opts = {
-        formatters_by_ft = {
-          fish = { 'fish_indent' },
-          sh = { 'shfmt' },
-          go = { 'goimports', 'gofmt' },
-          lua = { 'stylua' },
-          python = { 'ruff' },
-          rust = { 'rustfmt' },
-          c = { 'clang-format' },
-          cpp = { 'clang-format' },
-          javascript = { 'biome' },
-          javascriptreact = { 'biome' },
-          typescript = { 'biome' },
-          typescriptreact = { 'biome' },
-        },
-      },
-    },
-    {
       'nvim-treesitter/nvim-treesitter',
+      branch = 'master',
       build = ':TSUpdate',
       main = 'nvim-treesitter.configs',
       opts = {
@@ -191,13 +166,6 @@ if not vim.g.vscode then
           desc = '[S]earch [F]iles',
         },
         {
-          '<leader>sd',
-          function()
-            require('telescope.builtin').diagnostics()
-          end,
-          desc = '[S]earch [D]iagnostics',
-        },
-        {
           '<leader>sg',
           function()
             require('telescope.builtin').live_grep()
@@ -220,24 +188,6 @@ if not vim.g.vscode then
         },
       },
     },
-    {
-      'linux-cultist/venv-selector.nvim',
-      dependencies = {
-        'neovim/nvim-lspconfig',
-        { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } }, -- optional: you can also use fzf-lua, snacks, mini-pick instead.
-      },
-      ft = 'python', -- Load when opening Python files
-      keys = {
-        { ',v', '<cmd>VenvSelect<cr>' }, -- Open picker on keymap
-      },
-      opts = { -- this can be an empty lua table - just showing below for clarity.
-        search = {}, -- if you add your own searches, they go here.
-        options = {}, -- if you add plugin options, they go here.
-      },
-    },
-    { 'dmmulroy/ts-error-translator.nvim', opts = {
-      auto_attach = true,
-    } },
   }
   --}}}
 end
@@ -250,9 +200,18 @@ end
 
 -- General
 vim.opt.numberwidth = 5
+vim.opt.number = true
+vim.opt.relativenumber = true
 vim.opt.timeoutlen = 300 -- Decrease mapped sequence wait time
 vim.opt.undofile = true -- Enable persistent undo
 vim.opt.updatetime = 250 -- Decrease update time
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.signcolumn = 'yes'
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.termguicolors = true
 
 -- Indentation
 vim.opt.tabstop = 4
@@ -291,71 +250,29 @@ map('n', '<leader>fh', function()
   require('telescope.builtin').help_tags()
 end, 'Help tags')
 
-map('n', '<leader>e', vim.diagnostic.open_float, 'Line diagnostics')
-map('n', '[d', vim.diagnostic.goto_prev, 'Prev diagnostic')
-map('n', ']d', vim.diagnostic.goto_next, 'Next diagnostic')
-
-map('n', '<leader>q', vim.diagnostic.setloclist, 'Diagnostics loclist')
+map('n', '<leader>q', '<cmd>copen<cr>', 'Open quickfix results')
+map('n', '[q', '<cmd>cprevious<cr>', 'Previous quickfix result')
+map('n', ']q', '<cmd>cnext<cr>', 'Next quickfix result')
 map('n', '<leader>sv', function()
   vim.cmd 'vsplit'
 end, 'Vertical split')
-map('n', '<leader>sh', function()
+map('n', '<leader>s-', function()
   vim.cmd 'split'
 end, 'Horizontal split')
 
-map('n', '<leader>rn', vim.lsp.buf.rename, 'LSP rename')
-map('n', '<leader>ca', vim.lsp.buf.code_action, 'Code action')
-map('n', 'gd', vim.lsp.buf.definition, 'Goto definition')
-map('n', 'gD', vim.lsp.buf.declaration, 'Goto declaration')
-map('n', 'gi', vim.lsp.buf.implementation, 'Goto implementation')
-map('n', 'gr', vim.lsp.buf.references, 'Goto references')
-map('n', '<leader>f', function()
-  require('conform').format { async = true, lsp_fallback = true }
-end, 'Format buffer')
+map('n', '<leader>w', function()
+  vim.wo.wrap = not vim.wo.wrap
+  vim.wo.linebreak = vim.wo.wrap
+end, 'Toggle prose wrapping')
 -- }}}
 
--- LSP {{{
-if not vim.g.vscode then
-  vim.lsp.config('*', {
-    capabilities = {
-      textDocument = {
-        semanticTokens = {
-          multilineTokenSupport = true,
-        },
-      },
-    },
-    root_markers = { '.git' },
-  })
-
-  vim.lsp.enable { 'clangd', 'gopls', 'pyright', 'jsonls', 'ts_ls', 'svelte', 'tailwindcss' }
-
-  vim.diagnostic.config {
-    severity_sort = true,
-    float = { border = 'rounded', source = 'if_many' },
-    underline = { severity = vim.diagnostic.severity.ERROR },
-    signs = {
-      text = {
-        [vim.diagnostic.severity.ERROR] = '󰅚 ',
-        [vim.diagnostic.severity.WARN] = '󰀪 ',
-        [vim.diagnostic.severity.INFO] = '󰋽 ',
-        [vim.diagnostic.severity.HINT] = '󰌶 ',
-      },
-    },
-    virtual_text = {
-      source = 'if_many',
-      spacing = 2,
-      format = function(diagnostic)
-        local diagnostic_message = {
-          [vim.diagnostic.severity.ERROR] = diagnostic.message,
-          [vim.diagnostic.severity.WARN] = diagnostic.message,
-          [vim.diagnostic.severity.INFO] = diagnostic.message,
-          [vim.diagnostic.severity.HINT] = diagnostic.message,
-        }
-        return diagnostic_message[diagnostic.severity]
-      end,
-    },
-  }
-end
--- }}}
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown', 'text', 'gitcommit' },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.spell = true
+  end,
+})
 
 -- vim: ts=2 sts=2 sw=2 et foldmethod=marker

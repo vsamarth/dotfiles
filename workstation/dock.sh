@@ -9,26 +9,24 @@ fi
 
 dockutil --remove all --no-restart
 
-apps=(
-  'Google Chrome'
-  'Visual Studio Code'
-  'Ghostty'
-  'WhatsApp'
-  'Notion'
-  'Linear'
-  'Slack'
-  'ChatGPT'
-  'Spotify'
+app_paths=(
+  '/Applications/Safari.app'
+  '/Applications/Ghostty.app'
+  '/System/Applications/Messages.app'
+  '/System/Applications/Calendar.app'
+  '/System/Applications/Notes.app'
+  '/Applications/IINA.app'
+  '/System/Applications/System Settings.app'
 )
 
-for app in "${apps[@]}"; do
-  if [[ -d "/Applications/$app.app" ]]; then
-    dockutil --add "/Applications/$app.app" --no-restart
+for app_path in "${app_paths[@]}"; do
+  if [[ -d "$app_path" ]]; then
+    dockutil --add "$app_path" --no-restart
   fi
 done
 
-if [[ -d '/System/Applications/Calendar.app' ]]; then
-  dockutil --add '/System/Applications/Calendar.app' --no-restart
+if [[ -d "$HOME/Downloads" ]]; then
+  dockutil --add "$HOME/Downloads" --section others --view grid --display stack --sort dateadded --no-restart
 fi
 
 killall Dock 2>/dev/null || true
