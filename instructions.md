@@ -43,6 +43,7 @@ before replacing a real file.
 | zsh/                              | ~/.config/zsh                                                       |
 | zsh/zprofile, zsh/zshrc           | ~/.zprofile, ~/.zshrc                                               |
 | starship/starship.toml            | ~/.config/starship.toml                                             |
+| nvim/                             | ~/.config/nvim                                                      |
 
 Claude settings are not linked: Claude Code and herdr write into
 `~/.claude/settings.json`, which would replace a symlink. Run
@@ -74,6 +75,8 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 - `zsh -i -c exit` prints nothing
 - Ghostty opens a plain zsh; `herdr` attaches to the session; Ctrl+' opens the
   drop-down
+- `nvim <file>` in a herdr pane opens the read-only viewer (first run installs plugins and
+  needs network); `NVV_EDIT=1 nvim` allows editing
 - `claude` starts in a herdr pane with the status line; `/permissions` shows
   force-push under ask
 - `git config user.email` is hi@samarthv.com and `gh auth status` succeeds

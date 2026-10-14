@@ -20,6 +20,10 @@ brew "atuin"
 brew "eza"
 brew "bat"
 
+# Viewer pane (Neovim config in nvim/)
+brew "neovim"
+brew "tree-sitter-cli"   # compiles Treesitter parsers on first run
+
 # Terminal and browser
 cask "ghostty"
 cask "font-jetbrains-mono"
