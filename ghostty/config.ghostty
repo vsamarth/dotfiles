@@ -1,0 +1,19 @@
+theme = light:Melange Light,dark:Melange Dark
+font-family = JetBrains Mono
+font-size = 14
+background-opacity = 0.96
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = false
+window-padding-color = extend-always
+macos-option-as-alt = true
+macos-titlebar-style = transparent
+
+# Open straight into herdr
+command = /bin/zsh -l -c herdr
+
+# Global drop-down terminal: Ctrl + '
+keybind = global:ctrl+Quote=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 40%
+quick-terminal-autohide = true

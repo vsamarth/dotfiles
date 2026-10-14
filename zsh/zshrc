@@ -1,0 +1,11 @@
+[[ -o interactive ]] || return
+
+export EDITOR=nano VISUAL=nano
+
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt append_history share_history hist_ignore_dups hist_ignore_space
+setopt auto_cd no_beep
+
+autoload -Uz compinit && compinit -C

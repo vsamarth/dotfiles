@@ -1,18 +1,6 @@
 # .files
 
-## Setup
+Personal dotfiles for my MacBook.
 
-To set up a new machine, follow the instructions in [instructions.md](instructions.md).
-
-For the dedicated agent-server Mac, use [SERVER_SETUP.md](SERVER_SETUP.md).
-
-## Age helpers
-
-The `bin/` directory is on PATH, so these helpers are available as commands:
-
-```bash
-aenc -i ~/.config/age/recipient.key file.txt dir/
-adec -i ~/.config/age/identity.key file.txt.age dir.tar.age
-```
-
-The scripts encrypt files directly and wrap directories in `tar` before encrypting.
+To set up a machine, run `bootstrap.sh`, then open Claude Code in `~/.dotfiles`
+and ask it to follow [instructions.md](instructions.md).

@@ -1,0 +1,55 @@
+{
+  "cleanupPeriodDays": 90,
+  "model": "opus",
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "theme": "auto",
+  "preferredNotifChannel": "ghostty",
+  "autoContinueAtUsageLimit": true,
+  "subagentPromptCacheTtl": "1h",
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh",
+    "padding": 0
+  },
+  "permissions": {
+    "defaultMode": "auto",
+    "allow": ["Bash", "Read", "Edit", "Write", "WebFetch", "WebSearch"],
+    "ask": [
+      "Bash(git push*--force*)",
+      "Bash(git push* -f*)",
+      "Bash(git push* +*)",
+      "Bash(git push*--delete*)",
+      "Bash(git pf*)",
+      "Bash(git reset --hard*)",
+      "Bash(git clean*)",
+      "Bash(git branch -D*)",
+      "Bash(gh repo delete*)",
+      "Bash(gh repo create*--public*)",
+      "Bash(gh repo edit*--visibility*)",
+      "Bash(gh release*)",
+      "Bash(npm publish*)",
+      "Bash(pnpm publish*)",
+      "Bash(sudo *)"
+    ],
+    "deny": [
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/*.pem)",
+      "Bash(security dump-keychain*)",
+      "Bash(security find-generic-password*)",
+      "Bash(security find-internet-password*)"
+    ]
+  },
+  "autoMode": {
+    "allow": ["$defaults"],
+    "soft_deny": ["$defaults"],
+    "environment": [
+      "**Machine**: my personal MacBook. Trusted workspace is ~/Projects and the repo in the current directory.",
+      "**Ask before**: force-pushing, deleting remote branches or repos, making repos public, publishing packages or releases; secrets, Keychain, SSH keys; identity, key, login, permission or security-setting changes; deleting outside the project; rewriting local git history; dropping databases, pruning volumes or wiping model or dataset caches; sending messages or email, posting publicly or on other people's repos, or spending money.",
+      "**Allowed without asking**: installs, commits and branches, pushing branches, opening and merging PRs on my own repos, edits and deletions inside the project, downloads and network fetches, heavy local jobs."
+    ]
+  }
+}
