@@ -1,11 +1,12 @@
 # Core completion must be ready before the first prompt. Rebuild its dump only
 # after Homebrew's completion directories change; use the fast cached load
-# otherwise.
+# otherwise. -u skips compaudit on rebuild: /opt/homebrew/share is group-writable
+# by design, so the audit would prompt "insecure directories" in every new shell.
 fpath=(/opt/homebrew/share/zsh/site-functions /opt/homebrew/share/zsh-completions $fpath)
 autoload -Uz compinit
 _zsh_compdump="$HOME/.zcompdump"
 if [[ ! -s "$_zsh_compdump" || /opt/homebrew/share/zsh/site-functions -nt "$_zsh_compdump" || /opt/homebrew/share/zsh-completions -nt "$_zsh_compdump" ]]; then
-  compinit -d "$_zsh_compdump"
+  compinit -u -d "$_zsh_compdump"
 else
   compinit -C -d "$_zsh_compdump"
 fi
