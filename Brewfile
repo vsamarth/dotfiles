@@ -29,6 +29,7 @@ cask "helium-browser"
 cask "raycast"
 cask "rectangle"
 cask "keepingyouawake"
+cask "superwhisper"
 
 # Proton and network
 cask "proton-pass"
