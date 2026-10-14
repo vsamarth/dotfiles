@@ -42,7 +42,9 @@ before replacing a real file.
 | herdr/config.toml                 | ~/.config/herdr/config.toml                                         |
 | ghostty/config.ghostty            | ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty  |
 | git/gitconfig, git/gitignore      | ~/.gitconfig, ~/.gitignore                                          |
+| zsh/                              | ~/.config/zsh                                                       |
 | zsh/zprofile, zsh/zshrc           | ~/.zprofile, ~/.zshrc                                               |
+| starship/starship.toml            | ~/.config/starship.toml                                             |
 
 Check: every target resolves into ~/.dotfiles (`ls -l`).
 

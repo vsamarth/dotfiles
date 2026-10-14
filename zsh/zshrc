@@ -1,11 +1,22 @@
+# Framework-free Zsh setup. Keep this file as an obvious loader; individual
+# concerns live in ~/.config/zsh/ (linked to ~/.dotfiles/zsh).
 [[ -o interactive ]] || return
 
-export EDITOR=nano VISUAL=nano
+_zsh_config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+for _zsh_module in \
+  00-path.zsh \
+  10-history.zsh \
+  20-completion.zsh \
+  30-tools.zsh \
+  40-commands.zsh \
+  50-prompt.zsh \
+  60-atuin.zsh \
+  90-highlighting.zsh; do
+  source "$_zsh_config_dir/$_zsh_module"
+done
+unset _zsh_config_dir _zsh_module
 
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=10000
-SAVEHIST=10000
-setopt append_history share_history hist_ignore_dups hist_ignore_space
-setopt auto_cd no_beep
-
-autoload -Uz compinit && compinit -C
+# Machine-specific lines (installer PATH edits and the like) stay untracked.
+if [[ -r ~/.zshrc.local ]]; then
+  source ~/.zshrc.local
+fi

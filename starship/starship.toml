@@ -1,0 +1,76 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Context lives on one line. Tool versions are pushed to its far right, leaving
+# the input line intentionally empty except for the prompt marker.
+format = """
+$directory\
+$git_branch\
+$git_status\
+$git_state\
+$cmd_duration\
+$fill\
+$nodejs\
+$python\
+$rust\
+$golang\
+$jobs\
+$line_break\
+$character"""
+
+add_newline = false
+
+[fill]
+symbol = " "
+
+[directory]
+truncation_length = 3
+truncation_symbol = "…/"
+style = "bold"
+
+[git_branch]
+symbol = ""
+style = "bold cyan"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "yellow"
+format = "([$all_status$ahead_behind]($style))"
+
+[git_state]
+style = "bright-black"
+format = " [($state( $progress_current/$progress_total))]($style)"
+
+[cmd_duration]
+min_time = 1_000
+style = "purple"
+format = " [took $duration]($style)"
+
+[nodejs]
+symbol = "node "
+style = "green"
+format = "[$symbol($version )]($style)"
+
+[python]
+symbol = "py "
+style = "cyan"
+format = "[$symbol($version )]($style)"
+
+[rust]
+symbol = "rs "
+style = "red"
+format = "[$symbol($version )]($style)"
+
+[golang]
+symbol = "go "
+style = "blue"
+format = "[$symbol($version )]($style)"
+
+[jobs]
+symbol = "✦ "
+style = "purple"
+format = "[$symbol$number]($style) "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold cyan)"

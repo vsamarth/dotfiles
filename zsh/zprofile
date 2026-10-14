@@ -1,2 +1,2 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH="$HOME/.local/bin:$PATH"
+# Login-shell environment. The implementation lives with the other Zsh modules.
+source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/profile.zsh"

@@ -7,6 +7,19 @@ brew "fd"
 brew "node"      # pi needs it
 brew "pnpm"
 
+# Shell
+brew "starship"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+brew "zsh-completions"
+brew "fzf"
+brew "fzf-tab"
+brew "zoxide"
+brew "direnv"
+brew "atuin"
+brew "eza"
+brew "bat"
+
 # Terminal and browser
 cask "ghostty"
 cask "font-jetbrains-mono"
