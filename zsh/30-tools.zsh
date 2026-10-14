@@ -3,7 +3,8 @@
 eval "$(zoxide init zsh)"
 eval "$(direnv hook zsh)"
 
-# FZF owns Ctrl-R / Ctrl-T. Its Tab binding is intentionally not loaded because
+# FZF provides Ctrl-T and Alt-C. Atuin (60-atuin.zsh) owns Ctrl-R, which it
+# binds after this file loads. The fzf Tab binding is not loaded because
 # fzf-tab below owns visual completion.
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --prompt="❯ "'
 source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
