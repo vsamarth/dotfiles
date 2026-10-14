@@ -1,9 +1,53 @@
 onboarding = false
+
 [theme]
 name = "terminal"
+auto_switch = true
+dark_name = "terminal"
+light_name = "terminal"
+
+[theme.custom.dark]
+panel_bg = "#292522"
+sidebar_bg = "#292522"
+active_row_bg = "#292522"
+text = "#ece1d7"
+subtext0 = "#d4c0a8"
+overlay0 = "#b09c88"
+overlay1 = "#c1a78e"
+surface0 = "#4a443e"
+surface1 = "#5a524a"
+surface_dim = "#3a3530"
+red = "#d47766"
+green = "#85b695"
+yellow = "#ebc06d"
+blue = "#a3a9ce"
+teal = "#89b3b6"
+peach = "#e49b5d"
+mauve = "#b3a08c"
+accent = "#e49b5d"
+
+[theme.custom.light]
+panel_bg = "#f1f1f1"
+sidebar_bg = "#f1f1f1"
+active_row_bg = "#f1f1f1"
+text = "#54433a"
+subtext0 = "#7d6658"
+overlay0 = "#a98a78"
+overlay1 = "#8f7565"
+surface0 = "#d9d3ce"
+surface1 = "#c8c0b8"
+surface_dim = "#e2dcd6"
+red = "#c77b8b"
+green = "#6e9b72"
+yellow = "#a06d00"
+blue = "#7892bd"
+teal = "#739797"
+peach = "#bc5c00"
+mauve = "#7d6658"
+accent = "#bc5c00"
 
 [ui]
-sidebar_width = 20
+sidebar_width = 22
 hide_tab_bar_when_single_tab = true
 sidebar_min_width = 18
 sidebar_max_width = 26
@@ -19,9 +63,9 @@ prompt_new_workspace_name = true
 delivery = "herdr"
 
 [ui.sidebar.spaces]
-row_gap = 0
-rows = [["state_icon", "workspace", { token = "branch", dim = true }]]
+row_gap = 1
+rows = [["state_icon", "workspace"], [{ token = "branch", dim = true }, { token = "git_status", dim = true }]]
 
 [ui.sidebar.agents]
-row_gap = 0
+row_gap = 1
 rows = [["state_icon", { token = "agent", bold = true }, { token = "workspace", dim = true }]]
