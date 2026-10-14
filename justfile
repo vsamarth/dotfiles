@@ -11,13 +11,14 @@ vscode_settings := home_dir + "/Library/Application Support/Code/User/settings.j
 ghostty_dir := home_dir + "/.config/ghostty"
 config_dir := home_dir + "/.config"
 ssh_dir := home_dir + "/.ssh"
+claude_dir := home_dir + "/.claude"
 
 # Default recipe - run full setup
 default:
     just setup
 
 # Full setup
-setup: sudo create-dirs fish vscode terminal firefox git zellij ssh dev-tools brewfile dock macos
+setup: sudo create-dirs fish vscode terminal firefox git zellij ssh dev-tools brewfile claude dock macos
     @echo "Setup complete!"
 
 # Keep sudo alive
@@ -111,13 +112,12 @@ rust:
         cargo-tree \
         cargo-expand
 
-# Install Python
+# Install Python toolchain (uv-managed)
 python:
     @echo "Setting up Python"
-    brew install -q python@3.12 pipx
-    pipx ensurepath
-    @echo "Installing Python tools..."
-    pipx install uv ruff
+    brew install -q uv
+    uv python install --preview-features python-install-default --default 3.13
+    uv tool install ruff
 
 # Install Golang
 go:
@@ -158,6 +158,22 @@ ssh:
         echo "Testing SSH connection to GitHub..."; \
         ssh -o BatchMode=yes -o ConnectTimeout=5 -T git@github.com || true; \
     fi
+
+# Setup Claude Code configuration
+claude:
+    @echo "Setting up Claude Code"
+    @if ! command -v claude >/dev/null 2>&1; then \
+        echo "Claude Code is not installed. Install it with:"; \
+        echo "  curl -fsSL https://claude.ai/install.sh | bash"; \
+        echo "Then re-run 'just claude'."; \
+        exit 1; \
+    fi
+    mkdir -p {{claude_dir}}
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/claude/CLAUDE.md {{claude_dir}}/CLAUDE.md
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/claude/settings.json {{claude_dir}}/settings.json
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/claude/statusline.sh {{claude_dir}}/statusline.sh
+    {{dotfiles_dir}}/bin/symlink {{dotfiles_dir}}/claude/commands {{claude_dir}}/commands
+    chmod +x {{dotfiles_dir}}/claude/statusline.sh
 
 # Install development tools
 dev-tools:

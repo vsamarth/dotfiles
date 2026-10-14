@@ -349,11 +349,28 @@ Install development tools and configure environments for Rust, Python, Go, and N
 
 ### Python
 
-- Install pipx from Homebrew: `brew install pipx`
-- Ensure pipx is in PATH: `pipx ensurepath`
-- Install tools using pipx:
-    * `uv`: Fast Python package installer and resolver
+`uv` owns Python entirely: interpreters, tools, virtual environments, and project
+dependencies. Do not install Python from Homebrew, and do not install `pipx` or
+`pyenv` — `uv` replaces both. Never `pip install` into the Command Line Tools
+Python at `/usr/bin/python3`; it is build tooling, not a runtime.
+
+- Install uv from Homebrew: `brew install uv`
+- Install Python 3.13 and make it the default `python`/`python3`:
+  `uv python install --preview-features python-install-default --default 3.13`
+    * The `--default` flag is still experimental; the preview flag only silences
+      the warning. If it is ever removed, drop both flags and rely on per-project
+      versions instead.
+    * Shims land in `~/.local/bin`, which `~/.zprofile` already puts ahead of
+      `/usr/bin`, so `python3` resolves to 3.13 rather than the system 3.9.
+- Install tools with `uv tool install` (the pipx replacement):
     * `ruff`: Extremely fast Python linter and formatter
+- Per-project usage: `uv init`, `uv add <pkg>`, `uv sync`, `uv run <cmd>`. uv
+  creates and manages `.venv` and downloads whatever interpreter a project pins,
+  so 3.13 being the default does not constrain individual projects.
+
+**Verification:**
+- `python3 -V` reports 3.13.x and `which python3` is under `~/.local/bin`
+- `uv --version` and `ruff --version` both succeed
 
 ### Go
 

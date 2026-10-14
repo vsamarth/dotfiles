@@ -1,6 +1,6 @@
 [user]
 	name = Samarth Verma
-	email = vsamarthj@gmail.com
+	email = hi@samarthv.com
 
 [alias]
 	# View abbreviated SHA, description, and history graph of the latest 20 commits.
@@ -57,6 +57,8 @@
 	rebase = true
 
 [credential "https://github.com"]
+	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
+	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential

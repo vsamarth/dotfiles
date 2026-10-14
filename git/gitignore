@@ -39,3 +39,7 @@ build/
 
 # Fish shell local config
 fish/config.local.fish
+
+**/.claude/settings.local.json
+
+**/.claude/.cc-writes/
