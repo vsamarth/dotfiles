@@ -1,2 +1,5 @@
 # Worktrees directory
 .worktrees/
+
+# Machine-specific config (see instructions.md)
+*.local

@@ -1,10 +1,10 @@
-# CLI the agents rely on
+# CLI tools
 brew "git"
 brew "gh"
 brew "jq"
 brew "ripgrep"
 brew "fd"
-brew "node"      # pi needs it
+brew "node"      # default stack: TypeScript with pnpm and node
 brew "pnpm"
 
 # Shell
@@ -29,13 +29,6 @@ cask "helium-browser"
 cask "raycast"
 cask "rectangle"
 cask "keepingyouawake"
-cask "iina"
-
-# Chat, music, downloads
-cask "whatsapp"
-cask "telegram"
-cask "spotify"
-cask "motrix"
 
 # Proton and network
 cask "proton-pass"

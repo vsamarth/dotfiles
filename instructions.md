@@ -6,8 +6,8 @@ command's help first. Never read secret files and never ask me to paste a
 secret; sign-ins are mine to do.
 
 Target: a normal, lean personal MacBook with only the essentials. Ghostty opens
-into herdr, where Claude Code and pi run. Anything not listed here is left out
-on purpose. Add it when it is needed.
+into herdr, where Claude Code runs. Anything not listed here is left out on
+purpose. Add it when it is needed.
 
 ## 1. Foundation
 - Command Line Tools: `xcode-select --install`
@@ -21,13 +21,12 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
 
 ## 3. Agents
 - Claude Code: `curl -fsSL https://claude.ai/install.sh | bash`
-- pi: `curl -fsSL https://pi.dev/install.sh | sh`
 - herdr: look up the current install command in its docs, show it to me, then
   run it. Then install herdr's Claude Code integration. herdr writes its own
   hook into ~/.claude/settings.json; do not hand-write that hook.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): ASK, then install per
   Proton's current docs.
-Check: `claude --version`, `pi --version`, `herdr --version`, `pass-cli --version`
+Check: `claude --version`, `herdr --version`, `pass-cli --version`
 
 ## 4. Link configs
 Use `~/.dotfiles/bin/symlink <source> <target>`. It is idempotent and asks
@@ -35,10 +34,9 @@ before replacing a real file.
 
 | Source (in ~/.dotfiles)           | Target                                                              |
 | --------------------------------- | ------------------------------------------------------------------- |
-| agents/AGENTS.md                  | ~/.claude/CLAUDE.md and ~/.pi/agent/AGENTS.md                       |
+| agents/AGENTS.md                  | ~/.claude/CLAUDE.md                                                 |
 | claude/settings.json              | ~/.claude/settings.json                                             |
 | claude/statusline.sh              | ~/.claude/statusline.sh                                             |
-| pi/settings.json                  | ~/.pi/agent/settings.json                                           |
 | herdr/config.toml                 | ~/.config/herdr/config.toml                                         |
 | ghostty/config.ghostty            | ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty  |
 | git/gitconfig, git/gitignore      | ~/.gitconfig, ~/.gitignore                                          |
@@ -50,7 +48,7 @@ Check: every target resolves into ~/.dotfiles (`ls -l`).
 
 ## 5. Accounts (mine to do; guide me through each)
 - `gh auth login` (web flow), then `gh auth setup-git`
-- Sign in to Proton Pass, Mail, Drive, VPN, Tailscale, Claude Code and pi
+- Sign in to Proton Pass, Mail, Drive, VPN, Tailscale and Claude Code
 - Login items: Raycast, Rectangle, KeepingYouAwake, Proton Pass
 - Grant Accessibility to Raycast, Rectangle and Ghostty
 
