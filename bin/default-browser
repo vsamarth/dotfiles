@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Make an app the default web browser. macOS asks you to confirm in a dialog.
+# usage: default-browser [App Name]   (default: Helium)
+set -euo pipefail
+
+app="${1:-Helium}"
+id="$(osascript -e "id of app \"$app\"")"
+
+src="$(mktemp -d)/set.swift"
+cat > "$src" <<SWIFT
+import Foundation
+import CoreServices
+for s in ["http", "https"] {
+  LSSetDefaultHandlerForURLScheme(NSString(string: s) as CFString, NSString(string: "$id") as CFString)
+}
+SWIFT
+swift "$src" 2>/dev/null
+echo "Requested $app ($id) as default browser. Confirm the macOS dialog if one appears."

@@ -36,7 +36,6 @@ before replacing a real file.
 | Source (in ~/.dotfiles)           | Target                                                              |
 | --------------------------------- | ------------------------------------------------------------------- |
 | agents/AGENTS.md                  | ~/.claude/CLAUDE.md                                                 |
-| claude/settings.json              | ~/.claude/settings.json                                             |
 | claude/statusline.sh              | ~/.claude/statusline.sh                                             |
 | herdr/config.toml                 | ~/.config/herdr/config.toml                                         |
 | ghostty/config.ghostty            | ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty  |
@@ -45,13 +44,24 @@ before replacing a real file.
 | zsh/zprofile, zsh/zshrc           | ~/.zprofile, ~/.zshrc                                               |
 | starship/starship.toml            | ~/.config/starship.toml                                             |
 
-Check: every target resolves into ~/.dotfiles (`ls -l`).
+Claude settings are not linked: Claude Code and herdr write into
+`~/.claude/settings.json`, which would replace a symlink. Run
+`~/.dotfiles/bin/claude-settings` instead. It merges `claude/settings.json` into
+the live file (repo keys win, other keys such as herdr's hook are kept); `--dry`
+previews. Edit the repo file, then re-run it.
+
+Check: every target above resolves into ~/.dotfiles (`ls -l`), and
+`bin/claude-settings --dry` prints "Already up to date".
 
 ## 5. Accounts (mine to do; guide me through each)
 - `gh auth login` (web flow), then `gh auth setup-git`
 - Sign in to Proton Pass, Mail, Drive, VPN, Tailscale and Claude Code
-- Login items: Raycast, Rectangle, KeepingYouAwake, Proton Pass
-- Grant Accessibility to Raycast, Rectangle and Ghostty
+- Superwhisper (dictation, paid): sign in with the subscription, grant Microphone
+  and Accessibility, choose a local model and set the push-to-talk hotkey
+- Default browser: `~/.dotfiles/bin/default-browser` (Helium); I confirm the macOS
+  dialog
+- Login items: Raycast, Rectangle, KeepingYouAwake, Proton Pass, Superwhisper
+- Grant Accessibility to Raycast, Rectangle, Ghostty and Superwhisper
 
 ## 6. macOS and always-on
 - `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, trackpad)

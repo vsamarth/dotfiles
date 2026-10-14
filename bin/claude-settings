@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Apply claude/settings.json to ~/.claude/settings.json without clobbering keys that
+# Claude Code or herdr write there (hooks, per-model tweaks). Repo keys win; keys that
+# exist only in the live file are kept. Run with --dry to preview.
+set -euo pipefail
+
+src="$(cd "$(dirname "$0")/.." && pwd)/claude/settings.json"
+dst="${CLAUDE_SETTINGS:-$HOME/.claude/settings.json}"
+dry=0; [ "${1:-}" = "--dry" ] && dry=1
+
+command -v jq >/dev/null || { echo "jq is required (brew install jq)" >&2; exit 1; }
+mkdir -p "$(dirname "$dst")"
+[ -e "$dst" ] || echo '{}' > "$dst"
+
+tmp="$(mktemp)"
+jq -S -s '.[0] * .[1]' "$dst" "$src" > "$tmp"
+
+if diff <(jq -S . "$dst") "$tmp" >/dev/null; then
+  echo "Already up to date: $dst"; rm -f "$tmp"; exit 0
+fi
+diff <(jq -S . "$dst") "$tmp" || true
+if [ "$dry" = 1 ]; then rm -f "$tmp"; exit 0; fi
+
+# Replace a symlink with a real file so Claude Code and herdr can edit it freely.
+[ -L "$dst" ] && rm "$dst"
+mv "$tmp" "$dst"
+echo "Updated $dst"
