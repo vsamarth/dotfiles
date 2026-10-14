@@ -1,7 +1,7 @@
 # Personal working agreements
 
-Machine: my personal MacBook. Ghostty opens into herdr. There is
-no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
+Machine: my personal MacBook. Ghostty opens a plain zsh; I run herdr by
+hand. There is no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
 
 ## Defaults
 - Follow explicit current requests, then repo-local instructions, then these.

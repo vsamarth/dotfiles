@@ -9,9 +9,6 @@ window-padding-color = extend-always
 macos-option-as-alt = true
 macos-titlebar-style = transparent
 
-# Open straight into herdr
-command = /bin/zsh -l -c herdr
-
 # Global drop-down terminal: Ctrl + '
 keybind = global:ctrl+Quote=toggle_quick_terminal
 quick-terminal-position = top

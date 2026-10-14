@@ -6,8 +6,9 @@ command's help first. Never read secret files and never ask me to paste a
 secret; sign-ins are mine to do.
 
 Target: a normal, lean personal MacBook with only the essentials. Ghostty opens
-into herdr, where Claude Code runs. Anything not listed here is left out on
-purpose. Add it when it is needed.
+a plain zsh; running `herdr` attaches to the persistent session, where Claude
+Code runs. Anything not listed here is left out on purpose. Add it when it is
+needed.
 
 ## 1. Foundation
 - Command Line Tools: `xcode-select --install`
@@ -61,7 +62,8 @@ Check: every target resolves into ~/.dotfiles (`ls -l`).
 
 ## 7. Verify
 - `zsh -i -c exit` prints nothing
-- Ghostty opens into herdr; Ctrl+' opens the drop-down
+- Ghostty opens a plain zsh; `herdr` attaches to the session; Ctrl+' opens the
+  drop-down
 - `claude` starts in a herdr pane with the status line; `/permissions` shows
   force-push under ask
 - `git config user.email` is hi@samarthv.com and `gh auth status` succeeds
