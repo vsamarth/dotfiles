@@ -30,6 +30,7 @@ cask "raycast"
 cask "rectangle"
 cask "keepingyouawake"
 cask "superwhisper"
+cask "claude"
 
 # Proton and network
 cask "proton-pass"
