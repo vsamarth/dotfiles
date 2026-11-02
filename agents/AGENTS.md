@@ -13,6 +13,13 @@ There is no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
 - Inspect current state before editing. Preserve unrelated changes. Make the
   smallest maintainable change and explain consequential assumptions.
 
+## Questions
+When you need a decision from me, ask with your question tool
+(AskUserQuestion in Claude Code), not in prose. Put the recommended option
+first and make each question stand on its own. Ask related questions together
+in one call. Ask only when my answer changes what you do; otherwise pick the
+sensible default and say so.
+
 ## Do freely
 Install packages, create commits, branches and worktrees, edit and delete files
 inside the project, fetch URLs and download files, and run heavy jobs. Push to

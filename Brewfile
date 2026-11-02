@@ -34,6 +34,7 @@ cask "claude"
 
 # Proton and network
 cask "proton-pass"
+brew "protonpass/tap/pass-cli"  # secrets at run time: pass-cli run -- <cmd>
 cask "proton-mail"
 cask "proton-drive"
 cask "protonvpn"

@@ -13,7 +13,11 @@ here is left out on purpose. Add it when it is needed.
 - Command Line Tools: `xcode-select --install`
 - Homebrew from brew.sh, then `eval "$(/opt/homebrew/bin/brew shellenv)"`
 - Clone: `git clone https://github.com/vsamarth/dotfiles.git ~/.dotfiles`
-Check: `brew --version` and `git -C ~/.dotfiles log -1`
+- Touch ID for sudo: `sed 's/^#auth/auth/' /etc/pam.d/sudo_local.template |
+  sudo tee /etc/pam.d/sudo_local` (survives macOS updates; the password still
+  works where Touch ID can't, such as over SSH)
+Check: `brew --version`, `git -C ~/.dotfiles log -1`, and `sudo -k && sudo true`
+prompts for Touch ID
 
 ## 2. Packages
 `brew bundle --file=~/.dotfiles/Brewfile`
@@ -27,8 +31,8 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
   every session start). Then run `rex skill setup` to give
   Claude Code Rex's skill and session hook. Rex writes its own hook into
   ~/.claude/settings.json; do not hand-write that hook.
-- Proton Pass CLI (`pass-cli`, beta, paid plan): ASK, then install per
-  Proton's current docs.
+- Proton Pass CLI (`pass-cli`, beta, paid plan): installed by the Brewfile
+  from Proton's tap.
 Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`
 
 ## 4. Link configs
