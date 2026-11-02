@@ -1,13 +1,8 @@
 {
   "cleanupPeriodDays": 90,
-  "model": "sonnet",
+  "model": "opus",
   "effortLevel": "high",
   "autoCompactWindow": 400000,
-  "modelSettings": {
-    "claude-haiku-5-5": {
-      "effortLevel": "high"
-    }
-  },
   "tui": "fullscreen",
   "theme": "dark",
   "preferredNotifChannel": "auto",
