@@ -12,6 +12,8 @@ There is no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
   needs it.
 - Inspect current state before editing. Preserve unrelated changes. Make the
   smallest maintainable change and explain consequential assumptions.
+- When you use my browser, close the tabs you opened once you're done, unless
+  I still need one.
 
 ## Questions
 When you need a decision from me, ask with your question tool
