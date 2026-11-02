@@ -79,7 +79,8 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
   model, and set the push-to-talk hotkey
 - Default browser: `~/.dotfiles/bin/default-browser` (Helium); I confirm the macOS
   dialog
-- Login items: Raycast, Rectangle, Proton Pass, Hex
+- Login items: Raycast, Rectangle, Proton Pass, Hex and Tailscale (Tailscale's
+  own "Launch at login" switch doesn't stick, so add it as a login item instead)
 - Grant Accessibility to Raycast, Rectangle and Hex
 
 ## 6. macOS and always-on
