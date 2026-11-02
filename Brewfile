@@ -28,7 +28,6 @@ cask "helium-browser"
 # Mac basics
 cask "raycast"
 cask "rectangle"
-cask "keepingyouawake"
 cask "superwhisper"
 cask "claude"
 

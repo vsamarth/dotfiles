@@ -65,7 +65,7 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
   and Accessibility, choose a local model and set the push-to-talk hotkey
 - Default browser: `~/.dotfiles/bin/default-browser` (Helium); I confirm the macOS
   dialog
-- Login items: Raycast, Rectangle, KeepingYouAwake, Proton Pass, Superwhisper
+- Login items: Raycast, Rectangle, Proton Pass, Superwhisper
 - Grant Accessibility to Raycast, Rectangle and Superwhisper
 
 ## 6. macOS and always-on
