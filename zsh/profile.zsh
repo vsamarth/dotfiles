@@ -11,3 +11,7 @@ fi
 
 # Native user-installed CLIs, including Claude Code.
 export PATH="$HOME/.local/bin:$PATH"
+
+# Global pnpm packages (pnpm add -g).
+export PNPM_HOME="$HOME/Library/pnpm"
+export PATH="$PNPM_HOME/bin:$PATH"

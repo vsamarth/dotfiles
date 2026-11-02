@@ -31,9 +31,16 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
   every session start). Then run `rex skill setup` to give
   Claude Code Rex's skill and session hook. Rex writes its own hook into
   ~/.claude/settings.json; do not hand-write that hook.
+- Computer use: `pnpm add -g agent-desktop --allow-build=agent-desktop` (the
+  build step links the native binary), then `npx skills add
+  https://github.com/vercel-labs/agent-desktop --skill agent-desktop -g -a claude-code -y`.
+  I grant Rex Accessibility (`agent-desktop permissions --guide`). Claude
+  Code's built-in computer use is the backup: enable it from `/mcp` per
+  project; it needs Screen Recording.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): installed by the Brewfile
   from Proton's tap.
-Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`
+Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`,
+`agent-desktop version`
 
 ## 4. Link configs
 Use `~/.dotfiles/bin/symlink <source> <target>`. It is idempotent and asks
