@@ -61,12 +61,12 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 ## 5. Accounts (mine to do; guide me through each)
 - `gh auth login` (web flow), then `gh auth setup-git`
 - Sign in to Proton Pass, Mail, Drive, VPN, Tailscale and Claude Code
-- Superwhisper (dictation, paid): sign in with the subscription, grant Microphone
-  and Accessibility, choose a local model and set the push-to-talk hotkey
+- Hex (local dictation): grant Microphone and Accessibility, let it download its
+  model, and set the push-to-talk hotkey
 - Default browser: `~/.dotfiles/bin/default-browser` (Helium); I confirm the macOS
   dialog
-- Login items: Raycast, Rectangle, Proton Pass, Superwhisper
-- Grant Accessibility to Raycast, Rectangle and Superwhisper
+- Login items: Raycast, Rectangle, Proton Pass, Hex
+- Grant Accessibility to Raycast, Rectangle and Hex
 
 ## 6. macOS and always-on
 - `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, keyboard, screenshots,
