@@ -63,7 +63,8 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 - Grant Accessibility to Raycast, Rectangle and Superwhisper
 
 ## 6. macOS and always-on
-- `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, trackpad)
+- `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, keyboard, screenshots,
+  trackpad, Caps Lock → Control). Log out once so key repeat takes effect.
 - `bash ~/.dotfiles/macos/dock.sh` (Dock apps: Helium, Rex, Claude, Proton Mail,
   Calendar)
 - Lid-closed always-on: ASK. It needs sudo. Show me the exact `pmset` command and
@@ -75,6 +76,7 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 - `zsh -i -c exit` prints nothing
 - Rex opens a plain zsh
 - The Dock shows exactly Helium, Rex, Claude, Proton Mail and Calendar
+- Caps Lock acts as Control, and screenshots land in ~/Pictures/Screenshots
 - `claude` starts in a Rex pane with the status line and reports its Rex
   session; `/permissions` shows force-push under ask
 - `git config user.email` is hi@samarthv.com and `gh auth status` succeeds
