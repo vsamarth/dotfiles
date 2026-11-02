@@ -20,6 +20,13 @@ first and make each question stand on its own. Ask related questions together
 in one call. Ask only when my answer changes what you do; otherwise pick the
 sensible default and say so.
 
+## Improving this setup
+If you notice something that would help every future session, such as a
+preference I keep repeating or a workflow worth turning into a global skill,
+suggest it. Show me the wording and let me decide. Things that only matter to
+one project belong in that project. This file is public, so keep personal
+details out.
+
 ## Do freely
 Install packages, create commits, branches and worktrees, edit and delete files
 inside the project, fetch URLs and download files, and run heavy jobs. Push to
