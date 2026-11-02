@@ -36,6 +36,7 @@ before replacing a real file.
 | Source (in ~/.dotfiles)           | Target                                                              |
 | --------------------------------- | ------------------------------------------------------------------- |
 | agents/AGENTS.md                  | ~/.claude/CLAUDE.md                                                 |
+| agents/AGENTS.md                  | ~/.agents/AGENTS.md                                                 |
 | claude/statusline.sh              | ~/.claude/statusline.sh                                             |
 | git/gitconfig, git/gitignore      | ~/.gitconfig, ~/.gitignore                                          |
 | zsh/                              | ~/.config/zsh                                                       |
@@ -63,6 +64,8 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 
 ## 6. macOS and always-on
 - `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, trackpad)
+- `bash ~/.dotfiles/macos/dock.sh` (Dock apps: Helium, Rex, Claude, Proton Mail,
+  Calendar)
 - Lid-closed always-on: ASK. It needs sudo. Show me the exact `pmset` command and
   what it changes, wait for approval, then test: close the lid on power and reach
   the Mac over Tailscale.
@@ -71,6 +74,7 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 ## 7. Verify
 - `zsh -i -c exit` prints nothing
 - Rex opens a plain zsh
+- The Dock shows exactly Helium, Rex, Claude, Proton Mail and Calendar
 - `claude` starts in a Rex pane with the status line and reports its Rex
   session; `/permissions` shows force-push under ask
 - `git config user.email` is hi@samarthv.com and `gh auth status` succeeds

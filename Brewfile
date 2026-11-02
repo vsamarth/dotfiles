@@ -6,6 +6,7 @@ brew "ripgrep"
 brew "fd"
 brew "node"      # default stack: TypeScript with pnpm and node
 brew "pnpm"
+brew "dockutil"  # macos/dock.sh sets the Dock apps
 
 # Shell
 brew "starship"
