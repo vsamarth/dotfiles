@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Apply claude/settings.json to ~/.claude/settings.json without clobbering keys that
-# Claude Code or herdr write there (hooks, per-model tweaks). Repo keys win; keys that
+# Claude Code or Rex write there (hooks, per-model tweaks). Repo keys win; keys that
 # exist only in the live file are kept. Run with --dry to preview.
 set -euo pipefail
 
@@ -21,7 +21,7 @@ fi
 diff <(jq -S . "$dst") "$tmp" || true
 if [ "$dry" = 1 ]; then rm -f "$tmp"; exit 0; fi
 
-# Replace a symlink with a real file so Claude Code and herdr can edit it freely.
+# Replace a symlink with a real file so Claude Code and Rex can edit it freely.
 [ -L "$dst" ] && rm "$dst"
 mv "$tmp" "$dst"
 echo "Updated $dst"

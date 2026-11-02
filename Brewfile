@@ -21,7 +21,6 @@ brew "eza"
 brew "bat"
 
 # Terminal and browser
-cask "ghostty"
 cask "font-jetbrains-mono"
 cask "helium-browser"
 

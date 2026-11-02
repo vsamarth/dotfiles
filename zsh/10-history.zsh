@@ -1,4 +1,4 @@
-# Shared history without duplicate noise across Ghostty windows.
+# Shared history without duplicate noise across Rex panes.
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
 SAVEHIST=50000

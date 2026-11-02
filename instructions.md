@@ -5,10 +5,9 @@ ask before anything marked ASK. If you are unsure about a flag, read the
 command's help first. Never read secret files and never ask me to paste a
 secret; sign-ins are mine to do.
 
-Target: a normal, lean personal MacBook with only the essentials. Ghostty opens
-a plain zsh; running `herdr` attaches to the persistent session, where Claude
-Code runs. Anything not listed here is left out on purpose. Add it when it is
-needed.
+Target: a normal, lean personal MacBook with only the essentials. Rex is the
+terminal and multiplexer; Claude Code runs in its panes. Anything not listed
+here is left out on purpose. Add it when it is needed.
 
 ## 1. Foundation
 - Command Line Tools: `xcode-select --install`
@@ -22,12 +21,13 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
 
 ## 3. Agents
 - Claude Code: `curl -fsSL https://claude.ai/install.sh | bash`
-- herdr: look up the current install command in its docs, show it to me, then
-  run it. Then install herdr's Claude Code integration. herdr writes its own
-  hook into ~/.claude/settings.json; do not hand-write that hook.
+- Rex (beta): not on Homebrew (the `rex` formula is an unrelated tool). Install
+  the app from Rex's site and open it once. Then run `rex skill setup` to give
+  Claude Code Rex's skill and session hook. Rex writes its own hook into
+  ~/.claude/settings.json; do not hand-write that hook.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): ASK, then install per
   Proton's current docs.
-Check: `claude --version`, `herdr --version`, `pass-cli --version`
+Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`
 
 ## 4. Link configs
 Use `~/.dotfiles/bin/symlink <source> <target>`. It is idempotent and asks
@@ -37,17 +37,15 @@ before replacing a real file.
 | --------------------------------- | ------------------------------------------------------------------- |
 | agents/AGENTS.md                  | ~/.claude/CLAUDE.md                                                 |
 | claude/statusline.sh              | ~/.claude/statusline.sh                                             |
-| herdr/config.toml                 | ~/.config/herdr/config.toml                                         |
-| ghostty/config.ghostty            | ~/Library/Application Support/com.mitchellh.ghostty/config.ghostty  |
 | git/gitconfig, git/gitignore      | ~/.gitconfig, ~/.gitignore                                          |
 | zsh/                              | ~/.config/zsh                                                       |
 | zsh/zprofile, zsh/zshrc           | ~/.zprofile, ~/.zshrc                                               |
 | starship/starship.toml            | ~/.config/starship.toml                                             |
 
-Claude settings are not linked: Claude Code and herdr write into
+Claude settings are not linked: Claude Code and Rex write into
 `~/.claude/settings.json`, which would replace a symlink. Run
 `~/.dotfiles/bin/claude-settings` instead. It merges `claude/settings.json` into
-the live file (repo keys win, other keys such as herdr's hook are kept); `--dry`
+the live file (repo keys win, other keys such as Rex's hook are kept); `--dry`
 previews. Edit the repo file, then re-run it.
 
 Check: every target above resolves into ~/.dotfiles (`ls -l`), and
@@ -61,7 +59,7 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 - Default browser: `~/.dotfiles/bin/default-browser` (Helium); I confirm the macOS
   dialog
 - Login items: Raycast, Rectangle, KeepingYouAwake, Proton Pass, Superwhisper
-- Grant Accessibility to Raycast, Rectangle, Ghostty and Superwhisper
+- Grant Accessibility to Raycast, Rectangle and Superwhisper
 
 ## 6. macOS and always-on
 - `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, trackpad)
@@ -72,10 +70,9 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 
 ## 7. Verify
 - `zsh -i -c exit` prints nothing
-- Ghostty opens a plain zsh; `herdr` attaches to the session; Ctrl+' opens the
-  drop-down
-- `claude` starts in a herdr pane with the status line; `/permissions` shows
-  force-push under ask
+- Rex opens a plain zsh
+- `claude` starts in a Rex pane with the status line and reports its Rex
+  session; `/permissions` shows force-push under ask
 - `git config user.email` is hi@samarthv.com and `gh auth status` succeeds
 
 ## Working on this repo

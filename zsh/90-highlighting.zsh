@@ -1,5 +1,5 @@
 # Must remain last: it colours the final command line as it is typed. ANSI
-# colour names follow Ghostty's light/dark theme.
+# colour names follow the terminal's light/dark theme.
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=green,bold'

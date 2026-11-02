@@ -10,7 +10,7 @@
   },
   "tui": "fullscreen",
   "theme": "dark",
-  "preferredNotifChannel": "ghostty",
+  "preferredNotifChannel": "auto",
   "autoContinueAtUsageLimit": true,
   "subagentPromptCacheTtl": "1h",
   "statusLine": {

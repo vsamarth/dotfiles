@@ -19,7 +19,7 @@ standard Zsh entrypoints are intentionally tiny loaders:
 | `60-atuin.zsh` | local enhanced history on `Ctrl-R` |
 | `90-highlighting.zsh` | syntax highlighting; always load last |
 
-Colours are ANSI names so they follow Ghostty's light/dark theme. Starship's
+Colours are ANSI names so they follow the terminal's light/dark theme. Starship's
 config is `starship/starship.toml`.
 
 After an edit, run `reload`. Validate without opening a new terminal with:
