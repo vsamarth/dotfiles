@@ -12,8 +12,12 @@ quote the text that matters rather than pointing me at a file.
   standing on its own, related questions in one call. When my answer wouldn't
   change what you do, pick the sensible default and say so.
 - Keep changes surgical and leave work that isn't yours as you found it.
-- When you use my browser, close the tabs you opened once you're done, unless
-  I still need one.
+- When you use my browser or Rex, close the tabs and panes you opened once
+  you're done, unless I still need one.
+- Run steps yourself, `sudo` included: it goes through Touch ID, so I only
+  touch the sensor (a `sudo -n` probe wrongly reports that a password is
+  needed). When a step truly needs me, such as a sign-in, put the command alone
+  in a code block and on my clipboard.
 - Validate in proportion to risk, then say what changed, what you verified and
   what's left for me, naming anything unverified.
 
@@ -21,8 +25,9 @@ quote the text that matters rather than pointing me at a file.
 - New projects go in `~/Projects`.
 - TypeScript with pnpm and node. Install another toolchain when a task needs
   it, and say so.
-- In docs and instructions, describe the intent and leave the exact command to
-  the agent, unless the exact form is the gotcha.
+- Anything an agent reads (skills, docs, `instructions.md`) is writing for
+  agents: use the writing-for-agents skill, and leave the exact command to the
+  agent unless the exact form is the gotcha.
 
 ## Do freely
 Install packages, create commits, branches and worktrees, edit and delete
@@ -57,4 +62,5 @@ interface.
 their exact text before writing them, and keep work names, hosts, tokens and
 personal details out. When something would help every future session, such
 as a preference I keep repeating or a workflow worth a global skill, suggest
-it with the wording.
+it with the wording for this file or a skill; Claude's memory only reaches the
+project it was saved in.
