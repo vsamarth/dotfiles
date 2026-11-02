@@ -28,7 +28,7 @@ cask "helium-browser"
 # Mac basics
 cask "raycast"
 cask "rectangle"
-cask "superwhisper"
+cask "anomalyco/tap/hex"  # local dictation
 cask "claude"
 
 # Proton and network
