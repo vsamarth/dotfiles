@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Condensed read of recent Claude Code sessions, for the weekly retro: what I
+# said, what the agent replied and ran, tool results clipped. The raw .jsonl
+# transcripts are mostly API payloads (megabytes per session); open one only to
+# look closer at a moment the digest points to.
+# usage: retro-digest [days]   (default 7)
+set -euo pipefail
+
+days="${1:-7}"
+root="$HOME/.claude/projects"
+
+filter='
+def clip($n): if length > $n then .[0:$n] + "…[+" + ((length - $n) | tostring) + "]" else . end;
+def flat: if type == "string" then . else ([.[]? | .text? // ""] | join(" ")) end;
+def user($t; $ts):
+  select(($t | startswith("<local-command-caveat>")) | not)
+  | "USER \($ts[0:16]): " + ($t | clip(if ($t | startswith("This session is being continued")) then 200 else 800 end));
+. as $m
+| if $m.type == "user" then
+    ($m.message.content) as $c
+    | if ($c | type) == "string" then user($c; $m.timestamp)
+      else $c[]?
+        | if .type == "text" then user(.text; $m.timestamp)
+          elif .type == "tool_result" then "  RESULT: " + ((.content | flat | gsub("\n"; " ⏎ ")) | clip(300)) + (if .is_error then " [ERROR]" else "" end)
+          else empty end
+      end
+  elif $m.type == "assistant" then
+    $m.message.content[]?
+    | if .type == "text" then "ASSISTANT: " + (.text | clip(1000))
+      elif .type == "tool_use" then "  TOOL \(.name): " + (.input | tojson | clip(300))
+      else empty end
+  else empty end
+'
+
+find "$root" -name '*.jsonl' -mtime "-$days" -not -path '*/subagents/*' -print0 | xargs -0 ls -tr |
+  while IFS= read -r f; do
+    printf '\n##### SESSION %s\n' "$f"
+    jq -r "$filter" "$f"
+  done

@@ -1,21 +1,35 @@
 #!/usr/bin/env bash
 # Apply claude/settings.json to ~/.claude/settings.json without clobbering keys that
 # Claude Code or Rex write there (hooks, per-model tweaks). Repo keys win; keys that
-# exist only in the live file are kept. Run with --dry to preview.
+# exist only in the live file are kept, unless an earlier run applied them from the
+# repo and the repo has since dropped them. Run with --dry to preview.
 set -euo pipefail
 
 src="$(cd "$(dirname "$0")/.." && pwd)/claude/settings.json"
 dst="${CLAUDE_SETTINGS:-$HOME/.claude/settings.json}"
+# The repo file as of the last apply, so keys deleted from the repo get deleted live.
+applied="${CLAUDE_SETTINGS_APPLIED:-$HOME/.local/state/claude-settings/applied.json}"
 dry=0; [ "${1:-}" = "--dry" ] && dry=1
 
 command -v jq >/dev/null || { echo "jq is required (brew install jq)" >&2; exit 1; }
 mkdir -p "$(dirname "$dst")"
 [ -e "$dst" ] || echo '{}' > "$dst"
+base="$(cat "$applied" 2>/dev/null || echo "{}")"
+
+record() { mkdir -p "$(dirname "$applied")" && cp "$src" "$applied"; }
 
 tmp="$(mktemp)"
-jq -S -s '.[0] * .[1]' "$dst" "$src" > "$tmp"
+jq -S -s --argjson applied "$base" '
+  .[0] as $live | .[1] as $src
+  # Only whole settings, never a section like `hooks`: Rex keeps its own hook there.
+  | [ $applied | paths | select(all(.[]; type == "string"))
+      | select(. as $p | ($applied | getpath($p) | type) != "object")
+      | select(. as $p | ($src | try getpath($p) catch null) == null) ] as $dropped
+  | ($live | delpaths($dropped)) * $src
+' "$dst" "$src" > "$tmp"
 
 if diff <(jq -S . "$dst") "$tmp" >/dev/null; then
+  [ "$dry" = 1 ] || record
   echo "Already up to date: $dst"; rm -f "$tmp"; exit 0
 fi
 diff <(jq -S . "$dst") "$tmp" || true
@@ -24,4 +38,5 @@ if [ "$dry" = 1 ]; then rm -f "$tmp"; exit 0; fi
 # Replace a symlink with a real file so Claude Code and Rex can edit it freely.
 [ -L "$dst" ] && rm "$dst"
 mv "$tmp" "$dst"
+record
 echo "Updated $dst"

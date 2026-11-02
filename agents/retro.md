@@ -1,4 +1,4 @@
-/retro Scope: every Claude Code session from the last 7 days, across all projects. The transcripts are the `*.jsonl` files under `~/.claude/projects/` modified in that window.
+/retro Scope: every Claude Code session from the last 7 days, across all projects. The transcripts are the `*.jsonl` files under `~/.claude/projects/` modified in that window. They are mostly API payloads, so start from `bin/retro-digest` in this worktree: it prints every session in the window as a condensed read (my messages, your replies and tool calls, clipped results). Open a raw file only to look closer at a moment the digest shows.
 
 You're in a scratch worktree of my dotfiles, which holds my global agent setup: `agents/AGENTS.md` (loaded into every session), `claude/settings.json`, `claude/hooks/` and `instructions.md`. Look for what would help every future session: corrections I gave more than once, preferences I restated, procedures done by hand that deserve a global skill, mistakes a hook could prevent, and AGENTS.md lines that proved to be no-ops or wrong.
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<!-- Runs bin/weekly-retro every Sunday at 19:00 (or at the next wake). -->
+<!-- Runs bin/weekly-retro every Sunday at 19:00 (or at the next wake), once
+     with Sonnet and once with Opus; each leaves its own branch to compare. -->
 <plist version="1.0">
 <dict>
   <key>Label</key>
@@ -9,7 +10,7 @@
   <array>
     <string>/bin/zsh</string>
     <string>-lc</string>
-    <string>"$HOME/.dotfiles/bin/weekly-retro"</string>
+    <string>"$HOME/.dotfiles/bin/weekly-retro" sonnet xhigh; "$HOME/.dotfiles/bin/weekly-retro" opus high</string>
   </array>
   <key>StartCalendarInterval</key>
   <dict>

@@ -68,7 +68,8 @@ before replacing a real file.
 Claude settings are not linked: Claude Code and Rex write into
 `~/.claude/settings.json`, which would replace a symlink. Run
 `~/.dotfiles/bin/claude-settings` instead. It merges `claude/settings.json` into
-the live file (repo keys win, other keys such as Rex's hook are kept); `--dry`
+the live file (repo keys win, other keys such as Rex's hook are kept, and keys
+deleted from the repo file since the last run are deleted live too); `--dry`
 previews. Edit the repo file, then re-run it.
 
 Check: every target above resolves into ~/.dotfiles (`ls -l`), and
@@ -92,15 +93,17 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
   Calendar)
 - Weekly agent retro: link `macos/local.weekly-retro.plist` into
   `~/Library/LaunchAgents` and load it with `launchctl bootstrap`. Every Sunday
-  evening Claude reviews the week's sessions and leaves proposals on a local
-  `retro/<date>` branch; it never pushes, because the transcripts are private.
+  evening Sonnet and Opus each review the week's sessions and leave proposals
+  on local `retro/<date>-<model>` branches, sandboxed with no network; they
+  never push, because the transcripts are private.
 - Lid-closed always-on: ASK. It needs sudo. Show me the exact `pmset` command and
   what it changes, wait for approval, then test: close the lid on power and reach
   the Mac over Tailscale.
 - Tailscale and Proton VPN can conflict on macOS. Test them together once.
 
 ## 7. Verify
-- `zsh -i -c exit` prints nothing
+- `zsh -i -c exit` prints nothing, run in a Rex pane (an agent's own shell has
+  no terminal, so zsh warns about `zle` there)
 - Rex opens a plain zsh
 - The Dock shows exactly Helium, Rex, Claude, Proton Mail and Calendar
 - Caps Lock acts as Control, and screenshots land in ~/Pictures/Screenshots

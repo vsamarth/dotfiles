@@ -1,26 +1,33 @@
 #!/usr/bin/env bash
 # Weekly retro: Claude reviews the past week's sessions and proposes improvements
-# to the global agent setup as a commit on a local branch, retro/<date>.
+# to the global agent setup as a commit on a local branch, retro/<date>-<model>.
 # It never pushes: the transcripts are private and this repo is public.
+# usage: weekly-retro [model] [effort]   (default: sonnet xhigh)
 # Run by launchd (macos/local.weekly-retro.plist); safe to run by hand.
 set -euo pipefail
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 
 repo="$HOME/.dotfiles"
+model="${1:-sonnet}"
+effort="${2:-xhigh}"
 day="$(date +%F)"
-branch="retro/$day"
+branch="retro/$day-$model"
 state="$HOME/.local/state/retro"
-worktree="$state/worktree-$day"
-summary="$state/$day.md"
+worktree="$state/worktree-$day-$model"
+summary="$state/$day-$model.md"
 mkdir -p "$state"
 
 git -C "$repo" worktree add -q -b "$branch" "$worktree" main
 cd "$worktree"
+# The run inherits `Bash` from ~/.claude/settings.json, so --allowedTools alone
+# does not stop it from reaching the network or pushing. The sandbox does: Bash
+# runs with no outbound network and cannot step outside it.
 claude -p "$(cat "$repo/agents/retro.md")" \
-  --model sonnet --effort xhigh \
+  --model "$model" --effort "$effort" \
   --permission-mode acceptEdits \
+  --settings '{"sandbox":{"enabled":true,"allowUnsandboxedCommands":false}}' \
   --add-dir "$HOME/.claude/projects" \
-  --allowedTools "Read Grep Glob Edit Write Skill Bash(ls:*) Bash(find:*) Bash(jq:*) Bash(git diff:*) Bash(git status:*)" \
+  --allowedTools "Read Grep Glob Edit Write Skill Bash(bin/retro-digest:*) Bash(ls:*) Bash(find:*) Bash(jq:*) Bash(git diff:*) Bash(git status:*)" \
   --no-session-persistence > "$summary" 2>&1 || echo "claude exited with $?" >> "$summary"
 
 git add -A
@@ -38,4 +45,4 @@ if [ "$(git rev-list --count "main..$branch")" -eq 0 ]; then
 else
   note="Proposals are on branch $branch."
 fi
-osascript -e "display notification \"$note Summary in ~/.local/state/retro/$day.md\" with title \"Weekly agent retro\""
+osascript -e "display notification \"$note Summary in ~/.local/state/retro/$day-$model.md\" with title \"Weekly agent retro ($model)\""
