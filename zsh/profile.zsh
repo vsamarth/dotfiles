@@ -15,3 +15,6 @@ export PATH="$HOME/.local/bin:$PATH"
 # Global pnpm packages (pnpm add -g).
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME/bin:$PATH"
+
+# Opt out of CLI telemetry (npx skills and others that honour it).
+export DO_NOT_TRACK=1

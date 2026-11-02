@@ -1,67 +1,60 @@
-# Personal working agreements
+# Working agreements
 
-Machine: my personal MacBook. Rex is my terminal and multiplexer (`rex` CLI).
-There is no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
+Personal MacBook. Rex is my terminal and multiplexer, Helium my browser. I
+don't use a text editor: I see your work through your replies and diffs, so
+quote the text that matters rather than pointing me at a file.
 
-## Defaults
-- Follow explicit current requests, then repo-local instructions, then these.
-- Personal projects live in `~/Projects`. Create new repos and project files
-  there, not in `~` or on the Desktop.
-- Default stack is TypeScript with pnpm and node. If a tool you need is
-  missing (uv, Python, a build tool), say so and install it only when the task
-  needs it.
-- Inspect current state before editing. Preserve unrelated changes. Make the
-  smallest maintainable change and explain consequential assumptions.
+## Working with me
+- My messages are often dictated or typed fast. Read them for intent; "..."
+  usually separates requests.
+- Work end to end. When you need a decision, ask with your question tool
+  (AskUserQuestion in Claude Code): recommended option first, each question
+  standing on its own, related questions in one call. When my answer wouldn't
+  change what you do, pick the sensible default and say so.
+- Keep changes surgical and leave work that isn't yours as you found it.
 - When you use my browser, close the tabs you opened once you're done, unless
   I still need one.
+- Validate in proportion to risk, then say what changed, what you verified and
+  what's left for me, naming anything unverified.
 
-## Questions
-When you need a decision from me, ask with your question tool
-(AskUserQuestion in Claude Code), not in prose. Put the recommended option
-first and make each question stand on its own. Ask related questions together
-in one call. Ask only when my answer changes what you do; otherwise pick the
-sensible default and say so.
-
-## Improving this setup
-If you notice something that would help every future session, such as a
-preference I keep repeating or a workflow worth turning into a global skill,
-suggest it. Show me the wording and let me decide. Things that only matter to
-one project belong in that project. This file is public, so keep personal
-details out.
+## Defaults
+- New projects go in `~/Projects`.
+- TypeScript with pnpm and node. Install another toolchain when a task needs
+  it, and say so.
+- In docs and instructions, describe the intent and leave the exact command to
+  the agent, unless the exact form is the gotcha.
 
 ## Do freely
-Install packages, create commits, branches and worktrees, edit and delete files
-inside the project, fetch URLs and download files, and run heavy jobs. Push to
-any branch, and open, update and merge PRs on my own repos. Create issues and
-private repos. Work through software tasks end to end without checking in.
+Install packages, create commits, branches and worktrees, edit and delete
+files inside the project, fetch and download, and run heavy jobs. Push to any
+branch, and open, update and merge PRs on my own repos. Create issues and
+private repos.
 
 ## Ask first
-- Force-pushing (`--force`, `-f`, `--force-with-lease`, the `git pf` alias),
-  deleting remote branches or repos, making a repo public, and publishing
-  packages or releases.
+- Force-pushing, deleting remote branches or repos, making a repo public, and
+  publishing packages or releases.
 - Reading secrets, the Keychain, `~/.ssh`, `~/.aws`, `.env*` or key files.
-- Creating, deleting or changing identities, keys, logins, permissions, access
-  scopes or security settings.
+- Creating or changing identities, keys, logins, permissions, access scopes
+  or security settings.
 - Deleting outside the project, or any disk-level operation.
 - Rewriting git history: `reset --hard`, `clean`, branch deletion, rebasing
   shared history.
-- Losing data: dropping databases, pruning volumes, wiping caches that hold
-  models or datasets.
-- Acting as me toward others: sending messages or email, posting publicly,
-  commenting on other people's repos, or spending money on APIs or cloud.
+- Losing data: dropping databases, pruning volumes, wiping model or dataset
+  caches.
+- Acting as me toward others: messages, email, public posts, comments on
+  other people's repos, or spending money.
 
 ## Secrets
-Secrets live in Proton Pass. Inject them at run time with
-`pass-cli run -- <command>`. Never put a secret in a prompt, command argument,
-log, patch, commit or generated document. If a secret appears unexpectedly,
-stop and tell me. If an operation needs one, ask me to sign in through the
-proper interface. Never ask me to paste one into chat.
+Secrets live in Proton Pass and reach commands only at run time, through
+`pass-cli run -- <command>`, so they stay out of prompts, arguments, logs,
+patches, commits and documents. If one appears unexpectedly, stop and tell
+me. When something needs a secret, ask me to sign in through its own
+interface.
 
-## Reporting
-Validate in proportion to risk. Then say what changed, what was verified, and
-what you left for me. When something is unverified, say which part.
-
-## This machine's setup
-`~/.dotfiles` is a public repo and `instructions.md` is the source of truth.
-Propose changes with the file contents before writing them. Keep work names,
-hosts and tokens out of the repo.
+## My setup
+`~/.dotfiles` is public and holds this file and my machine setup;
+`instructions.md` there is the source of truth. Propose dotfiles changes with
+their exact text before writing them, and keep work names, hosts, tokens and
+personal details out. When something would help every future session, such
+as a preference I keep repeating or a workflow worth a global skill, suggest
+it with the wording.

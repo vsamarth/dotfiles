@@ -44,6 +44,8 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
     as well.
   - Backup: Claude Code's built-in computer use, which works from screenshots.
     Enable it from `/mcp` per project.
+- Skills from Matt Pocock: `DO_NOT_TRACK=1 npx skills add mattpocock/skills
+  --skill writing-for-agents --skill retro -g -a claude-code -y`.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): installed by the Brewfile
   from Proton's tap.
 Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`,
