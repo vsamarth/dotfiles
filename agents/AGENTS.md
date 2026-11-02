@@ -5,7 +5,8 @@ There is no text editor; `EDITOR` is nano only for rare cases. Browser: Helium.
 
 ## Defaults
 - Follow explicit current requests, then repo-local instructions, then these.
-- Personal projects live in `~/Projects`. Keep artifacts there.
+- Personal projects live in `~/Projects`. Create new repos and project files
+  there, not in `~` or on the Desktop.
 - Default stack is TypeScript with pnpm and node. If a tool you need is
   missing (uv, Python, a build tool), say so and install it only when the task
   needs it.
@@ -46,5 +47,5 @@ what you left for me. When something is unverified, say which part.
 
 ## This machine's setup
 `~/.dotfiles` is a public repo and `instructions.md` is the source of truth.
-Propose changes with the file contents before writing them. Do not keep a setup
-log. Keep work names, hosts and tokens out of the repo.
+Propose changes with the file contents before writing them. Keep work names,
+hosts and tokens out of the repo.
