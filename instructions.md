@@ -90,6 +90,10 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
   trackpad, Caps Lock → Control). Log out once so key repeat takes effect.
 - `bash ~/.dotfiles/macos/dock.sh` (Dock apps: Helium, Rex, Claude, Proton Mail,
   Calendar)
+- Weekly agent retro: link `macos/local.weekly-retro.plist` into
+  `~/Library/LaunchAgents` and load it with `launchctl bootstrap`. Every Sunday
+  evening Claude reviews the week's sessions and leaves proposals on a local
+  `retro/<date>` branch; it never pushes, because the transcripts are private.
 - Lid-closed always-on: ASK. It needs sudo. Show me the exact `pmset` command and
   what it changes, wait for approval, then test: close the lid on power and reach
   the Mac over Tailscale.

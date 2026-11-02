@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Weekly retro: Claude reviews the past week's sessions and proposes improvements
+# to the global agent setup as a commit on a local branch, retro/<date>.
+# It never pushes: the transcripts are private and this repo is public.
+# Run by launchd (macos/local.weekly-retro.plist); safe to run by hand.
+set -euo pipefail
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+
+repo="$HOME/.dotfiles"
+day="$(date +%F)"
+branch="retro/$day"
+state="$HOME/.local/state/retro"
+worktree="$state/worktree-$day"
+summary="$state/$day.md"
+mkdir -p "$state"
+
+git -C "$repo" worktree add -q -b "$branch" "$worktree" main
+cd "$worktree"
+claude -p "$(cat "$repo/agents/retro.md")" \
+  --model sonnet --effort xhigh \
+  --permission-mode acceptEdits \
+  --add-dir "$HOME/.claude/projects" \
+  --allowedTools "Read Grep Glob Edit Write Skill Bash(ls:*) Bash(find:*) Bash(jq:*) Bash(git diff:*) Bash(git status:*)" \
+  --no-session-persistence > "$summary" 2>&1 || echo "claude exited with $?" >> "$summary"
+
+git add -A
+git commit -q -F - <<EOF || true
+retro: proposals from the week ending $day
+
+Summary: $summary (local only)
+EOF
+cd "$repo"
+git worktree remove --force "$worktree"
+
+if [ "$(git rev-list --count "main..$branch")" -eq 0 ]; then
+  git branch -q -D "$branch"
+  note="No changes proposed this week."
+else
+  note="Proposals are on branch $branch."
+fi
+osascript -e "display notification \"$note Summary in ~/.local/state/retro/$day.md\" with title \"Weekly agent retro\""
