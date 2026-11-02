@@ -22,7 +22,9 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
 ## 3. Agents
 - Claude Code: `curl -fsSL https://claude.ai/install.sh | bash`
 - Rex (beta): not on Homebrew (the `rex` formula is an unrelated tool). Install
-  the app from Rex's site and open it once. Then run `rex skill setup` to give
+  the app from Rex's site and open it once. If `rex` is not on PATH, link the
+  CLI from inside the app bundle into ~/.local/bin (the hook calls `rex` at
+  every session start). Then run `rex skill setup` to give
   Claude Code Rex's skill and session hook. Rex writes its own hook into
   ~/.claude/settings.json; do not hand-write that hook.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): ASK, then install per
