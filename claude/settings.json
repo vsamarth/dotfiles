@@ -15,20 +15,7 @@
   },
   "hooks": {
     "PreToolUse": [
-      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/guard.sh" }] },
-      { "matcher": "AskUserQuestion", "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/rex-status.sh blocked" }] }
-    ],
-    "PostToolUse": [
-      { "matcher": "*", "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/rex-status.sh working" }] }
-    ],
-    "UserPromptSubmit": [
-      { "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/rex-status.sh working" }] }
-    ],
-    "Notification": [
-      { "matcher": "permission_prompt", "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/rex-status.sh blocked" }] }
-    ],
-    "Stop": [
-      { "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/rex-status.sh done" }] }
+      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "$HOME/.dotfiles/claude/hooks/guard.sh" }] }
     ]
   },
   "permissions": {
