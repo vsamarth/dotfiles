@@ -64,6 +64,7 @@ before replacing a real file.
 | agents/AGENTS.md                  | ~/.claude/CLAUDE.md                                                 |
 | agents/AGENTS.md                  | ~/.agents/AGENTS.md                                                 |
 | claude/statusline.sh              | ~/.claude/statusline.sh                                             |
+| claude/skills/remote-sessions/    | ~/.claude/skills/remote-sessions                                    |
 | git/gitconfig, git/gitignore      | ~/.gitconfig, ~/.gitignore                                          |
 | zsh/                              | ~/.config/zsh                                                       |
 | zsh/zprofile, zsh/zshrc           | ~/.zprofile, ~/.zshrc                                               |
