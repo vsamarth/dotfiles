@@ -31,16 +31,23 @@ Check: `brew bundle check --file=~/.dotfiles/Brewfile`
   every session start). Then run `rex skill setup` to give
   Claude Code Rex's skill and session hook. Rex writes its own hook into
   ~/.claude/settings.json; do not hand-write that hook.
-- Computer use: `pnpm add -g agent-desktop --allow-build=agent-desktop` (the
-  build step links the native binary), then `npx skills add
-  https://github.com/vercel-labs/agent-desktop --skill agent-desktop -g -a claude-code -y`.
-  I grant Rex Accessibility (`agent-desktop permissions --guide`). Claude
-  Code's built-in computer use is the backup: enable it from `/mcp` per
-  project; it needs Screen Recording.
+- Computer use: agent-desktop, which reads and operates apps through the
+  accessibility tree.
+  - Install: `pnpm add -g agent-desktop --allow-build=agent-desktop` (the build
+    step links the native binary), then `npx skills add
+    https://github.com/vercel-labs/agent-desktop --skill agent-desktop -g -a claude-code -y`.
+  - Permissions (mine to grant): Accessibility, which macOS 27 calls Device
+    Control and Data Access, and Screen Recording, both for Rex Beta.
+    `agent-desktop permissions --guide` opens the panes. Terminals run under
+    the Rex Server helper, so if a permission still shows as denied, add
+    `~/Library/Application Support/com.superlogical.rex/RexServer/Versions/Current/Rex Server.app`
+    as well.
+  - Backup: Claude Code's built-in computer use, which works from screenshots.
+    Enable it from `/mcp` per project.
 - Proton Pass CLI (`pass-cli`, beta, paid plan): installed by the Brewfile
   from Proton's tap.
 Check: `claude --version`, `rex version`, `rex skill status`, `pass-cli --version`,
-`agent-desktop version`
+and `agent-desktop status` shows accessibility and screen_recording as granted
 
 ## 4. Link configs
 Use `~/.dotfiles/bin/symlink <source> <target>`. It is idempotent and asks
