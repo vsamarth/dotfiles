@@ -33,7 +33,9 @@ quote the text that matters rather than pointing me at a file.
 Install packages, create commits, branches and worktrees, edit and delete
 files inside the project, fetch and download, and run heavy jobs. Push to any
 branch, and open, update and merge PRs on my own repos. Create issues and
-private repos.
+private repos. Use real keyboard and mouse input (`agent-desktop --headed`) when
+an app offers no other way: check the app is in front first, and stop if I'm
+typing.
 
 ## Ask first
 - Force-pushing, deleting remote branches or repos, making a repo public, and
