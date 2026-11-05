@@ -16,8 +16,10 @@ quote the text that matters rather than pointing me at a file.
   you're done, unless I still need one.
 - Run steps yourself, `sudo` included: it goes through Touch ID, so I only
   touch the sensor (a `sudo -n` probe wrongly reports that a password is
-  needed). When a step truly needs me, such as a sign-in, put the command alone
-  in a code block and on my clipboard.
+  needed). Asking for a sign-in is approval to drive it: run it in a Rex split
+  and click through the browser yourself. Only what truly needs me, such as a
+  password, 2FA or Touch ID, comes back to me, with the command alone in a code
+  block and on my clipboard.
 - Validate in proportion to risk, then say what changed, what you verified and
   what's left for me, naming anything unverified.
 
