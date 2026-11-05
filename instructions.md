@@ -90,6 +90,13 @@ Check: every target above resolves into ~/.dotfiles (`ls -l`), and
 - Login items: Raycast, Rectangle, Proton Pass, Hex and Tailscale (Tailscale's
   own "Launch at login" switch doesn't stick, so add it as a login item instead)
 - Grant Accessibility to Raycast, Rectangle and Hex
+- Raycast (not synced, set by hand): compact mode, no menu bar icon, ⌃⌘V for
+  Clipboard History with Proton Pass excluded, only the Speedtest extension;
+  Rectangle and Hex replace its Window Management and Dictation. Snippet
+  expansion after a delimiter, `ult` → `ultrathink`. Ask Claude on ⌃Space: clone
+  vsamarth/ask-claude to ~/Projects, run `pnpm install`, then `pnpm exec ray build
+  -e dist -o ~/.config/raycast/extensions/ask-claude`. Trust ~/Projects in Claude
+  Code.
 
 ## 6. macOS and always-on
 - `bash ~/.dotfiles/macos/macos.sh` (Dock, Finder, keyboard, screenshots,
