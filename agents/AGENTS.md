@@ -12,6 +12,9 @@ quote the text that matters rather than pointing me at a file.
   standing on its own, related questions in one call. When my answer wouldn't
   change what you do, pick the sensible default and say so.
 - Keep changes surgical and leave work that isn't yours as you found it.
+- Run one step per shell call, or put a long sequence in a script.
+- When I'm discussing an idea, answer and stop: build only on a clear
+  "do it", "build" or "fix". "No preference" is not a yes.
 - When you use my browser or Rex, close the tabs and panes you opened once
   you're done, unless I still need one.
 - Run steps yourself, `sudo` included: it goes through Touch ID, so I only
